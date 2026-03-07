@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FORAGER — Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #FDFCFB; color: #1A1C19; }
+        h1, h2, h3 { font-family: 'Outfit', sans-serif; }
+        .nav-shadow { box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        
+        /* Base Mobile Canvas */
+        #petalWheel { width: 100%; height: auto; display: block; }
+
+        /* Tablet & Desktop Adjustments (CSS Only) */
+        @media (min-width: 768px) {
+            .main-container { max-width: 780px !important; }
+            #petalWheel { width: 600px !important; height: 600px !important; }
+            .plant-grid { 
+                display: grid; 
+                grid-template-columns: repeat(2, minmax(0, 1fr)); 
+                gap: 1.5rem; 
+            }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        jan: '#E8ECF0', feb: '#D8EBF8', mar: '#DDF0E4', apr: '#F8F8D0',
+                        may: '#5FAD6A', jun: '#F0B8CC', jul: '#2E8FD8', aug: '#E8907A',
+                        sep: '#7A4A6E', oct: '#8A4A28', nov: '#425A72', dec: '#2C5A3A',
+                        primary: '#1A1C19', secondary: '#5E635E', bg: '#FDFCFB'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="pb-28">
+
+    <header class="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-100 px-6 py-4 flex justify-between items-center">
+        <h1 class="text-xl font-bold tracking-tight">FORAGER</h1>
+        <div id="month-dot" class="w-3 h-3 rounded-full"></div>
+    </header>
+
+    <main class="pt-24 px-6 mx-auto main-container max-w-md">
+        <div class="mb-4">
+            <p class="text-secondary text-sm mb-1">Good morning, Forager.</p>
+            <h2 class="text-3xl font-bold">In season now</h2>
+        </div>
+
+        <div style="width: 100%; max-width: 520px; margin: 0 auto;" class="my-4 relative overflow-hidden flex justify-center">
+            <canvas id="petalWheel" width="520" height="520" class="cursor-pointer"></canvas>
+        </div>
+
+        <div class="plant-grid space-y-4 md:space-y-0">
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-50">
+                <div class="mb-2">
+                    <h3 class="text-lg font-bold">Wild Garlic</h3>
+                    <p class="text-secondary text-sm italic">(Ramsløg)</p>
+                </div>
+                <div class="flex gap-1 mb-3">
+                    <span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span><span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span>
+                    <span class="w-[9px] h-[9px] rounded-full bg-mar"></span><span class="w-[9px] h-[9px] rounded-full bg-apr"></span>
+                    <span class="w-[9px] h-[9px] rounded-full bg-may"></span><span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span>
+                    <span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span><span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span>
+                    <span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span><span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span>
+                    <span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span><span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span>
+                </div>
+                <p class="text-sm text-secondary">Found in moist deciduous forests. Smells strongly of garlic. Watch for toxic Lily of the Valley.</p>
+            </div>
+
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-50">
+                <div class="mb-2">
+                    <h3 class="text-lg font-bold">Stinging Nettle</h3>
+                    <p class="text-secondary text-sm italic">(Brændenælde)</p>
+                </div>
+                <div class="flex gap-1 mb-3">
+                    <span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span><span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span>
+                    <span class="w-[9px] h-[9px] rounded-full bg-mar"></span><span class="w-[9px] h-[9px] rounded-full bg-apr"></span>
+                    <span class="w-[9px] h-[9px] rounded-full bg-may"></span><span class="w-[9px] h-[9px] rounded-full bg-jun"></span>
+                    <span class="w-[9px] h-[9px] rounded-full bg-jul"></span><span class="w-[9px] h-[9px] rounded-full bg-aug"></span>
+                    <span class="w-[9px] h-[9px] rounded-full bg-sep"></span><span class="w-[9px] h-[9px] rounded-full bg-oct"></span>
+                    <span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span><span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span>
+                </div>
+                <p class="text-sm text-secondary">A nutritional powerhouse. Harvest top shoots in spring. Always wear gloves when picking.</p>
+            </div>
+
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-50">
+                <div class="mb-2">
+                    <h3 class="text-lg font-bold">Ground Elder</h3>
+                    <p class="text-secondary text-sm italic">(Skvalderkål)</p>
+                </div>
+                <div class="flex gap-1 mb-3">
+                    <span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span><span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span>
+                    <span class="w-[9px] h-[9px] rounded-full bg-mar"></span><span class="w-[9px] h-[9px] rounded-full bg-apr"></span>
+                    <span class="w-[9px] h-[9px] rounded-full bg-may"></span><span class="w-[9px] h-[9px] rounded-full bg-jun"></span>
+                    <span class="w-[9px] h-[9px] rounded-full bg-jul"></span><span class="w-[9px] h-[9px] rounded-full bg-aug"></span>
+                    <span class="w-[9px] h-[9px] rounded-full bg-sep"></span><span class="w-[9px] h-[9px] rounded-full bg-oct"></span>
+                    <span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span><span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span>
+                </div>
+                <p class="text-sm text-secondary">Pick when leaves are shiny and "folded" for best flavor. Tastes like a mix of celery and parsley.</p>
+            </div>
+        </div>
+    </main>
+
+    <nav class="fixed bottom-0 w-full bg-white border-t border-gray-100 nav-shadow px-6 py-3 flex justify-between items-center z-50">
+        <a href="index.html" class="flex flex-col items-center text-primary">
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            <span class="text-[10px] font-medium uppercase tracking-wider">Home</span>
+        </a>
+        <a href="plants.html" class="flex flex-col items-center text-secondary hover:text-primary">
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <span class="text-[10px] font-medium uppercase tracking-wider">Find</span>
+        </a>
+        <a href="recipes.html" class="flex flex-col items-center text-secondary hover:text-primary">
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+            <span class="text-[10px] font-medium uppercase tracking-wider">Kitchen</span>
+        </a>
+        <a href="log.html" class="flex flex-col items-center text-secondary hover:text-primary">
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+            <span class="text-[10px] font-medium uppercase tracking-wider">Log</span>
+        </a>
+    </nav>
+
+    <script>
+        // JavaScript remains untouched as requested
+        const monthColors = {
+            0: { name: 'JANUARY', hex: '#E8ECF0', label: 'jan', dark: false },
+            1: { name: 'FEBRUARY', hex: '#D8EBF8', label: 'feb', dark: false },
+            2: { name: 'MARCH', hex: '#DDF0E4', label: 'mar', dark: false },
+            3: { name: 'APRIL', hex: '#F8F8D0', label: 'apr', dark: false },
+            4: { name: 'MAY', hex: '#5FAD6A', label: 'may', dark: true },
+            5: { name: 'JUNE', hex: '#F0B8CC', label: 'jun', dark: false },
+            6: { name: 'JULY', hex: '#2E8FD8', label: 'jul', dark: true },
+            7: { name: 'AUGUST', hex: '#E8907A', label: 'aug', dark: false },
+            8: { name: 'SEPTEMBER', hex: '#7A4A6E', label: 'sep', dark: true },
+            9: { name: 'OCTOBER', hex: '#8A4A28', label: 'oct', dark: true },
+            10: { name: 'NOVEMBER', hex: '#425A72', label: 'nov', dark: true },
+            11: { name: 'DECEMBER', hex: '#2C5A3A', label: 'dec', dark: true }
+        };
+
+        const canvas = document.getElementById('petalWheel');
+        const ctx = canvas.getContext('2d');
+        const now = new Date();
+        const currentMonthIdx = now.getMonth();
+        const currentYear = now.getFullYear();
+
+        document.getElementById('month-dot').style.backgroundColor = monthColors[currentMonthIdx].hex;
+
+        function drawWheel() {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const numPetals = 12;
+            const baseRadius = 200; 
+            const angleStep = (Math.PI * 2) / numPetals;
+            const rotationOffset = -Math.PI / 2 - (currentMonthIdx * angleStep);
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < numPetals; i++) {
+                const angle = rotationOffset + (i * angleStep);
+                const isCurrent = (i === currentMonthIdx);
+                const radius = isCurrent ? baseRadius * 1.25 : baseRadius;
+                const width = isCurrent ? 0.45 : 0.38;
+
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(angle);
+
+                ctx.beginPath();
+                ctx.moveTo(20, 0); 
+                ctx.bezierCurveTo(radius/2, -radius * width, radius, -radius * (width/2), radius, 0);
+                ctx.bezierCurveTo(radius, radius * (width/2), radius/2, radius * width, 20, 0);
+                ctx.fillStyle = monthColors[i].hex;
+                ctx.fill();
+
+                ctx.fillStyle = monthColors[i].dark ? '#FFFFFF' : '#3A3D3A';
+                ctx.font = isCurrent ? 'bold 14px Outfit' : '11px Outfit';
+                ctx.textAlign = 'center';
+                ctx.fillText(monthColors[i].label.toUpperCase(), radius * 0.7, 5);
+
+                ctx.restore();
+            }
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 65, 0, Math.PI * 2);
+            ctx.fillStyle = '#FDFCFB';
+            ctx.fill();
+
+            ctx.fillStyle = '#1A1C19';
+            ctx.textAlign = 'center';
+            ctx.font = 'bold 18px Outfit';
+            ctx.fillText(monthColors[currentMonthIdx].name, centerX, centerY + 2);
+            ctx.font = '12px Inter';
+            ctx.fillText(currentYear, centerX, centerY + 20);
+        }
+
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left - (rect.width / 2);
+            const y = e.clientY - rect.top - (rect.height / 2);
+            const angle = Math.atan2(y, x);
+            const rotationOffset = -Math.PI / 2 - (currentMonthIdx * (Math.PI * 2 / 12));
+            let normalizedAngle = (angle - rotationOffset) % (Math.PI * 2);
+            if (normalizedAngle < 0) normalizedAngle += Math.PI * 2;
+            const clickedIdx = (Math.round(normalizedAngle / (Math.PI * 2 / 12)) + currentMonthIdx + 10) % 12;
+            window.location.href = `month-detail.html?m=${monthColors[clickedIdx].label}`;
+        });
+
+        document.fonts.ready.then(() => {
+            drawWheel();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FORAGER — Month Detail</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #FDFCFB; color: #1A1C19; }
+        h1, h2, h3 { font-family: 'Outfit', sans-serif; }
+        .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+        .nav-shadow { box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        @media (min-width: 768px) {
+            .main-container { max-width: 780px !important; }
+            .two-col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+            .two-col > *:last-child:nth-child(odd) { grid-column: span 2 / span 2; }
+        }
+    </style>
+</head>
+<body class="pb-28">
+
+    <header id="header-band" class="w-full pt-16 pb-12 px-6 text-center transition-colors duration-500">
+        <h1 id="month-name" class="text-4xl font-bold tracking-tight mb-2 uppercase"></h1>
+        <p id="mood-line" class="text-lg opacity-80 italic"></p>
+    </header>
+
+    <div class="flex justify-between items-center px-6 py-4 bg-white border-b border-gray-100 sticky top-0 z-40">
+        <a id="prev-link" href="#" class="flex items-center gap-2">
+            <span class="text-xl">←</span>
+            <span id="prev-label" class="text-xs font-bold uppercase tracking-widest"></span>
+        </a>
+        <a id="next-link" href="#" class="flex items-center gap-2">
+            <span id="next-label" class="text-xs font-bold uppercase tracking-widest"></span>
+            <span class="text-xl">→</span>
+        </a>
+    </div>
+
+    <main class="main-container mx-auto px-6 pt-8">
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold mb-6">Focus Plants</h2>
+            <div id="plant-list" class="two-col space-y-4 md:space-y-0"></div>
+        </section>
+        <section class="mb-10">
+            <h2 class="text-xl font-bold mb-4">What to look for</h2>
+            <ul id="field-notes" class="space-y-3 text-sm list-disc pl-5 text-gray-600"></ul>
+        </section>
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold mb-6">This month in the kitchen</h2>
+            <div id="recipe-list" class="two-col space-y-4 md:space-y-0"></div>
+        </section>
+        <section class="mb-12 border-t border-gray-100 pt-8">
+            <h2 class="text-xl font-bold mb-3">Preserve and store</h2>
+            <p id="preserve-note" class="text-sm leading-relaxed text-gray-600"></p>
+        </section>
+    </main>
+
+    <nav class="fixed bottom-0 w-full bg-white border-t border-gray-100 nav-shadow px-6 py-2 flex justify-around items-center z-50">
+        <a href="index.html" class="flex flex-col items-center text-gray-500 hover:text-gray-900">
+            <i data-lucide="home" class="w-5 h-5 mb-1"></i>
+            <span class="text-[10px] uppercase font-bold tracking-wider">Home</span>
+        </a>
+        <a href="plants.html" class="flex flex-col items-center text-gray-500 hover:text-gray-900">
+            <i data-lucide="search" class="w-5 h-5 mb-1"></i>
+            <span class="text-[10px] uppercase font-bold tracking-wider">Find</span>
+        </a>
+        <a href="recipes.html" class="flex flex-col items-center text-gray-500 hover:text-gray-900">
+            <i data-lucide="flame" class="w-5 h-5 mb-1"></i>
+            <span class="text-[10px] uppercase font-bold tracking-wider">Kitchen</span>
+        </a>
+        <a href="log.html" class="flex flex-col items-center text-gray-500 hover:text-gray-900">
+            <i data-lucide="book-open" class="w-5 h-5 mb-1"></i>
+            <span class="text-[10px] uppercase font-bold tracking-wider">Log</span>
+        </a>
+    </nav>
+
+    <script>
+        const COLORS = {
+            jan:'#E8ECF0', feb:'#D8EBF8', mar:'#DDF0E4', apr:'#F8F8D0',
+            may:'#5FAD6A', jun:'#F0B8CC', jul:'2E8FD8', aug:'#E8907A',
+            sep:'#7A4A6E', oct:'#8A4A28', nov:'#425A72', dec:'#2C5A3A'
+        };
+
+        const MONTH_KEYS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+
+        const monthData = {
+            jan: {
+                name: "January", mood: "The lean winter silence", color: "#E8ECF0",
+                plants: [
+                    { name: "White Dead-nettle", danish: "Hvid Døvnælde", tip: "No sting, white hooded flowers.", habitat: "Urban edges and hedgerows.", season: [1,1,1,0,0,0,0,0,0,0,0,1] },
+                    { name: "Juniper", danish: "Ene", tip: "Sharp blue-black berries.", habitat: "Heathland and open woodland.", season: [1,1,0,0,0,0,0,0,0,0,1,1] }
+                ],
+                notes: [
+                    "Process and organise your stored dried roots from autumn.",
+                    "Learn to identify trees by their bark while leaves are absent.",
+                    "Check hedgerows for any remaining dried berries still on stems.",
+                    "This is a good month to plan your foraging calendar for the year ahead."
+                ],
+                recipes: [
+                    { name: "Juniper Tea", ingredient: "Juniper (Ene)", desc: "A warming, resinous brew. Simmer berries gently, do not boil." },
+                    { name: "Dead-nettle Soup", ingredient: "White Dead-nettle (Hvid Døvnælde)", desc: "A mild, mineral-rich winter green soup." }
+                ],
+                preserve: "Dry juniper berries in a single layer at low heat until completely brittle for long-term storage. Press white dead-nettle leaves into a green powder by drying and crumbling for use as a winter nutrient supplement. Render any stored animal fats to seal and preserve potted forage-based rillettes through the cold months."
+            },
+            feb: {
+                name: "February", mood: "Waiting for the thaw", color: "#D8EBF8",
+                plants: [
+                    { name: "Velvet Shank", danish: "Fløjlsfodsvampe", tip: "Velvety dark stems, clustered on dead wood.", habitat: "Dead deciduous wood, especially elm.", season: [1,1,0,0,0,0,0,0,0,0,1,1] },
+                    { name: "Hawthorn", danish: "Tjørn", tip: "First leaf buds appear, bright and sticky.", habitat: "Hedgerows and woodland edges.", season: [0,1,1,0,0,0,0,0,0,0,0,0] }
+                ],
+                notes: [
+                    "Check fallen logs and stumps for Velvet Shank clusters after frost.",
+                    "Look for the first sticky hawthorn buds on bare branches.",
+                    "Birch trees begin to move sap by late February in mild years.",
+                    "Visit your summer foraging spots to observe winter conditions."
+                ],
+                recipes: [
+                    { name: "Miso Fungi Broth", ingredient: "Velvet Shank (Fløjlsfodsvampe)", desc: "A clear, warming broth with deep umami." },
+                    { name: "Hawthorn Bud Salad", ingredient: "Hawthorn (Tjørn)", desc: "Young buds tossed with oil and lemon. Nutty and fresh." }
+                ],
+                preserve: "Pickle winter mushrooms in a mild apple cider vinegar brine to maintain a firm, chewy texture for months. Salt-cure inner tree bark collected in small quantities to create a stable flour base for experimental winter baking. Ferment any remaining root vegetables from storage in a 2% brine to develop complex umami notes."
+            },
+            mar: {
+                name: "March", mood: "The forest floor wakes up", color: "#DDF0E4",
+                plants: [
+                    { name: "Wild Garlic", danish: "Ramsløg", tip: "Unmistakable garlic scent when crushed. Watch for Lily of the Valley lookalike.", habitat: "Moist deciduous forests, especially near streams.", season: [0,0,1,1,1,0,0,0,0,0,0,0] },
+                    { name: "Stinging Nettle", danish: "Brændenælde", tip: "Opposite serrated leaves with stinging hairs. Wear gloves.", habitat: "Nitrogen-rich disturbed soil, forest edges, gardens.", season: [0,0,1,1,1,1,1,1,1,1,0,0] },
+                    { name: "Ground Elder", danish: "Skvalderkål", tip: "Triple-split leaves, glossy when young. Smells of parsley.", habitat: "Gardens, hedgerows, shaded forest edges.", season: [0,0,1,1,1,1,0,0,0,0,0,0] }
+                ],
+                notes: [
+                    "Look for the green haze of Wild Garlic carpeting the woodland floor.",
+                    "Harvest young nettles while they are only a few centimetres tall for best flavour.",
+                    "Birch sap tapping reaches its peak in late March, time it carefully.",
+                    "Check damp ground near streams for the first Wild Garlic shoots."
+                ],
+                recipes: [
+                    { name: "Wild Garlic Pesto", ingredient: "Wild Garlic (Ramsløg)", desc: "Classic spring sauce with pine nuts and good oil." },
+                    { name: "Nettle Soup", ingredient: "Stinging Nettle (Brændenælde)", desc: "A deep green, mineral-rich soup. Blanch first to remove sting." }
+                ],
+                preserve: "Blend fresh Wild Garlic leaves with neutral oil to create a vibrant green oil that lasts months in the fridge. Prepare fermented Wild Garlic capers by brining the unopened buds in early spring for a salty, popping condiment. Dry young stinging nettles in a dark place and crumble into jars to use as a mineral-dense winter tea."
+            },
+            apr: {
+                name: "April", mood: "The hedgerows burst open", color: "#F8F8D0",
+                plants: [
+                    { name: "Dandelion", danish: "Mælkebøtte", tip: "Hollow stem with milky sap. All parts edible.", habitat: "Meadows, lawns, roadsides everywhere.", season: [0,0,1,1,1,1,1,0,0,0,0,0] },
+                    { name: "Sweet Woodruff", danish: "Skovmærke", tip: "Whorled leaves, small white flowers. Smells of vanilla when dried.", habitat: "Shaded forest floor, beech woods.", season: [0,0,0,1,1,0,0,0,0,0,0,0] },
+                    { name: "Beech Leaves", danish: "Bøgeblade", tip: "Bright lime green, silky when very young.", habitat: "Beech woodland throughout Denmark.", season: [0,0,0,1,0,0,0,0,0,0,0,0] }
+                ],
+                notes: [
+                    "Pick dandelion flowers on dry sunny days for the best flavour.",
+                    "Harvest beech leaves in the very first week they open, before they toughen.",
+                    "Sweet Woodruff must be dried before eating to develop its coumarin aroma.",
+                    "April is excellent for foraging coastal plants as growth is still tender."
+                ],
+                recipes: [
+                    { name: "Dandelion Flower Fritters", ingredient: "Dandelion (Mælkebøtte)", desc: "Flowers dipped in light batter and fried until golden." },
+                    { name: "Beech Leaf Noyau", ingredient: "Beech Leaves (Bøgeblade)", desc: "Young leaves infused in gin with sugar. A Danish spring liqueur." }
+                ],
+                preserve: "Infuse young dandelion flowers into raw honey for two weeks to capture their sweet, nectar-like essence. Press and dry sweet woodruff in bundles to develop its coumarin-rich vanilla aroma for use in May wine. Pickle young beech leaves in a light sweet-sour brine within the first week of opening for a crunchy spring condiment."
+            },
+            may: {
+                name: "May", mood: "The green rush", color: "#5FAD6A",
+                plants: [
+                    { name: "Elderflower", danish: "Hyldblomst", tip: "Large flat white flower heads with a distinctive muscat scent.", habitat: "Hedgerows, woodland edges, gardens.", season: [0,0,0,0,1,1,0,0,0,0,0,0] },
+                    { name: "Cleavers", danish: "Burre-snerre", tip: "Sticky whorled leaves that cling to clothing.", habitat: "Hedgerows and disturbed ground.", season: [0,0,1,1,1,1,0,0,0,0,0,0] },
+                    { name: "Hawthorn Blossom", danish: "Tjørnblomst", tip: "Clusters of white five-petalled flowers with almond scent.", habitat: "Hedgerows throughout the country.", season: [0,0,0,0,1,0,0,0,0,0,0,0] }
+                ],
+                notes: [
+                    "Pick elderflower heads on a dry morning before noon for the best scent.",
+                    "Elderflower season is short, typically two to three weeks only.",
+                    "Cleavers make an excellent cold-infused water, do not heat them.",
+                    "Hawthorn blossom has a brief peak, check trees every few days in May."
+                ],
+                recipes: [
+                    { name: "Elderflower Cordial", ingredient: "Elderflower (Hyldblomst)", desc: "The classic Nordic summer drink. Steep with lemon and citric acid." },
+                    { name: "Cleavers Cold Infusion", ingredient: "Cleavers (Burre-snerre)", desc: "Overnight cold water infusion, refreshing and cleansing." }
+                ],
+                preserve: "Freeze elderflower heads in vacuum bags to preserve their delicate scent for making cordial and fritters in winter. Make elderflower cordial in large batches and freeze in portions as it does not keep indefinitely in the fridge. Dry hawthorn blossom quickly at low temperature to use as a calming herbal tea through the year."
+            },
+            jun: {
+                name: "June", mood: "Midsummer light", color: "#F0B8CC",
+                plants: [
+                    { name: "Wild Rose", danish: "Hunderose", tip: "Five pink petals, golden stamens. Petals fall quickly so pick promptly.", habitat: "Hedgerows, coastal scrub, woodland edges.", season: [0,0,0,0,0,1,1,0,0,0,0,0] },
+                    { name: "Meadowsweet", danish: "Mødurt", tip: "Frothy cream flower clusters with a strong almond and honey scent.", habitat: "Damp meadows, riverbanks, ditches.", season: [0,0,0,0,0,1,1,0,0,0,0,0] },
+                    { name: "Sea Purslane", danish: "Strandbede", tip: "Fleshy grey-green leaves, salt tolerant.", habitat: "Coastal saltmarshes and sandy shores.", season: [0,0,0,0,1,1,1,1,0,0,0,0] }
+                ],
+                notes: [
+                    "Pick wild rose petals early in the morning before they begin to drop.",
+                    "Meadowsweet flowers should be harvested just as they open fully.",
+                    "Visit the coast for sea purslane and other salt-tolerant coastal plants.",
+                    "June is the best month for flower-based preserves and infusions."
+                ],
+                recipes: [
+                    { name: "Rose Petal Jam", ingredient: "Wild Rose (Hunderose)", desc: "Fragrant and delicate. Use just-opened petals for the best colour." },
+                    { name: "Meadowsweet Panna Cotta", ingredient: "Meadowsweet (Mødurt)", desc: "Cream infused with meadowsweet. Clean and floral." }
+                ],
+                preserve: "Salt-cure wild rose petals to preserve their colour and fragrance as a botanical seasoning for desserts and drinks. Ferment rose petals into a fragrant petal vinegar over four weeks for use in dressings. Dry meadowsweet flower heads quickly in a warm dark place to use as a culinary flavouring all year."
+            },
+            jul: {
+                name: "July", mood: "First berries", color: "#2E8FD8",
+                plants: [
+                    { name: "Wild Strawberry", danish: "Markjordbær", tip: "Tiny, intensely flavoured. Three leaflets, white flowers.", habitat: "Sunny woodland edges, dry grassland.", season: [0,0,0,0,0,1,1,0,0,0,0,0] },
+                    { name: "Bilberry", danish: "Blåbær", tip: "Small blue-black berries, stains fingers purple.", habitat: "Heathland, conifer forest floors.", season: [0,0,0,0,0,0,1,1,0,0,0,0] },
+                    { name: "Linden Flower", danish: "Lindeblomst", tip: "Small yellow-white flowers on a bract. Intensely honey-scented.", habitat: "Parks, roadsides, woodland edges.", season: [0,0,0,0,0,1,1,0,0,0,0,0] }
+                ],
+                notes: [
+                    "Wild strawberries are tiny but worth the effort, check sunny south-facing banks.",
+                    "Bilberry picking rewards patience, bring a wide container.",
+                    "Linden flowers must be picked when just opening and dried quickly.",
+                    "July evenings are long, ideal for coastal foraging walks."
+                ],
+                recipes: [
+                    { name: "Wild Strawberry Tart", ingredient: "Wild Strawberry (Markjordbær)", desc: "Simply arranged on crème pâtissière. Let the berries speak." },
+                    { name: "Linden Flower Tea", ingredient: "Linden Flower (Lindeblomst)", desc: "Classic Nordic calming tea. Dried or fresh." }
+                ],
+                preserve: "Reduce wild bilberries into a thick, sugar-free concentrate by slow simmering to use as a powerful flavouring through winter. Dry linden flowers immediately after picking at low temperature to preserve their volatile honey scent. Infuse vodka or aquavit with wild strawberries for six weeks to create an intensely fragrant summer spirit."
+            },
+            aug: {
+                name: "August", mood: "Harvest golden light", color: "#E8907A",
+                plants: [
+                    { name: "Chanterelle", danish: "Kantarel", tip: "Egg-yolk yellow, forked ridges not gills, fruity apricot scent.", habitat: "Mossy deciduous and mixed forest.", season: [0,0,0,0,0,0,1,1,1,0,0,0] },
+                    { name: "Rosehip", danish: "Hyben", tip: "Red oval hips developing on rose stems. Pick after first frost.", habitat: "Hedgerows, coastal scrub, roadsides.", season: [0,0,0,0,0,0,0,1,1,1,0,0] },
+                    { name: "Blackberry", danish: "Brombær", tip: "Thorny canes, black when ripe. Pick clean dry berries.", habitat: "Hedgerows, woodland edges, scrubland.", season: [0,0,0,0,0,0,0,1,1,0,0,0] }
+                ],
+                notes: [
+                    "Chanterelle season begins in earnest, check mossy forest floors after rain.",
+                    "Blackberries are best picked in the morning before the sun softens them.",
+                    "August is the ideal month to start building your mushroom identification skills.",
+                    "Check hedgerows for the first rosehips turning colour, they need more time."
+                ],
+                recipes: [
+                    { name: "Chanterelle Butter", ingredient: "Chanterelle (Kantarel)", desc: "Sautéed in brown butter with thyme. Simple and perfect." },
+                    { name: "Blackberry Vinegar", ingredient: "Blackberry (Brombær)", desc: "Berries macerated in cider vinegar. Brilliant with cheese." }
+                ],
+                preserve: "Dry chanterelles in a dehydrator at 45 degrees until completely crisp to concentrate their flavour for winter risottos and sauces. Freeze blackberries in a single layer before bagging to keep them separate and easy to portion. Make rosehip syrup in early autumn batches as rosehips develop their full sweetness after the first frost."
+            },
+            sep: {
+                name: "September", mood: "Mushroom moon", color: "#7A4A6E",
+                plants: [
+                    { name: "Porcini", danish: "Karljohan", tip: "Brown cap, white sponge pores, no ring at base. Check for worms.", habitat: "Birch and pine forest, often mossy ground.", season: [0,0,0,0,0,0,0,1,1,1,0,0] },
+                    { name: "Sloe", danish: "Slåen", tip: "Small dark blue-black berries, very astringent raw.", habitat: "Hedgerows and scrubland.", season: [0,0,0,0,0,0,0,0,1,1,0,0] },
+                    { name: "Hawthorn Berry", danish: "Tjørnbær", tip: "Deep red clusters on thorny hedgerow branches.", habitat: "Hedgerows throughout Denmark.", season: [0,0,0,0,0,0,0,0,1,1,0,0] }
+                ],
+                notes: [
+                    "September after warm wet August is the best mushroom month of the year.",
+                    "Go out early on misty September mornings for the best mushroom finds.",
+                    "Sloes are better after a frost, pick early and freeze them to simulate this.",
+                    "Hawthorn berries are ripe now and excellent for hedgerow jelly."
+                ],
+                recipes: [
+                    { name: "Porcini Risotto", ingredient: "Porcini (Karljohan)", desc: "The classic. Use fresh and dried together for maximum depth." },
+                    { name: "Sloe Gin", ingredient: "Sloe (Slåen)", desc: "Pierce berries and steep in gin with sugar for three months." }
+                ],
+                preserve: "Slice porcini thinly and dry until brittle for the finest winter pasta and risotto ingredient. Freeze whole sloes immediately after picking to break down their astringency before making gin or jelly. Simmer hawthorn berries into a thick hedgerow ketchup or jelly to use as a condiment through winter."
+            },
+            oct: {
+                name: "October", mood: "Golden woods and last harvest", color: "#8A4A28",
+                plants: [
+                    { name: "Hen of the Woods", danish: "Mosaikporesvamp", tip: "Overlapping grey-brown fronds at base of oak trees.", habitat: "Base of old oak trees.", season: [0,0,0,0,0,0,0,0,1,1,0,0] },
+                    { name: "Sweet Chestnut", danish: "Ægte Kastanje", tip: "Spiny cases, shiny brown nuts. Not horse chestnut.", habitat: "Parks and woodland in south Denmark.", season: [0,0,0,0,0,0,0,0,0,1,0,0] },
+                    { name: "Crab Apple", danish: "Vildæble", tip: "Small tart yellow-green apples on thorny woodland trees.", habitat: "Hedgerows and woodland edges.", season: [0,0,0,0,0,0,0,0,1,1,0,0] }
+                ],
+                notes: [
+                    "Check the base of oak trees for Hen of the Woods after rain.",
+                    "Sweet chestnut cases open and drop in October, gather from the ground.",
+                    "Crab apples are bitter raw but make exceptional jelly and cider.",
+                    "This is the last good month for most mushrooms before the cold sets in."
+                ],
+                recipes: [
+                    { name: "Roasted Chestnuts", ingredient: "Sweet Chestnut (Ægte Kastanje)", desc: "Score and roast directly in embers or a hot oven." },
+                    { name: "Crab Apple Jelly", ingredient: "Crab Apple (Vildæble)", desc: "High in natural pectin. Sets beautifully with no added pectin." }
+                ],
+                preserve: "Dry sweet chestnuts slowly and grind into a sweet flour for use in cakes and pasta through winter. Store crab apples in a cool dark place where they keep for weeks, or reduce into a dense paste. Dehydrate Hen of the Woods mushroom fronds at low temperature for a concentrated umami ingredient."
+            },
+            nov: {
+                name: "November", mood: "Dark days, forest roots", color: "#425A72",
+                plants: [
+                    { name: "Velvet Shank", danish: "Fløjlsfodsvampe", tip: "Returns in cold weather on dead wood. Caramel coloured caps.", habitat: "Dead deciduous wood, stumps.", season: [1,1,0,0,0,0,0,0,0,0,1,1] },
+                    { name: "Burdock Root", danish: "Burrerod", tip: "Large dock-like leaves, dig the first year root before it flowers.", habitat: "Roadsides, disturbed ground, field edges.", season: [0,0,0,0,0,0,0,0,0,1,1,0] }
+                ],
+                notes: [
+                    "Check stumps and fallen logs after the first hard frosts for Velvet Shank.",
+                    "Burdock root is best dug now before the ground freezes.",
+                    "November is a good month to process and organise your autumn harvest.",
+                    "Visit your foraging sites to note what is still growing and plan for next year."
+                ],
+                recipes: [
+                    { name: "Burdock Kinpira", ingredient: "Burdock Root (Burrerod)", desc: "Japanese-style sauté with sesame and soy. Earthy and satisfying." },
+                    { name: "Velvet Shank Toast", ingredient: "Velvet Shank (Fløjlsfodsvampe)", desc: "Sautéed with garlic butter on sourdough." }
+                ],
+                preserve: "Ferment shredded burdock root with a 2% salt brine for a week to develop complex earthy flavours. Dry Velvet Shank caps at low temperature to preserve their delicate flavour for winter soups. Press the last hardy autumn greens into ice cube trays with water and freeze for adding to winter stews."
+            },
+            dec: {
+                name: "December", mood: "Winter resilience", color: "#2C5A3A",
+                plants: [
+                    { name: "Juniper", danish: "Ene", tip: "Ripe blue-black berries on prickly evergreen shrubs.", habitat: "Heathland, open woodland, coastal scrub.", season: [1,1,0,0,0,0,0,0,0,0,1,1] },
+                    { name: "Velvet Shank", danish: "Fløjlsfodsvampe", tip: "Clusters on dead wood even in frost.", habitat: "Dead deciduous wood.", season: [1,1,0,0,0,0,0,0,0,0,1,1] }
+                ],
+                notes: [
+                    "Juniper berries are fully ripe now and at their most aromatic.",
+                    "Velvet Shank survives frost and can be found even in December.",
+                    "Use this month to review your preserved stores and plan recipes.",
+                    "Walk familiar routes to observe the winter landscape and note changes."
+                ],
+                recipes: [
+                    { name: "Juniper Aquavit Cure", ingredient: "Juniper (Ene)", desc: "Cure salmon with juniper, dill and salt for a Nordic Christmas dish." },
+                    { name: "Velvet Shank Broth", ingredient: "Velvet Shank (Fløjlsfodsvampe)", desc: "A clear warming broth for cold evenings." }
+                ],
+                preserve: "Dry juniper berries in a single layer until completely brittle and store in airtight glass for year-round use in marinades and brines. Grind preserved dried root powders into hot water for a warming, earthy winter chai. Seal remaining dried berry stocks in light-proof jars to protect volatile oils through the winter months."
+            }
+        };
+
+        const MONTH_COLOR_TEXT = {
+            jan: '#5E635E', feb: '#5E635E', mar: '#3A5C3A', apr: '#6B6B00',
+            may: '#ffffff', jun: '#8B3A5A', jul: '#ffffff', aug: '#6B2A15',
+            sep: '#ffffff', oct: '#ffffff', nov: '#ffffff', dec: '#ffffff'
+        };
+
+        function makeDots(seasonArr) {
+            const colors = Object.values(COLORS);
+            return '<div class="flex gap-1 flex-wrap my-2">' +
+                seasonArr.map((active, i) =>
+                    `<span class="dot" style="background:${active ? colors[i] : '#E5E7EB'};"></span>`
+                ).join('') +
+            '</div>';
+        }
+
+        function getParam() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('m') || 'mar';
+        }
+
+        function render() {
+            const key = getParam();
+            const idx = MONTH_KEYS.indexOf(key);
+            const data = monthData[key] || monthData['mar'];
+
+            // Header
+            document.getElementById('header-band').style.backgroundColor = data.color;
+            document.getElementById('month-name').textContent = data.name;
+            document.getElementById('mood-line').textContent = data.mood;
+const darkMonths = ['may','jul','sep','oct','nov','dec'];
+const textColor = darkMonths.includes(key) ? '#FFFFFF' : '#1A1C19';
+document.getElementById('month-name').style.color = textColor;
+document.getElementById('mood-line').style.color = textColor;
+
+            // Prev / Next
+            const prevIdx = (idx - 1 + 12) % 12;
+            const nextIdx = (idx + 1) % 12;
+            const prevKey = MONTH_KEYS[prevIdx];
+            const nextKey = MONTH_KEYS[nextIdx];
+            const prevData = monthData[prevKey];
+            const nextData = monthData[nextKey];
+
+            document.getElementById('prev-label').textContent = prevData.name;
+            document.getElementById('prev-label').style.color = prevData.color;
+            document.getElementById('prev-link').href = `month-detail.html?m=${prevKey}`;
+
+            document.getElementById('next-label').textContent = nextData.name;
+            document.getElementById('next-label').style.color = nextData.color;
+            document.getElementById('next-link').href = `month-detail.html?m=${nextKey}`;
+
+            // Plants
+            const plantList = document.getElementById('plant-list');
+            plantList.innerHTML = '';
+            data.plants.forEach(p => {
+                const card = document.createElement('a');
+                card.href = `plant-detail.html?id=${p.name.toLowerCase().replace(/\s+/g,'-')}`;
+                card.className = 'bg-white p-5 rounded-2xl shadow-sm border border-gray-50 block hover:shadow-md transition-shadow';
+                card.innerHTML = `
+                    <h3 class="text-lg font-bold">${p.name}</h3>
+                    <p class="text-sm text-gray-400 italic mb-1">(${p.danish})</p>
+                    ${makeDots(p.season)}
+                    <p class="text-sm mt-1"><strong>Tip:</strong> ${p.tip}</p>
+                    <p class="text-sm text-gray-500"><strong>Habitat:</strong> ${p.habitat}</p>
+                `;
+                plantList.appendChild(card);
+            });
+
+            // Field notes
+            const notesList = document.getElementById('field-notes');
+            notesList.innerHTML = '';
+            data.notes.forEach(n => {
+                const li = document.createElement('li');
+                li.textContent = n;
+                notesList.appendChild(li);
+            });
+
+            // Recipes
+            const recipeList = document.getElementById('recipe-list');
+            recipeList.innerHTML = '';
+            data.recipes.forEach(r => {
+                const card = document.createElement('a');
+                card.href = `recipe-detail.html?id=${r.name.toLowerCase().replace(/\s+/g,'-')}`;
+                card.className = 'bg-white p-5 rounded-2xl shadow-sm border border-gray-50 block hover:shadow-md transition-shadow';
+                card.innerHTML = `
+                    <h3 class="text-lg font-bold">${r.name}</h3>
+                    <p class="text-xs font-bold tracking-widest mt-1 mb-2 text-gray-400 uppercase">${r.ingredient}</p>
+                    <p class="text-sm text-gray-500">${r.desc}</p>
+                `;
+                recipeList.appendChild(card);
+            });
+
+            // Preserve
+            document.getElementById('preserve-note').textContent = data.preserve;
+
+            // Page title
+            document.title = `FORAGER — ${data.name}`;
+        }
+
+        render();
+        lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FORAGER — Kitchen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #FDFCFB; color: #1A1C19; }
+        h1, h2, h3 { font-family: 'Outfit', sans-serif; }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid #D1D5DB;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+        .nav-shadow { box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .filter-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 1px solid #D1D5DB;
+            cursor: pointer;
+            transition: transform 0.15s, border-color 0.15s;
+            flex-shrink: 0;
+        }
+        .filter-dot.active {
+            transform: scale(1.25);
+            border: 2px solid #1A1C19;
+        }
+        .type-pill {
+            padding: 0.25rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid #E5E7EB;
+            background: white;
+            color: #5E635E;
+            transition: background 0.15s, color 0.15s;
+        }
+        .type-pill.active {
+            background: #1A1C19;
+            color: white;
+            border-color: #1A1C19;
+        }
+    </style>
+</head>
+<body class="pb-24">
+
+    <header class="sticky top-0 bg-[#FDFCFB]/90 backdrop-blur-md z-50 p-4 flex justify-between items-center border-b border-gray-100">
+        <h1 class="text-xl font-bold tracking-tight">FORAGER</h1>
+        <div id="month-dot" class="dot" style="width:14px;height:14px;"></div>
+    </header>
+
+    <main class="mx-auto p-4 md:max-w-[960px]">
+        <h2 class="text-3xl font-bold mb-6">Kitchen</h2>
+
+        <div class="mb-6 space-y-3">
+            <input type="text" id="search" placeholder="Search recipes..."
+                class="w-full p-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-gray-300 text-sm">
+            <div id="month-filters" class="flex flex-wrap gap-2"></div>
+            <div id="type-filters" class="flex flex-wrap gap-2">
+                <button class="type-pill active" data-type="All">All</button>
+                <button class="type-pill" data-type="Fresh">Fresh</button>
+                <button class="type-pill" data-type="Preserve">Preserve</button>
+                <button class="type-pill" data-type="Drink">Drink</button>
+            </div>
+        </div>
+
+        <div id="recipe-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+        <p id="no-results" class="hidden text-center text-gray-400 text-sm py-12">No recipes found.</p>
+    </main>
+
+    <nav class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 nav-shadow px-6 py-2 flex justify-around items-center z-50">
+        <a href="index.html" class="flex flex-col items-center text-gray-400 hover:text-gray-900">
+            <i data-lucide="home" class="w-5 h-5 mb-1"></i>
+            <span class="text-[10px] uppercase font-bold tracking-wider">Home</span>
+        </a>
+        <a href="plants.html" class="flex flex-col items-center text-gray-400 hover:text-gray-900">
+            <i data-lucide="search" class="w-5 h-5 mb-1"></i>
+            <span class="text-[10px] uppercase font-bold tracking-wider">Find</span>
+        </a>
+        <a href="recipes.html" class="flex flex-col items-center text-gray-900">
+            <i data-lucide="flame" class="w-5 h-5 mb-1"></i>
+            <span class="text-[10px] uppercase font-bold tracking-wider">Kitchen</span>
+        </a>
+        <a href="log.html" class="flex flex-col items-center text-gray-400 hover:text-gray-900">
+            <i data-lucide="book-open" class="w-5 h-5 mb-1"></i>
+            <span class="text-[10px] uppercase font-bold tracking-wider">Log</span>
+        </a>
+    </nav>
+
+    <script>
+        const MONTH_KEYS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+        const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        const hexMap = {
+            jan: '#E8ECF0', feb: '#D8EBF8', mar: '#DDF0E4', apr: '#F8F8D0',
+            may: '#5FAD6A', jun: '#F0B8CC', jul: '#2E8FD8', aug: '#E8907A',
+            sep: '#7A4A6E', oct: '#8A4A28', nov: '#425A72', dec: '#2C5A3A'
+        };
+
+        // season: 12 booleans Jan-Dec
+        const recipes = [
+            {
+                name: "Nettle Soup",
+                ingredient: "Stinging Nettle", dk: "Brændenælde",
+                type: "Fresh", peak: "may",
+                season: [false,false,true,true,true,true,true,true,true,true,false,false],
+                desc: "A classic spring soup, earthy, mineral-rich and deeply green."
+            },
+            {
+                name: "Wild Garlic Pesto",
+                ingredient: "Wild Garlic", dk: "Ramsløg",
+                type: "Preserve", peak: "mar",
+                season: [false,false,true,true,true,false,false,false,false,false,false,false],
+                desc: "Vibrant, garlicky and fresh. Keeps for weeks under a layer of oil."
+            },
+            {
+                name: "Elderflower Cordial",
+                ingredient: "Elderflower", dk: "Hyldblomst",
+                type: "Drink", peak: "jun",
+                season: [false,false,false,false,true,true,false,false,false,false,false,false],
+                desc: "The classic Nordic summer drink. Sweet, floral and unmistakably June."
+            },
+            {
+                name: "Juniper Salt",
+                ingredient: "Juniper", dk: "Ene",
+                type: "Preserve", peak: "dec",
+                season: [true,true,false,false,false,false,false,false,false,false,true,true],
+                desc: "Aromatic finishing salt for game, roasted vegetables and cheese."
+            },
+            {
+                name: "Sea Buckthorn Sorbet",
+                ingredient: "Sea Buckthorn", dk: "Havtorn",
+                type: "Fresh", peak: "sep",
+                season: [false,false,false,false,false,false,false,true,true,true,false,false],
+                desc: "Intensely tart and vibrantly orange. A taste of the Danish coast."
+            },
+            {
+                name: "Oyster Mushroom Stew",
+                ingredient: "Oyster Mushroom", dk: "Østershat",
+                type: "Fresh", peak: "nov",
+                season: [false,false,false,false,false,false,false,false,true,true,true,true],
+                desc: "Warm, satisfying and deeply savoury. Winter forest cooking at its best."
+            },
+            {
+                name: "Dandelion Honey",
+                ingredient: "Dandelion", dk: "Mælkebøtte",
+                type: "Preserve", peak: "apr",
+                season: [false,false,true,true,true,true,true,false,false,false,false,false],
+                desc: "Golden floral syrup made from fresh dandelion petals. Beautiful on toast."
+            },
+            {
+                name: "Rosehip Syrup",
+                ingredient: "Rosehip", dk: "Hyben",
+                type: "Drink", peak: "sep",
+                season: [false,false,false,false,false,false,false,true,true,true,false,false],
+                desc: "Rich, vitamin-packed autumn syrup. Dilute with water or pour over porridge."
+            },
+            {
+                name: "Nettle Tea",
+                ingredient: "Stinging Nettle", dk: "Brændenælde",
+                type: "Drink", peak: "may",
+                season: [false,false,true,true,true,true,true,true,true,true,false,false],
+                desc: "Invigorating and mineral-rich. Dried nettles work beautifully all winter too."
+            },
+            {
+                name: "Pickled Garlic Mustard",
+                ingredient: "Garlic Mustard", dk: "Løgkarse",
+                type: "Preserve", peak: "apr",
+                season: [false,false,true,true,true,true,false,false,false,false,false,false],
+                desc: "Zesty, peppery pickled greens. Excellent with cold meats and strong cheeses."
+            },
+            {
+                name: "Sorrel Salad",
+                ingredient: "Wood Sorrel", dk: "Skovsyre",
+                type: "Fresh", peak: "may",
+                season: [false,false,false,true,true,true,false,false,false,false,false,false],
+                desc: "A sharp, lemony explosion of freshness. Toss with oil and good salt."
+            },
+            {
+                name: "Birch Sap Syrup",
+                ingredient: "Birch", dk: "Birk",
+                type: "Drink", peak: "mar",
+                season: [false,false,true,false,false,false,false,false,false,false,false,false],
+                desc: "The very first sweet taste of spring. Reduce fresh sap slowly for a delicate syrup."
+            },
+            {
+                name: "Chanterelle Butter",
+                ingredient: "Chanterelle", dk: "Kantarel",
+                type: "Preserve", peak: "aug",
+                season: [false,false,false,false,false,false,true,true,true,false,false,false],
+                desc: "Sautéed chanterelles blended into butter with thyme. Freeze in logs for winter pasta."
+            },
+            {
+                name: "Meadowsweet Tea",
+                ingredient: "Meadowsweet", dk: "Mødurt",
+                type: "Drink", peak: "jul",
+                season: [false,false,false,false,false,true,true,false,false,false,false,false],
+                desc: "Almond-honey scented and wonderfully calming. Dry flowers quickly after picking."
+            },
+            {
+                name: "Crab Apple Jelly",
+                ingredient: "Crab Apple", dk: "Vildæble",
+                type: "Preserve", peak: "oct",
+                season: [false,false,false,false,false,false,false,false,true,true,false,false],
+                desc: "Jewel-red and naturally high in pectin. Sets perfectly without added pectin."
+            }
+        ];
+
+        let activeMonth = null;
+        let activeType = "All";
+
+        function makeDots(seasonArr) {
+            return MONTH_KEYS.map((m, i) => {
+                const color = seasonArr[i] ? hexMap[m] : 'white';
+                return `<span class="dot" style="background-color:${color};"></span>`;
+            }).join('');
+        }
+
+        function render() {
+            const grid = document.getElementById('recipe-grid');
+            const noResults = document.getElementById('no-results');
+            const query = document.getElementById('search').value.toLowerCase();
+            grid.innerHTML = '';
+
+            const filtered = recipes.filter(r => {
+                const matchesSearch = r.name.toLowerCase().includes(query) ||
+                    r.ingredient.toLowerCase().includes(query) ||
+                    r.dk.toLowerCase().includes(query);
+                const matchesType = activeType === 'All' || r.type === activeType;
+                const matchesMonth = activeMonth === null || r.season[activeMonth];
+                return matchesSearch && matchesType && matchesMonth;
+            });
+
+            if (filtered.length === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                filtered.forEach(r => {
+                    const card = document.createElement('a');
+                    card.href = `recipe-detail.html?id=${r.name.toLowerCase().replace(/\s+/g, '-')}`;
+                    card.className = 'bg-white rounded-2xl border border-gray-100 card-shadow block hover:shadow-md transition-shadow overflow-hidden';
+
+                    // Type badge colour
+                    const typeBadgeColors = { Fresh: '#DDF0E4', Preserve: '#F8F8D0', Drink: '#D8EBF8' };
+                    const typeBadgeText = { Fresh: '#3A5C3A', Preserve: '#6B6B00', Drink: '#1A4A6B' };
+
+                    card.innerHTML = `
+                        <div class="h-36 flex items-center justify-center rounded-t-2xl" style="background-color:${hexMap[r.peak]}">
+                            <i data-lucide="flame" class="w-8 h-8 text-white opacity-80"></i>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-start justify-between gap-2 mb-1">
+                                <h3 class="font-bold text-lg leading-tight">${r.name}</h3>
+                                <span class="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full whitespace-nowrap mt-1" 
+                                    style="background-color:${typeBadgeColors[r.type]};color:${typeBadgeText[r.type]}">${r.type}</span>
+                            </div>
+                            <p class="text-xs font-bold uppercase tracking-wide mb-2" style="color:${hexMap[r.peak]}">${r.ingredient} (${r.dk})</p>
+                            <div class="flex gap-1 py-2">${makeDots(r.season)}</div>
+                            <p class="text-sm text-gray-500">${r.desc}</p>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+            lucide.createIcons();
+        }
+
+        // Build month filter dots
+        const monthContainer = document.getElementById('month-filters');
+        MONTH_KEYS.forEach((m, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'filter-dot';
+            btn.style.backgroundColor = hexMap[m];
+            btn.title = MONTH_NAMES[i];
+            btn.onclick = () => {
+                activeMonth = activeMonth === i ? null : i;
+                document.querySelectorAll('.filter-dot').forEach(d => d.classList.remove('active'));
+                if (activeMonth !== null) btn.classList.add('active');
+                render();
+            };
+            monthContainer.appendChild(btn);
+        });
+
+        // Type filter pills
+        document.querySelectorAll('.type-pill').forEach(btn => {
+            btn.addEventListener('click', () => {
+                activeType = btn.getAttribute('data-type');
+                document.querySelectorAll('.type-pill').forEach(p => p.classList.remove('active'));
+                btn.classList.add('active');
+                render();
+            });
+        });
+
+        // Search
+        document.getElementById('search').addEventListener('input', render);
+
+        // Header month dot
+        document.getElementById('month-dot').style.backgroundColor = hexMap[MONTH_KEYS[new Date().getMonth()]];
+
+        render();
+    </script>
+</body>
+</html>

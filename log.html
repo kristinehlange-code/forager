@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FORAGER — My Log</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #FDFCFB; color: #1A1C19; }
+        h1, h2, h3 { font-family: 'Outfit', sans-serif; }
+        .nav-shadow { box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .dot { width: 12px; height: 12px; border-radius: 50%; border: 1px solid #D1D5DB; display: inline-block; flex-shrink: 0; }
+        #modal { display: none; }
+        #modal.open { display: flex; }
+        textarea:focus, input:focus { outline: none; }
+        .mic-listening {
+            background-color: #EF4444 !important;
+            color: white !important;
+            border-color: #EF4444 !important;
+            animation: pulse 1.2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .spinning { animation: spin 1s linear infinite; }
+    </style>
+</head>
+<body class="pb-24">
+
+    <header class="sticky top-0 bg-[#FDFCFB]/90 backdrop-blur-md z-50 p-4 flex justify-between items-center border-b border-gray-100">
+        <h1 class="text-xl font-bold tracking-tight">FORAGER</h1>
+        <div id="month-dot" class="dot" style="width:14px;height:14px;"></div>
+    </header>
+
+    <main class="mx-auto p-4 md:max-w-[720px]">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-3xl font-bold">My Log</h2>
+            <button onclick="openModal()" class="flex items-center gap-2 bg-gray-900 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-gray-700 transition-colors">
+                <i data-lucide="plus" class="w-4 h-4"></i> New entry
+            </button>
+        </div>
+
+        <div id="entry-list" class="space-y-4"></div>
+        <div id="empty-state" class="hidden text-center py-20">
+            <i data-lucide="book-open" class="w-10 h-10 text-gray-300 mx-auto mb-4"></i>
+            <p class="text-gray-400 text-sm">No entries yet. Tap <strong>New entry</strong> to record your first walk.</p>
+        </div>
+    </main>
+
+    <!-- Add / Edit Modal -->
+    <div id="modal" class="fixed inset-0 bg-black/40 z-50 items-end md:items-center justify-center">
+        <div class="bg-white w-full md:max-w-lg md:rounded-2xl rounded-t-2xl p-6 space-y-4 max-h-[92vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-2">
+                <h3 id="modal-title" class="text-xl font-bold">New entry</h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-700">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Date -->
+            <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1 block">Date</label>
+                <input type="date" id="f-date" class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-white">
+            </div>
+
+            <!-- Location with GPS -->
+            <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1 block">Location</label>
+                <div class="flex gap-2">
+                    <input type="text" id="f-location" placeholder="e.g. Dyrehaven, North Zealand"
+                        class="flex-1 border border-gray-200 rounded-xl p-3 text-sm bg-white">
+                    <button id="gps-btn" onclick="getLocation()" title="Get my current location"
+                        class="flex items-center justify-center w-12 h-12 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors flex-shrink-0">
+                        <i data-lucide="map-pin" class="w-4 h-4 text-gray-500"></i>
+                    </button>
+                </div>
+                <input type="hidden" id="f-lat">
+                <input type="hidden" id="f-lng">
+                <p id="gps-status" class="text-xs mt-1 text-gray-400 hidden"></p>
+            </div>
+
+            <!-- What you found -->
+            <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1 block">What you found</label>
+                <input type="text" id="f-found" placeholder="e.g. Wild Garlic, Stinging Nettle, Chanterelle"
+                    class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-white">
+            </div>
+
+            <!-- Weather -->
+            <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1 block">Weather and conditions</label>
+                <input type="text" id="f-weather" placeholder="e.g. Overcast, 12°C, forest floor damp"
+                    class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-white">
+            </div>
+
+            <!-- Notes with voice-to-text -->
+            <div>
+                <div class="flex items-center justify-between mb-1">
+                    <label class="text-xs font-bold uppercase tracking-wider text-gray-500">Notes</label>
+                    <button id="mic-btn" onclick="toggleMic()"
+                        class="flex items-center gap-1.5 text-xs font-semibold text-gray-500 border border-gray-200 rounded-full px-3 py-1 hover:bg-gray-50 transition-colors">
+                        <i data-lucide="mic" class="w-3 h-3"></i>
+                        <span id="mic-label">Speak</span>
+                    </button>
+                </div>
+                <textarea id="f-notes" rows="4"
+                    placeholder="Tap Speak to dictate, or type your observations and tips for next time..."
+                    class="w-full border border-gray-200 rounded-xl p-3 text-sm bg-white resize-none"></textarea>
+                <p id="mic-status" class="text-xs text-red-400 mt-1 hidden"></p>
+            </div>
+
+            <!-- Photo -->
+            <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2 block">Photo</label>
+                <div id="photo-preview" class="hidden mb-3 relative">
+                    <img id="preview-img" src="" alt="Entry photo" class="w-full rounded-xl object-cover max-h-48">
+                    <button onclick="clearPhoto()" class="absolute top-2 right-2 bg-black/50 text-white rounded-full p-1 hover:bg-black/70">
+                        <i data-lucide="x" class="w-3 h-3"></i>
+                    </button>
+                </div>
+                <label class="flex items-center gap-2 cursor-pointer border border-gray-200 rounded-xl p-3 hover:bg-gray-50 transition-colors">
+                    <i data-lucide="camera" class="w-4 h-4 text-gray-500"></i>
+                    <span class="text-sm text-gray-500">Take or choose a photo</span>
+                    <input type="file" id="f-photo" accept="image/*" capture="environment" class="hidden" onchange="handlePhoto(event)">
+                </label>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex gap-3 pt-2">
+                <button onclick="saveEntry()" class="flex-1 bg-gray-900 text-white py-3 rounded-xl font-semibold text-sm hover:bg-gray-700 transition-colors">
+                    Save entry
+                </button>
+                <button id="delete-btn" onclick="deleteEntry()" class="hidden px-4 py-3 border border-red-200 text-red-500 rounded-xl font-semibold text-sm hover:bg-red-50 transition-colors">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 nav-shadow px-6 py-2 flex justify-around items-center z-40">
+        <a href="index.html" class="flex flex-col items-center text-gray-400 hover:text-gray-900">
+            <i data-lucide="home" class="w-5 h-5 mb-1"></i>
+            <span class="text-[10px] uppercase font-bold tracking-wider">Home</span>
+        </a>
+        <a href="plants.html" class="flex flex-col items-center text-gray-400 hover:text-gray-900">
+            <i data-lucide="search" class="w-5 h-5 mb-1"></i>
+            <span class="text-[10px] uppercase font-bold tracking-wider">Find</span>
+        </a>
+        <a href="recipes.html" class="flex flex-col items-center text-gray-400 hover:text-gray-900">
+            <i data-lucide="flame" class="w-5 h-5 mb-1"></i>
+            <span class="text-[10px] uppercase font-bold tracking-wider">Kitchen</span>
+        </a>
+        <a href="log.html" class="flex flex-col items-center text-gray-900">
+            <i data-lucide="book-open" class="w-5 h-5 mb-1"></i>
+            <span class="text-[10px] uppercase font-bold tracking-wider">Log</span>
+        </a>
+    </nav>
+
+    <script>
+        const MONTH_KEYS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+        const hexMap = {
+            jan: '#E8ECF0', feb: '#D8EBF8', mar: '#DDF0E4', apr: '#F8F8D0',
+            may: '#5FAD6A', jun: '#F0B8CC', jul: '#2E8FD8', aug: '#E8907A',
+            sep: '#7A4A6E', oct: '#8A4A28', nov: '#425A72', dec: '#2C5A3A'
+        };
+
+        let entries = JSON.parse(localStorage.getItem('forager-log') || '[]');
+        let editingId = null;
+        let photoData = null;
+        let recognition = null;
+        let isListening = false;
+        let finalTranscript = '';
+
+        function saveToStorage() {
+            localStorage.setItem('forager-log', JSON.stringify(entries));
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const d = new Date(dateStr + 'T12:00:00');
+            return d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        }
+
+        function getMonthKey(dateStr) {
+            if (!dateStr) return null;
+            return MONTH_KEYS[new Date(dateStr + 'T12:00:00').getMonth()];
+        }
+
+        // ── GPS ───────────────────────────────────────────────────
+        function getLocation() {
+            if (!navigator.geolocation) {
+                setGpsStatus('Location not supported by your browser.', true);
+                return;
+            }
+            const btn = document.getElementById('gps-btn');
+            btn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 text-gray-400 spinning"></i>';
+            lucide.createIcons();
+            setGpsStatus('Finding your location...', false);
+
+            navigator.geolocation.getCurrentPosition(
+                pos => {
+                    const lat = pos.coords.latitude.toFixed(6);
+                    const lng = pos.coords.longitude.toFixed(6);
+                    document.getElementById('f-lat').value = lat;
+                    document.getElementById('f-lng').value = lng;
+
+                    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
+                        .then(r => r.json())
+                        .then(data => {
+                            const a = data.address || {};
+                            const label = [
+                                a.leisure || a.park || a.nature_reserve || a.forest || a.wood,
+                                a.village || a.town || a.city || a.suburb,
+                                a.county || a.state
+                            ].filter(Boolean).join(', ');
+                            document.getElementById('f-location').value = label || `${lat}, ${lng}`;
+                            setGpsStatus('Location found.', false);
+                            btn.innerHTML = '<i data-lucide="map-pin" class="w-4 h-4 text-green-600"></i>';
+                            lucide.createIcons();
+                        })
+                        .catch(() => {
+                            document.getElementById('f-location').value = `${lat}, ${lng}`;
+                            setGpsStatus('Saved as coordinates.', false);
+                            btn.innerHTML = '<i data-lucide="map-pin" class="w-4 h-4 text-green-600"></i>';
+                            lucide.createIcons();
+                        });
+                },
+                () => {
+                    setGpsStatus('Could not get location. Please allow location access and try again.', true);
+                    btn.innerHTML = '<i data-lucide="map-pin" class="w-4 h-4 text-gray-500"></i>';
+                    lucide.createIcons();
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        }
+
+        function setGpsStatus(msg, isError) {
+            const el = document.getElementById('gps-status');
+            el.textContent = msg;
+            el.className = `text-xs mt-1 ${isError ? 'text-red-400' : 'text-gray-400'}`;
+            el.classList.remove('hidden');
+        }
+
+        // ── Voice to text ─────────────────────────────────────────
+        function toggleMic() {
+            const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SR) {
+                document.getElementById('mic-status').textContent = 'Voice input is not supported here. Try Chrome on Android or Safari on iPhone.';
+                document.getElementById('mic-status').classList.remove('hidden');
+                return;
+            }
+
+            if (isListening) { stopMic(); return; }
+
+            recognition = new SR();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'en-GB';
+
+            const notesField = document.getElementById('f-notes');
+            const baseText = notesField.value;
+            finalTranscript = baseText;
+
+            recognition.onstart = () => {
+                isListening = true;
+                const btn = document.getElementById('mic-btn');
+                btn.classList.add('mic-listening');
+                btn.innerHTML = '<i data-lucide="mic-off" class="w-3 h-3"></i><span id="mic-label"> Stop</span>';
+                lucide.createIcons();
+                document.getElementById('mic-status').classList.add('hidden');
+            };
+
+            recognition.onresult = event => {
+                let interim = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    if (event.results[i].isFinal) {
+                        finalTranscript += (finalTranscript ? ' ' : '') + event.results[i][0].transcript.trim();
+                    } else {
+                        interim += event.results[i][0].transcript;
+                    }
+                }
+                notesField.value = finalTranscript + (interim ? ' ' + interim : '');
+            };
+
+            recognition.onerror = event => {
+                const msg = event.error === 'not-allowed'
+                    ? 'Microphone access denied. Check your browser settings.'
+                    : `Voice error: ${event.error}`;
+                document.getElementById('mic-status').textContent = msg;
+                document.getElementById('mic-status').classList.remove('hidden');
+                stopMic();
+            };
+
+            recognition.onend = () => { if (isListening) stopMic(); };
+            recognition.start();
+        }
+
+        function stopMic() {
+            isListening = false;
+            if (recognition) { try { recognition.stop(); } catch(e) {} recognition = null; }
+            const btn = document.getElementById('mic-btn');
+            btn.classList.remove('mic-listening');
+            btn.innerHTML = '<i data-lucide="mic" class="w-3 h-3"></i><span id="mic-label"> Speak</span>';
+            lucide.createIcons();
+        }
+
+        // ── Photo ─────────────────────────────────────────────────
+        function handlePhoto(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const maxW = 800;
+                    const scale = Math.min(1, maxW / img.width);
+                    canvas.width = img.width * scale;
+                    canvas.height = img.height * scale;
+                    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+                    photoData = canvas.toDataURL('image/jpeg', 0.75);
+                    document.getElementById('preview-img').src = photoData;
+                    document.getElementById('photo-preview').classList.remove('hidden');
+                    lucide.createIcons();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearPhoto() {
+            photoData = null;
+            document.getElementById('preview-img').src = '';
+            document.getElementById('photo-preview').classList.add('hidden');
+            document.getElementById('f-photo').value = '';
+        }
+
+        // ── Modal ─────────────────────────────────────────────────
+        function openModal(id = null) {
+            editingId = id;
+            photoData = null;
+            finalTranscript = '';
+            stopMic();
+
+            ['f-date','f-location','f-found','f-weather','f-notes','f-photo','f-lat','f-lng'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            document.getElementById('preview-img').src = '';
+            document.getElementById('photo-preview').classList.add('hidden');
+            document.getElementById('gps-status').classList.add('hidden');
+            document.getElementById('mic-status').classList.add('hidden');
+            document.getElementById('gps-btn').innerHTML = '<i data-lucide="map-pin" class="w-4 h-4 text-gray-500"></i>';
+
+            if (id) {
+                const entry = entries.find(e => e.id === id);
+                if (entry) {
+                    document.getElementById('modal-title').textContent = 'Edit entry';
+                    document.getElementById('f-date').value = entry.date || '';
+                    document.getElementById('f-location').value = entry.location || '';
+                    document.getElementById('f-lat').value = entry.lat || '';
+                    document.getElementById('f-lng').value = entry.lng || '';
+                    document.getElementById('f-found').value = entry.found || '';
+                    document.getElementById('f-weather').value = entry.weather || '';
+                    document.getElementById('f-notes').value = entry.notes || '';
+                    finalTranscript = entry.notes || '';
+                    if (entry.photo) {
+                        photoData = entry.photo;
+                        document.getElementById('preview-img').src = entry.photo;
+                        document.getElementById('photo-preview').classList.remove('hidden');
+                    }
+                    document.getElementById('delete-btn').classList.remove('hidden');
+                }
+            } else {
+                document.getElementById('modal-title').textContent = 'New entry';
+                document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+                document.getElementById('delete-btn').classList.add('hidden');
+            }
+
+            document.getElementById('modal').classList.add('open');
+            lucide.createIcons();
+        }
+
+        function closeModal() {
+            stopMic();
+            document.getElementById('modal').classList.remove('open');
+            editingId = null;
+            photoData = null;
+        }
+
+        // ── Save / Delete ─────────────────────────────────────────
+        function saveEntry() {
+            const date = document.getElementById('f-date').value;
+            if (!date) { alert('Please add a date for this entry.'); return; }
+
+            const data = {
+                date,
+                location: document.getElementById('f-location').value.trim(),
+                lat: document.getElementById('f-lat').value,
+                lng: document.getElementById('f-lng').value,
+                found: document.getElementById('f-found').value.trim(),
+                weather: document.getElementById('f-weather').value.trim(),
+                notes: document.getElementById('f-notes').value.trim(),
+                photo: photoData
+            };
+
+            if (editingId) {
+                const idx = entries.findIndex(e => e.id === editingId);
+                if (idx !== -1) entries[idx] = { ...entries[idx], ...data };
+            } else {
+                entries.push({ id: Date.now().toString(), ...data });
+            }
+
+            saveToStorage();
+            closeModal();
+            renderEntries();
+        }
+
+        function deleteEntry() {
+            if (!editingId || !confirm('Delete this entry? This cannot be undone.')) return;
+            entries = entries.filter(e => e.id !== editingId);
+            saveToStorage();
+            closeModal();
+            renderEntries();
+        }
+
+        // ── Render ────────────────────────────────────────────────
+        function renderEntries() {
+            const list = document.getElementById('entry-list');
+            const empty = document.getElementById('empty-state');
+            list.innerHTML = '';
+
+            if (entries.length === 0) {
+                empty.classList.remove('hidden');
+                lucide.createIcons();
+                return;
+            }
+            empty.classList.add('hidden');
+
+            [...entries].sort((a, b) => b.date.localeCompare(a.date)).forEach(entry => {
+                const monthKey = getMonthKey(entry.date);
+                const monthColor = monthKey ? hexMap[monthKey] : '#E5E7EB';
+                const foundList = entry.found ? entry.found.split(',').map(f => f.trim()).filter(Boolean) : [];
+                const hasCoords = entry.lat && entry.lng;
+                const mapsUrl = hasCoords ? `https://www.google.com/maps?q=${entry.lat},${entry.lng}` : null;
+
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-2xl border border-gray-100 card-shadow overflow-hidden';
+                card.innerHTML = `
+                    ${entry.photo
+                        ? `<img src="${entry.photo}" alt="Walk photo" class="w-full object-cover max-h-52">`
+                        : `<div class="h-2 w-full" style="background-color:${monthColor}"></div>`}
+                    <div class="p-4">
+                        <div class="flex items-start justify-between gap-2 mb-3">
+                            <div>
+                                <p class="font-bold text-base leading-snug">${formatDate(entry.date)}</p>
+                                ${entry.location ? `
+                                <p class="text-sm text-gray-500 flex items-center gap-1 mt-1">
+                                    ${mapsUrl
+                                        ? `<a href="${mapsUrl}" target="_blank" rel="noopener" class="flex items-center gap-1 hover:text-green-700 transition-colors">
+                                               <i data-lucide="map-pin" class="w-3 h-3 flex-shrink-0"></i>
+                                               <span class="underline underline-offset-2">${entry.location}</span>
+                                           </a>`
+                                        : `<i data-lucide="map-pin" class="w-3 h-3 flex-shrink-0"></i><span>${entry.location}</span>`}
+                                </p>` : ''}
+                            </div>
+                            <button onclick="openModal('${entry.id}')" class="text-gray-300 hover:text-gray-600 flex-shrink-0 mt-0.5">
+                                <i data-lucide="pencil" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        ${foundList.length > 0 ? `
+                        <div class="mb-3">
+                            <p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Found</p>
+                            <div class="flex flex-wrap gap-1">
+                                ${foundList.map(f =>
+                                    `<span class="text-xs px-2 py-0.5 rounded-full font-medium" style="background-color:${monthColor}30;color:#1A1C19">${f}</span>`
+                                ).join('')}
+                            </div>
+                        </div>` : ''}
+
+                        ${entry.weather ? `
+                        <p class="text-xs text-gray-400 flex items-center gap-1 mb-2">
+                            <i data-lucide="cloud" class="w-3 h-3"></i>${entry.weather}
+                        </p>` : ''}
+
+                        ${entry.notes ? `
+                        <p class="text-sm text-gray-600 leading-relaxed border-t border-gray-50 pt-3 mt-2">${entry.notes}</p>` : ''}
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        document.getElementById('month-dot').style.backgroundColor = hexMap[MONTH_KEYS[new Date().getMonth()]];
+        renderEntries();
+        lucide.createIcons();
+    </script>
+</body>
+</html>

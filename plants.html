@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FORAGER — Field Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #FDFCFB; color: #1A1C19; }
+        h1, h2, h3 { font-family: 'Outfit', sans-serif; }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid #D1D5DB;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+        .nav-shadow { box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .filter-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 1px solid #D1D5DB;
+            cursor: pointer;
+            transition: transform 0.15s, border-color 0.15s;
+            flex-shrink: 0;
+        }
+        .filter-dot.active {
+            transform: scale(1.25);
+            border: 2px solid #1A1C19;
+        }
+    </style>
+</head>
+<body class="pb-24">
+
+    <header class="sticky top-0 bg-[#FDFCFB]/90 backdrop-blur-md z-50 p-4 flex justify-between items-center border-b border-gray-100">
+        <h1 class="text-xl font-bold tracking-tight">FORAGER</h1>
+        <div id="month-dot" class="dot" style="width:14px;height:14px;"></div>
+    </header>
+
+    <main class="mx-auto p-4 md:max-w-[960px]">
+        <h2 class="text-3xl font-bold mb-6">Field Guide</h2>
+
+        <div class="mb-6 space-y-4">
+            <input type="text" id="search" placeholder="Search plants..." 
+                class="w-full p-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-gray-300 text-sm">
+            <div class="flex flex-wrap items-center gap-2">
+                <button id="btn-all" onclick="setFilter(null)" 
+                    class="px-3 py-1 bg-gray-900 text-white rounded-full text-xs font-bold hover:bg-gray-700 transition-colors">ALL</button>
+                <div id="month-filters" class="flex flex-wrap gap-2"></div>
+            </div>
+        </div>
+
+        <div id="plant-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+        <p id="no-results" class="hidden text-center text-gray-400 text-sm py-12">No plants found.</p>
+    </main>
+
+    <nav class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 nav-shadow px-6 py-2 flex justify-around items-center z-50">
+        <a href="index.html" class="flex flex-col items-center text-gray-400 hover:text-gray-900">
+            <i data-lucide="home" class="w-5 h-5 mb-1"></i>
+            <span class="text-[10px] uppercase font-bold tracking-wider">Home</span>
+        </a>
+        <a href="plants.html" class="flex flex-col items-center text-gray-900">
+            <i data-lucide="search" class="w-5 h-5 mb-1"></i>
+            <span class="text-[10px] uppercase font-bold tracking-wider">Find</span>
+        </a>
+        <a href="recipes.html" class="flex flex-col items-center text-gray-400 hover:text-gray-900">
+            <i data-lucide="flame" class="w-5 h-5 mb-1"></i>
+            <span class="text-[10px] uppercase font-bold tracking-wider">Kitchen</span>
+        </a>
+        <a href="log.html" class="flex flex-col items-center text-gray-400 hover:text-gray-900">
+            <i data-lucide="book-open" class="w-5 h-5 mb-1"></i>
+            <span class="text-[10px] uppercase font-bold tracking-wider">Log</span>
+        </a>
+    </nav>
+
+    <script>
+        const MONTH_KEYS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+        const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        const hexMap = {
+            jan: '#E8ECF0', feb: '#D8EBF8', mar: '#DDF0E4', apr: '#F8F8D0',
+            may: '#5FAD6A', jun: '#F0B8CC', jul: '#2E8FD8', aug: '#E8907A',
+            sep: '#7A4A6E', oct: '#8A4A28', nov: '#425A72', dec: '#2C5A3A'
+        };
+
+        // season array: 12 booleans, true = active month
+        const plants = [
+            {
+                name: "Wild Garlic", dk: "Ramsløg", peak: "mar",
+                season: [false,false,true,true,true,false,false,false,false,false,false,false],
+                habitat: "Moist forest floors",
+                tip: "Crush a leaf — the garlic scent is unmistakable.",
+                warning: "Lookalike: Lily of the Valley (toxic). Always smell before picking."
+            },
+            {
+                name: "Stinging Nettle", dk: "Brændenælde", peak: "apr",
+                season: [false,false,true,true,true,true,true,true,true,true,false,false],
+                habitat: "Nitrogen-rich disturbed soil",
+                tip: "Harvest the top four leaves only. Sting disappears when cooked.",
+                warning: null
+            },
+            {
+                name: "Wild Carrot", dk: "Vild Gulerod", peak: "jul",
+                season: [false,false,false,false,false,true,true,true,false,false,false,false],
+                habitat: "Sunny, dry meadows and roadsides",
+                tip: "Root must smell unmistakably of carrot.",
+                warning: "Toxic lookalikes include Hemlock and Hemlock Water Dropwort. Never eat without positive ID."
+            },
+            {
+                name: "Ground Ivy", dk: "Korsknap", peak: "may",
+                season: [false,false,true,true,true,true,false,false,false,false,false,false],
+                habitat: "Shady edges, hedgerows",
+                tip: "Look for square stems and small purple flowers.",
+                warning: null
+            },
+            {
+                name: "Sea Buckthorn", dk: "Havtorn", peak: "sep",
+                season: [false,false,false,false,false,false,false,true,true,true,false,false],
+                habitat: "Coastal dunes and sandy shores",
+                tip: "Berries are bright orange and very sharp tasting. Use gloves on thorny stems.",
+                warning: null
+            },
+            {
+                name: "Elderberry", dk: "Hyld", peak: "jun",
+                season: [false,false,false,false,false,true,false,true,true,true,false,false],
+                habitat: "Hedgerows, woodland edges, gardens",
+                tip: "Flowers in June, berries August to October. Cook all berries before eating.",
+                warning: "Never eat raw berries — toxic. Flowers are safe raw."
+            },
+            {
+                name: "Oyster Mushroom", dk: "Østershat", peak: "nov",
+                season: [false,false,false,false,false,false,false,false,true,true,true,true],
+                habitat: "Dead deciduous wood, especially beech",
+                tip: "Shelf-like clusters on logs and stumps. White gills running down the stem.",
+                warning: null
+            },
+            {
+                name: "Dandelion", dk: "Mælkebøtte", peak: "apr",
+                season: [false,false,true,true,true,true,true,false,false,false,false,false],
+                habitat: "Everywhere — meadows, lawns, roadsides",
+                tip: "Young spring leaves are far less bitter. Hollow stem with milky sap.",
+                warning: null
+            },
+            {
+                name: "Garlic Mustard", dk: "Løgkarse", peak: "apr",
+                season: [false,false,true,true,true,true,false,false,false,false,false,false],
+                habitat: "Hedge banks and woodland edges",
+                tip: "Smell of garlic and mustard when leaves are crushed. Heart-shaped lower leaves.",
+                warning: null
+            },
+            {
+                name: "Yarrow", dk: "Røllike", peak: "jul",
+                season: [false,false,false,false,false,true,true,true,false,false,false,false],
+                habitat: "Fields, roadsides, dry grassland",
+                tip: "Feathery aromatic leaves and flat-topped white or pink flower clusters.",
+                warning: null
+            },
+            {
+                name: "Meadowsweet", dk: "Mødurt", peak: "jul",
+                season: [false,false,false,false,false,true,true,false,false,false,false,false],
+                habitat: "Damp meadows, riverbanks, ditches",
+                tip: "Strong honey-almond scent from frothy cream flower clusters.",
+                warning: null
+            },
+            {
+                name: "White Dead-nettle", dk: "Hvid Døvnælde", peak: "jan",
+                season: [true,true,true,false,false,false,false,false,false,false,false,true],
+                habitat: "Urban edges, hedgerows, disturbed ground",
+                tip: "Leaves resemble stinging nettle but have no sting at all.",
+                warning: null
+            },
+            {
+                name: "Juniper", dk: "Ene", peak: "dec",
+                season: [true,true,false,false,false,false,false,false,false,false,true,true],
+                habitat: "Heathland, open woodland, coastal scrub",
+                tip: "Sharp prickly needles. Look for ripe blue-black berries.",
+                warning: "Garden Juniper (Juniperus sabina) is toxic. Only harvest from Juniperus communis."
+            },
+            {
+                name: "Chanterelle", dk: "Kantarel", peak: "aug",
+                season: [false,false,false,false,false,false,true,true,true,false,false,false],
+                habitat: "Mossy deciduous and mixed forest",
+                tip: "Egg-yolk yellow with forked ridges, not gills. Fruity apricot scent.",
+                warning: null
+            },
+            {
+                name: "Shepherd's Purse", dk: "Hyrdetaske", peak: "mar",
+                season: [true,true,true,true,false,false,false,false,false,false,true,true],
+                habitat: "Disturbed soil, roadsides, gardens",
+                tip: "Look for distinctive small heart-shaped seed pods along the stem.",
+                warning: null
+            }
+        ];
+
+        let activeFilter = null;
+
+        function makeDots(seasonArr) {
+            return MONTH_KEYS.map((m, i) => {
+                const color = seasonArr[i] ? hexMap[m] : 'white';
+                return `<span class="dot" style="background-color:${color};"></span>`;
+            }).join('');
+        }
+
+        function setFilter(monthIdx) {
+            activeFilter = monthIdx;
+            // Update ALL button style
+            const allBtn = document.getElementById('btn-all');
+            allBtn.className = monthIdx === null
+                ? 'px-3 py-1 bg-gray-900 text-white rounded-full text-xs font-bold transition-colors'
+                : 'px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-bold hover:bg-gray-200 transition-colors';
+            // Update filter dot active states
+            document.querySelectorAll('.filter-dot').forEach((btn, i) => {
+                btn.classList.toggle('active', i === monthIdx);
+            });
+            renderGrid();
+        }
+
+        function renderGrid() {
+            const query = document.getElementById('search').value.toLowerCase();
+            const grid = document.getElementById('plant-grid');
+            const noResults = document.getElementById('no-results');
+            grid.innerHTML = '';
+
+            const filtered = plants.filter(p => {
+                const matchesSearch = p.name.toLowerCase().includes(query) || p.dk.toLowerCase().includes(query);
+                const matchesMonth = activeFilter === null || p.season[activeFilter];
+                return matchesSearch && matchesMonth;
+            });
+
+            if (filtered.length === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                filtered.forEach(p => {
+                    const card = document.createElement('a');
+                    card.href = `plant-detail.html?id=${p.name.toLowerCase().replace(/\s+/g, '-')}`;
+                    card.className = 'bg-white rounded-2xl border border-gray-100 card-shadow block hover:shadow-md transition-shadow overflow-hidden';
+                    card.innerHTML = `
+                        <div class="h-36 flex items-center justify-center rounded-t-2xl" style="background-color:${hexMap[p.peak]}">
+                            <i data-lucide="leaf" class="w-8 h-8 text-white opacity-80"></i>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg leading-tight">${p.name} <span class="text-gray-400 font-normal text-base">(${p.dk})</span></h3>
+                            <div class="flex gap-1 py-2">${makeDots(p.season)}</div>
+                            <p class="text-xs font-bold text-green-700 uppercase tracking-wide mb-2">${p.habitat}</p>
+                            <p class="text-sm text-gray-600 mb-3">${p.tip}</p>
+                            ${p.warning ? `<div class="bg-amber-50 border border-amber-200 p-2 rounded-lg text-xs font-semibold text-amber-900">${p.warning}</div>` : ''}
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+            lucide.createIcons();
+        }
+
+        // Build month filter dots
+        const filterContainer = document.getElementById('month-filters');
+        MONTH_KEYS.forEach((m, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'filter-dot';
+            btn.style.backgroundColor = hexMap[m];
+            btn.title = MONTH_NAMES[i];
+            btn.onclick = () => setFilter(i);
+            filterContainer.appendChild(btn);
+        });
+
+        // Search listener
+        document.getElementById('search').addEventListener('input', renderGrid);
+
+        // Set header month dot
+        document.getElementById('month-dot').style.backgroundColor = hexMap[MONTH_KEYS[new Date().getMonth()]];
+
+        // Initial render
+        renderGrid();
+    </script>
+</body>
+</html>
