@@ -217,6 +217,11 @@
         let activeMonth = null;
         let activeType = "All";
 
+        function firstMonth(seasonArr) {
+            const idx = seasonArr.findIndex(v => v);
+            return idx >= 0 ? MONTH_KEYS[idx] : 'jan';
+        }
+
         function makeDots(seasonArr) {
             return MONTH_KEYS.map((m, i) => {
                 const color = seasonArr[i] ? hexMap[m] : 'white';
@@ -251,9 +256,10 @@
                     // Type badge colour
                     const typeBadgeColors = { Fresh: '#DDF0E4', Preserve: '#F8F8D0', Drink: '#D8EBF8' };
                     const typeBadgeText = { Fresh: '#3A5C3A', Preserve: '#6B6B00', Drink: '#1A4A6B' };
+                    const cardColor = hexMap[firstMonth(r.season)];
 
                     card.innerHTML = `
-                        <div class="h-36 flex items-center justify-center rounded-t-2xl" style="background-color:${hexMap[r.peak]}">
+                        <div class="h-36 flex items-center justify-center rounded-t-2xl" style="background-color:${cardColor}">
                             <i data-lucide="flame" class="w-8 h-8 text-white opacity-80"></i>
                         </div>
                         <div class="p-4">
@@ -262,7 +268,7 @@
                                 <span class="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full whitespace-nowrap mt-1" 
                                     style="background-color:${typeBadgeColors[r.type]};color:${typeBadgeText[r.type]}">${r.type}</span>
                             </div>
-                            <p class="text-xs font-bold uppercase tracking-wide mb-2" style="color:${hexMap[r.peak]}">${r.ingredient} (${r.dk})</p>
+                            <p class="text-xs font-bold uppercase tracking-wide mb-2" style="color:${cardColor}">${r.ingredient} (${r.dk})</p>
                             <div class="flex gap-1 py-2">${makeDots(r.season)}</div>
                             <p class="text-sm text-gray-500">${r.desc}</p>
                         </div>
