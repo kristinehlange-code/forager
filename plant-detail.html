@@ -10,14 +10,82 @@
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #FDFCFB; color: #1A1C19; }
         h1, h2, h3 { font-family: 'Outfit', sans-serif; }
-        .dot { width: 12px; height: 12px; border-radius: 50%; border: 1px solid #D1D5DB; display: inline-block; flex-shrink: 0; }
+        .dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1px solid #D1D5DB;
+            display: inline-block;
+            flex-shrink: 0;
+        }
         .nav-shadow { box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
         .card-shadow { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        .hero-img { width: 100%; height: 260px; object-fit: cover; }
-        .warning-band { background-color: #FFFBEB; border: 1px solid #FDE68A; border-radius: 0.75rem; padding: 0.75rem 1rem; }
+        .warning-band {
+            background-color: #FFFBEB;
+            border: 1px solid #FDE68A;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+        }
+
+        /* Photo strip */
+        .photo-strip {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 12px 20px;
+            scrollbar-width: none;
+            background: white;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        .photo-strip::-webkit-scrollbar { display: none; }
+        .photo-thumb {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            object-fit: cover;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: opacity 0.15s;
+        }
+        .photo-thumb:hover { opacity: 0.85; }
+        .photo-placeholder {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1.5px dashed #D1D5DB;
+            background: #F9FAFB;
+            cursor: default;
+        }
+
+        /* Lightbox */
+        #lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        #lightbox.open { display: flex; }
+        #lightbox img {
+            max-width: 95vw;
+            max-height: 90vh;
+            border-radius: 12px;
+            object-fit: contain;
+        }
     </style>
 </head>
 <body class="pb-24">
+
+    <!-- Lightbox -->
+    <div id="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="">
+    </div>
 
     <header class="sticky top-0 bg-[#FDFCFB]/90 backdrop-blur-md z-50 p-4 flex justify-between items-center border-b border-gray-100">
         <a href="plants.html" class="flex items-center gap-2 text-gray-500 hover:text-gray-900">
@@ -27,10 +95,13 @@
         <div id="month-dot" class="dot" style="width:14px;height:14px;"></div>
     </header>
 
-    <!-- Hero image / placeholder -->
-    <div id="hero" class="w-full h-64 flex items-center justify-center relative overflow-hidden">
-        <i data-lucide="leaf" class="w-16 h-16 text-white opacity-40"></i>
+    <!-- Hero -->
+    <div id="hero" class="w-full h-52 flex items-center justify-center relative overflow-hidden">
+        <i data-lucide="leaf" class="w-14 h-14 text-white opacity-30"></i>
     </div>
+
+    <!-- Photo strip -->
+    <div id="photo-strip" class="photo-strip"></div>
 
     <main class="mx-auto px-5 pt-6 pb-4 md:max-w-[720px]">
 
@@ -38,12 +109,12 @@
         <div class="mb-6">
             <h1 id="plant-name" class="text-3xl font-bold leading-tight"></h1>
             <p id="plant-danish" class="text-base text-gray-400 italic mt-0.5"></p>
-            <div id="season-dots" class="flex gap-1 mt-3"></div>
+            <div id="season-dots" class="flex gap-1.5 mt-3 flex-wrap"></div>
         </div>
 
         <!-- How to spot it -->
         <section class="mb-7">
-            <h2 class="text-lg font-bold mb-2">How to spot it</h2>
+            <h2 class="text-lg font-bold mb-3">How to spot it</h2>
             <ul id="spot-list" class="space-y-2 text-sm text-gray-600 list-disc pl-5"></ul>
         </section>
 
@@ -112,22 +183,30 @@
 
     <script>
         const MONTH_KEYS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
-        const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
         const hexMap = {
             jan: '#E8ECF0', feb: '#D8EBF8', mar: '#DDF0E4', apr: '#F8F8D0',
             may: '#5FAD6A', jun: '#F0B8CC', jul: '#2E8FD8', aug: '#E8907A',
             sep: '#7A4A6E', oct: '#8A4A28', nov: '#425A72', dec: '#2C5A3A'
         };
 
+        // ── Photo configuration ───────────────────────────────────
+        // To add photos for a plant:
+        // 1. Create an "images" folder in your GitHub repo
+        // 2. Upload your photo files there
+        // 3. Add the filenames to the photos array below
+        // Example: photos: ['images/wild-garlic-1.jpg', 'images/wild-garlic-2.jpg']
+        // Leave the array empty [] if no photos yet — placeholders will show instead.
+
         const plantData = {
             'wild-garlic': {
                 name: 'Wild Garlic', danish: 'Ramsløg', peak: 'mar',
                 season: [false,false,true,true,true,false,false,false,false,false,false,false],
+                photos: [],
                 spot: [
-                    'Broad, bright green lance-shaped leaves, 15–25cm long, emerging directly from the ground.',
+                    'Broad, bright green lance-shaped leaves 15–25cm long, emerging directly from the ground.',
                     'Crush a leaf between your fingers — the smell of garlic is unmistakable and immediate.',
                     'Clusters of small white star-shaped flowers appear from April onward.',
-                    'Leaves are smooth and shiny on top, with a single prominent midrib underneath.'
+                    'Leaves are smooth and shiny on top with a single prominent midrib underneath.'
                 ],
                 habitat: 'Found in moist, shaded deciduous woodland, particularly under beech and ash trees. Often grows in dense carpets near streams and in damp valley floors. Common throughout Denmark from March to May.',
                 warning: 'Can be confused with Lily of the Valley (Convallaria majalis), which is highly toxic, and with Autumn Crocus (Colchicum autumnale). Always crush a leaf and confirm the garlic smell before picking. If there is no garlic smell, do not eat it.',
@@ -144,6 +223,7 @@
             'stinging-nettle': {
                 name: 'Stinging Nettle', danish: 'Brændenælde', peak: 'apr',
                 season: [false,false,true,true,true,true,true,true,true,true,false,false],
+                photos: [],
                 spot: [
                     'Opposite serrated leaves with a heart-shaped base, covered in fine hollow stinging hairs.',
                     'Square green stem, also covered in stinging hairs.',
@@ -165,18 +245,19 @@
             'elderflower': {
                 name: 'Elderflower', danish: 'Hyldblomst', peak: 'jun',
                 season: [false,false,false,false,true,true,false,false,false,false,false,false],
+                photos: [],
                 spot: [
-                    'Large flat-topped clusters of tiny cream-white flowers, 10–20cm across.',
+                    'Large flat-topped clusters of tiny cream-white flowers 10–20cm across.',
                     'Unmistakable muscat and lychee scent, strongest on dry warm mornings.',
                     'Pinnate leaves with 5–7 leaflets, slightly unpleasant smell when crushed.',
-                    'Flowers appear on elder shrubs or small trees, often found in hedgerows and woodland edges.'
+                    'Flowers appear on elder shrubs or small trees in hedgerows and woodland edges.'
                 ],
-                habitat: 'Extremely common throughout Denmark in hedgerows, woodland edges, roadsides, and gardens. Elder grows fast and prolifically. The flowering season is short, typically two to three weeks in late May and June depending on the year.',
-                warning: 'Never eat raw elderberries — they contain sambunigrin which causes nausea and vomiting when raw. The flowers are safe to eat raw. Do not confuse elder with Dwarf Elder (Sambucus ebulus) which is toxic — it grows from a herbaceous stem rather than woody branches and smells unpleasant.',
-                about: 'Elder is deeply embedded in Danish and Nordic culture, used for centuries in cooking, medicine, and folk tradition. The flowers have a fleeting, intoxicating scent that defines early summer. Hyldeblomst cordial is perhaps the most iconic Danish summer drink, made in homes across the country every June.',
+                habitat: 'Extremely common throughout Denmark in hedgerows, woodland edges, roadsides, and gardens. The flowering season is short, typically two to three weeks in late May and June.',
+                warning: 'Never eat raw elderberries — they contain sambunigrin which causes nausea and vomiting. The flowers are safe raw. Do not confuse elder with Dwarf Elder (Sambucus ebulus) which is toxic — it grows from a herbaceous stem rather than woody branches.',
+                about: 'Elder is deeply embedded in Danish and Nordic culture, used for centuries in cooking, medicine, and folk tradition. The flowers have a fleeting, intoxicating scent that defines early summer. Hyldeblomst cordial is perhaps the most iconic Danish summer drink.',
                 uses: [
                     'Make cordial by steeping flower heads in sugar syrup with lemon and citric acid.',
-                    'Dip whole flower heads in a light batter and fry for elderflower fritters — a classic summer treat.',
+                    'Dip whole flower heads in a light batter and fry for elderflower fritters.',
                     'Infuse into cream or milk for panna cotta, ice cream, or custard.',
                     'Freeze whole flower heads in bags to use for fritters and cordial through winter.',
                     'Dry flower heads quickly at low temperature to use as a flavouring for teas and desserts.'
@@ -186,62 +267,65 @@
             'chanterelle': {
                 name: 'Chanterelle', danish: 'Kantarel', peak: 'aug',
                 season: [false,false,false,false,false,false,true,true,true,false,false,false],
+                photos: [],
                 spot: [
                     'Egg-yolk to golden yellow colour, sometimes with orange tones.',
                     'Cap is irregularly wavy or funnel-shaped, not flat or domed.',
-                    'Forked ridges running down the stem instead of true gills — this is the key ID feature.',
+                    'Forked ridges running down the stem instead of true gills — the key ID feature.',
                     'Fruity, faintly apricot-like scent when fresh.',
                     'Solid white stem, tapering toward the base.'
                 ],
-                habitat: 'Found in mossy deciduous and mixed forest, particularly under beech, oak and birch. Prefers slightly acidic soil. Often grows in the same spots year after year. Look for them after warm, wet periods in July and August.',
-                warning: 'Can be confused with the False Chanterelle (Hygrophoropsis aurantiaca) which has true gills (not forked ridges), a more orange colour, and a floppy cap. The Jack-o-lantern mushroom (Omphalotus olearius) is also similar but grows in clusters at the base of trees and glows faintly in the dark. When in doubt, check the ridges — true chanterelles never have true gills.',
-                about: 'The Chanterelle is Denmark\'s most beloved wild mushroom and one of the finest edible fungi in the world. Its golden colour, fruity scent, and firm texture make it prized in professional and home kitchens alike. It pairs beautifully with butter, cream, eggs, and fresh herbs, and dries well for year-round use.',
+                habitat: 'Found in mossy deciduous and mixed forest, particularly under beech, oak and birch. Prefers slightly acidic soil. Often grows in the same spots year after year after warm, wet periods in July and August.',
+                warning: 'Can be confused with the False Chanterelle (Hygrophoropsis aurantiaca) which has true gills, a more orange colour, and a floppy cap. Always check the ridges — true chanterelles never have true gills.',
+                about: 'The Chanterelle is Denmark\'s most beloved wild mushroom and one of the finest edible fungi in the world. Its golden colour, fruity scent, and firm texture make it prized in professional and home kitchens alike.',
                 uses: [
                     'Sauté in brown butter with fresh thyme — the simplest and best preparation.',
                     'Fold into scrambled eggs or an omelette for a classic combination.',
                     'Dehydrate at 45°C until completely crisp, then store in glass jars for winter cooking.',
                     'Blend dried chanterelles into a powder to use as a flavouring for sauces and soups.',
-                    'Use in cream sauces for pasta or polenta — they hold their texture well with long cooking.'
+                    'Use in cream sauces for pasta or polenta — they hold their texture well.'
                 ],
                 recipes: ['chanterelle-butter']
             },
             'dandelion': {
                 name: 'Dandelion', danish: 'Mælkebøtte', peak: 'apr',
                 season: [false,false,true,true,true,true,true,false,false,false,false,false],
+                photos: [],
                 spot: [
                     'Deeply toothed leaves in a basal rosette, pointing back toward the centre.',
                     'Hollow stem with a single bright yellow flower head.',
-                    'Milky white sap when stem is broken — distinctive and unmistakable.',
-                    'Leaves are hairless and slightly glossy, unlike some similar species.'
+                    'Milky white sap when stem is broken.',
+                    'Leaves are hairless and slightly glossy.'
                 ],
-                habitat: 'Found absolutely everywhere — meadows, lawns, roadsides, gardens, and disturbed ground throughout Denmark. Flowers from March through to autumn in waves. One of the most abundant and reliable wild plants available.',
-                warning: 'No dangerous lookalikes. Dandelion is one of the safest plants to forage. Avoid picking from roadsides, near golf courses, or anywhere that may have been sprayed with herbicides or pesticides.',
-                about: 'The humble dandelion is one of the most nutritious and versatile wild plants available. Every part is edible — roots, leaves, flowers, and stems. Young spring leaves are far less bitter than mature ones and have been eaten across Europe for centuries as a spring green. The flowers make a beautiful honey-like syrup and the roots can be roasted as a coffee substitute.',
+                habitat: 'Found absolutely everywhere — meadows, lawns, roadsides, gardens, and disturbed ground throughout Denmark. One of the most abundant and reliable wild plants available.',
+                warning: 'No dangerous lookalikes. Avoid picking from roadsides or anywhere that may have been sprayed with herbicides or pesticides.',
+                about: 'The humble dandelion is one of the most nutritious and versatile wild plants available. Every part is edible — roots, leaves, flowers, and stems. Young spring leaves are far less bitter than mature ones.',
                 uses: [
-                    'Use young spring leaves in salads — they are nutty and only mildly bitter before the plant flowers.',
+                    'Use young spring leaves in salads — nutty and only mildly bitter before the plant flowers.',
                     'Infuse flowers in honey or sugar syrup for a floral, nectar-like sweetener.',
                     'Roast dried roots at 200°C until dark, then grind for a coffee-like drink.',
                     'Pickle flower buds in a light brine for a caper-like condiment.',
-                    'Batter and fry whole flowers for a simple fritter — children love these.'
+                    'Batter and fry whole flowers for a simple fritter.'
                 ],
                 recipes: ['dandelion-honey']
             },
             'wild-carrot': {
                 name: 'Wild Carrot', danish: 'Vild Gulerod', peak: 'jul',
                 season: [false,false,false,false,false,true,true,true,false,false,false,false],
+                photos: [],
                 spot: [
-                    'Flat-topped white flower head (umbel) with a single small dark purple or red flower at the centre.',
+                    'Flat-topped white flower head (umbel) with a single small dark purple flower at the centre.',
                     'Feathery, carrot-like leaves that smell distinctly of carrot when crushed.',
                     'Hairy stems and leaves, unlike the smooth stems of toxic lookalikes.',
                     'Root smells unmistakably of carrot — always check this before eating any part.'
                 ],
                 habitat: 'Found on dry, sunny grassland, chalk downs, coastal cliffs, and roadsides throughout Denmark. Prefers well-drained, poor soil. Flowers from June to August.',
-                warning: 'This is one of the most important safety warnings in foraging. Wild Carrot belongs to the Apiaceae family which contains several highly toxic species including Hemlock (Conium maculatum) and Hemlock Water Dropwort (Oenanthe crocata). Always confirm the carrot smell of the root before eating. Hemlock has purple blotching on smooth stems and smells unpleasant. Never eat any white-flowered umbellifer without positive identification.',
-                about: 'Wild Carrot is the ancestor of the cultivated carrot. The roots are edible but tough and woody compared to cultivated varieties — they are best used young or as a flavouring. The flowers and seeds are the most useful parts for foraging, with a distinctive warm, slightly spicy carrot flavour.',
+                warning: 'Wild Carrot belongs to the Apiaceae family which contains several highly toxic species including Hemlock (Conium maculatum) and Hemlock Water Dropwort (Oenanthe crocata). Always confirm the carrot smell of the root before eating. Never eat any white-flowered umbellifer without positive identification.',
+                about: 'Wild Carrot is the ancestor of the cultivated carrot. The roots are edible but tough and woody compared to cultivated varieties. The flowers and seeds are the most useful parts for foraging, with a distinctive warm, slightly spicy carrot flavour.',
                 uses: [
-                    'Use seeds as a spice — they have a warm, earthy carrot flavour excellent in bread and biscuits.',
+                    'Use seeds as a spice with a warm, earthy carrot flavour excellent in bread and biscuits.',
                     'Steep flower heads in cream or milk to infuse a subtle carrot-floral flavour for desserts.',
-                    'Young roots can be roasted whole as a vegetable, though they are smaller and tougher than cultivated carrots.',
+                    'Young roots can be roasted whole as a small, flavourful vegetable.',
                     'Add flower heads to salads for a delicate, feathery garnish.'
                 ],
                 recipes: []
@@ -249,6 +333,7 @@
             'ground-ivy': {
                 name: 'Ground Ivy', danish: 'Korsknap', peak: 'may',
                 season: [false,false,true,true,true,true,false,false,false,false,false,false],
+                photos: [],
                 spot: [
                     'Small, kidney-shaped to round scalloped leaves on long stalks.',
                     'Square stem — a key identifier for the mint family.',
@@ -257,8 +342,8 @@
                     'Creeping stems that root at nodes, forming dense mats.'
                 ],
                 habitat: 'Found in shaded hedgerows, woodland edges, gardens, and disturbed ground. Very common throughout Denmark. Often grows in the same shaded spots as nettles and garlic mustard.',
-                warning: 'No serious lookalikes in a Danish context. The square stem and distinctive scent make it easy to identify. Not to be confused with Common Ivy (Hedera helix) which has a completely different leaf shape, woody stem, and is toxic.',
-                about: 'Ground Ivy was one of the most important herbs in medieval Europe, used to clarify and flavour ale before hops became standard. It has a complex flavour — slightly minty, slightly bitter, with herbal and resinous notes. Used medicinally for centuries for respiratory complaints. Underused in modern cooking but worth exploring.',
+                warning: 'No dangerous lookalikes. The square stem and distinctive scent make it easy to identify. Not to be confused with Common Ivy (Hedera helix) which has a completely different leaf shape and is toxic.',
+                about: 'Ground Ivy was one of the most important herbs in medieval Europe, used to clarify and flavour ale before hops became standard. It has a complex flavour — slightly minty, slightly bitter, with herbal and resinous notes.',
                 uses: [
                     'Use as a herb in small quantities — it is strong, so treat it like oregano rather than parsley.',
                     'Add a few leaves to salads for a bitter, aromatic kick.',
@@ -271,20 +356,21 @@
             'sea-buckthorn': {
                 name: 'Sea Buckthorn', danish: 'Havtorn', peak: 'sep',
                 season: [false,false,false,false,false,false,false,true,true,true,false,false],
+                photos: [],
                 spot: [
                     'Dense, thorny shrub with narrow silvery-green leaves.',
                     'Intensely orange berries growing in dense clusters directly on the branches.',
                     'Very sharp thorns — wear thick gloves when harvesting.',
                     'Berries are juicy and extremely tart when raw.'
                 ],
-                habitat: 'Found on coastal dunes, sandy shores, and sea cliffs throughout the Danish coastline. Particularly abundant on Jutland\'s west coast. Also planted in urban parks and gardens as an ornamental shrub.',
-                warning: 'No toxic lookalikes. The thorns are the main hazard — wear heavy gloves and long sleeves when harvesting. Berries are extremely sour raw and best used in small quantities or sweetened.',
-                about: 'Sea Buckthorn is one of Denmark\'s most distinctive coastal plants and an increasingly fashionable ingredient in Nordic cuisine. The berries are extraordinarily rich in vitamin C, containing more than almost any other plant. Their intense tartness and bright orange colour make them a striking ingredient in drinks, desserts, and sauces. René Redzepi and Noma brought them to global attention.',
+                habitat: 'Found on coastal dunes, sandy shores, and sea cliffs throughout the Danish coastline. Particularly abundant on Jutland\'s west coast. Also planted in urban parks and gardens.',
+                warning: 'No toxic lookalikes. The thorns are the main hazard — wear heavy gloves and long sleeves. Berries are extremely sour raw and best used sweetened.',
+                about: 'Sea Buckthorn is one of Denmark\'s most distinctive coastal plants and an increasingly fashionable ingredient in Nordic cuisine. The berries are extraordinarily rich in vitamin C. René Redzepi and Noma brought them to global attention.',
                 uses: [
-                    'Make a vivid orange juice by pressing berries through a sieve — dilute with water and sweeten to taste.',
-                    'Reduce into a sauce for game, duck, or fatty fish — the tartness cuts through rich meat beautifully.',
+                    'Make a vivid orange juice by pressing berries through a sieve — dilute and sweeten to taste.',
+                    'Reduce into a sauce for game, duck, or fatty fish.',
                     'Freeze whole berries and add directly to smoothies from frozen.',
-                    'Make a simple jelly or curd with sugar and butter — the natural pectin helps it set.',
+                    'Make a simple jelly or curd with sugar and butter.',
                     'Infuse berries in vodka for a few weeks for a tart, intensely flavoured spirit.'
                 ],
                 recipes: ['sea-buckthorn-sorbet']
@@ -292,6 +378,7 @@
             'meadowsweet': {
                 name: 'Meadowsweet', danish: 'Mødurt', peak: 'jul',
                 season: [false,false,false,false,false,true,true,false,false,false,false,false],
+                photos: [],
                 spot: [
                     'Frothy, cream-white flower clusters with a powerful honey-almond-vanilla scent.',
                     'Pinnate leaves, dark green above and pale below, with smaller leaflets between larger ones.',
@@ -299,10 +386,10 @@
                     'Grows tall, typically 60–120cm, in dense stands.'
                 ],
                 habitat: 'Found in damp meadows, riverbanks, ditches, fens, and wet woodland edges throughout Denmark. Prefers waterlogged or consistently moist soil. Flowers in July and August.',
-                warning: 'Contains salicylates (similar to aspirin). Avoid in large quantities if you are sensitive to aspirin or taking blood-thinning medication. No dangerous lookalikes in a Danish context.',
-                about: 'Meadowsweet has one of the most complex and beautiful scents in the wild plant world — sweet, almondy, and deeply floral with a hint of vanilla. It was the original source of salicylic acid from which aspirin was later synthesised. Historically used to flavour mead and ale, it remains an excellent culinary ingredient for infusions and desserts.',
+                warning: 'Contains salicylates similar to aspirin. Avoid in large quantities if sensitive to aspirin or taking blood-thinning medication.',
+                about: 'Meadowsweet has one of the most complex and beautiful scents in the wild plant world — sweet, almondy, and deeply floral with a hint of vanilla. It was the original source of salicylic acid from which aspirin was later synthesised.',
                 uses: [
-                    'Infuse flower heads in warm cream or milk overnight for use in panna cotta, ice cream, or custard.',
+                    'Infuse flower heads in warm cream overnight for panna cotta, ice cream, or custard.',
                     'Steep in sugar syrup to make a fragrant cordial — pair with gooseberry or rhubarb.',
                     'Dry flower heads quickly after picking to preserve their volatile scent for year-round tea.',
                     'Use as a flavouring for vinegar — infuse for two weeks for a floral dressing.',
@@ -313,42 +400,43 @@
             'juniper': {
                 name: 'Juniper', danish: 'Ene', peak: 'dec',
                 season: [true,true,false,false,false,false,false,false,false,false,true,true],
+                photos: [],
                 spot: [
                     'Evergreen shrub with very sharp, prickly needle-like leaves in whorls of three.',
                     'Ripe berries are blue-black with a waxy bloom, taking two to three years to ripen.',
                     'Unripe berries are green — only harvest the dark blue-black ones.',
                     'Distinctive resinous, pine-like scent from both leaves and berries.'
                 ],
-                habitat: 'Found on heathland, open woodland, coastal scrub, and chalk downland. Less common than it once was in Denmark due to habitat loss. Protected in some areas — harvest only small quantities and never from nature reserves.',
-                warning: 'Garden Juniper (Juniperus sabina) is toxic and must not be eaten. Only harvest from Common Juniper (Juniperus communis), which has a single white stripe along the upper surface of each needle. If in doubt, do not harvest. Also avoid harvesting near roads or from areas that may be sprayed.',
-                about: 'Juniper berries are the defining flavour of gin and a cornerstone of Nordic cuisine, used to season game, cured fish, and fermented foods for centuries. They have a complex flavour that is resinous, piney, and slightly citrusy with a warming spice. In Denmark, juniper has long been associated with the winter landscape and Christmas traditions.',
+                habitat: 'Found on heathland, open woodland, coastal scrub, and chalk downland. Less common than it once was in Denmark due to habitat loss. Protected in some areas.',
+                warning: 'Garden Juniper (Juniperus sabina) is toxic and must not be eaten. Only harvest from Common Juniper (Juniperus communis), which has a single white stripe along the upper surface of each needle.',
+                about: 'Juniper berries are the defining flavour of gin and a cornerstone of Nordic cuisine, used to season game, cured fish, and fermented foods for centuries. In Denmark, juniper has long been associated with the winter landscape and Christmas traditions.',
                 uses: [
-                    'Use berries to season game meats — crush lightly and rub into venison, duck, or pork before roasting.',
+                    'Use berries to season game meats — crush lightly and rub into venison, duck, or pork.',
                     'Add to curing mixes for salmon or gravlax alongside dill and salt.',
                     'Make a flavoured salt by grinding dried berries with sea salt.',
                     'Infuse in aquavit or vodka for a simple home-made gin-style spirit.',
-                    'Add to sauerkraut or other fermented vegetables for a traditional Nordic flavour.'
+                    'Add to sauerkraut or fermented vegetables for a traditional Nordic flavour.'
                 ],
                 recipes: ['juniper-salt']
             },
             'oyster-mushroom': {
                 name: 'Oyster Mushroom', danish: 'Østershat', peak: 'nov',
                 season: [false,false,false,false,false,false,false,false,true,true,true,true],
+                photos: [],
                 spot: [
                     'Shelf-like clusters growing directly on dead or dying wood, usually beech.',
                     'Fan or oyster-shaped caps, pale grey to greyish-brown.',
                     'White gills running down the short, off-centre stem.',
-                    'Mild, pleasant mushroom smell with a slightly anise note when very fresh.',
-                    'Cap surface is smooth, sometimes slightly wavy at the edges.'
+                    'Mild, pleasant mushroom smell with a slightly anise note when very fresh.'
                 ],
-                habitat: 'Found on dead and dying deciduous trees, particularly beech, elm, and willow. Grows in dense clusters throughout autumn and into winter, surviving mild frosts. Look for them on fallen logs and standing dead wood in woodland.',
-                warning: 'No dangerous lookalikes in a Danish context when growing on wood. The Angel Wings mushroom (Pleurocybe nuda) is similar but much thinner and grows on conifer wood. Always confirm the host tree is deciduous and the gills run down the stem.',
-                about: 'Oyster Mushrooms are one of the easiest and most rewarding wild mushrooms to find, growing reliably through autumn and even into December in mild years. They are widely cultivated but the wild versions have a firmer texture and better flavour. They are an excellent source of protein and B vitamins, making them a valuable winter food.',
+                habitat: 'Found on dead and dying deciduous trees, particularly beech, elm, and willow. Grows in dense clusters throughout autumn and into winter, surviving mild frosts.',
+                warning: 'No dangerous lookalikes in a Danish context when growing on deciduous wood. Always confirm the host tree is deciduous and the gills run down the stem.',
+                about: 'Oyster Mushrooms are one of the easiest and most rewarding wild mushrooms to find, growing reliably through autumn and even into December in mild years. They are an excellent source of protein and B vitamins.',
                 uses: [
-                    'Sauté in butter over high heat until golden — they need heat and space in the pan to colour rather than steam.',
-                    'Use in Asian-style stir-fries and soups where their firm texture holds up well to heat.',
-                    'Dry in a dehydrator at low temperature for storage — they rehydrate well in soups and stews.',
-                    'Use large caps as a meat substitute — they have a satisfying chew and absorb flavours beautifully.',
+                    'Sauté in butter over high heat until golden — they need heat and space to colour rather than steam.',
+                    'Use in Asian-style stir-fries and soups where their firm texture holds up well.',
+                    'Dry in a dehydrator at low temperature for storage — they rehydrate well.',
+                    'Use large caps as a meat substitute — they have a satisfying chew.',
                     'Make a simple cream sauce with shallots and thyme to serve on toast or pasta.'
                 ],
                 recipes: ['oyster-mushroom-stew']
@@ -356,57 +444,60 @@
             'garlic-mustard': {
                 name: 'Garlic Mustard', danish: 'Løgkarse', peak: 'apr',
                 season: [false,false,true,true,true,true,false,false,false,false,false,false],
+                photos: [],
                 spot: [
                     'Heart-shaped to triangular leaves with toothed edges on the lower plant.',
                     'Small white four-petalled flowers in clusters at the top of the stem.',
                     'Distinctive smell of garlic and mustard when leaves are crushed.',
-                    'Long, thin seed pods (siliques) appear after flowering.'
+                    'Long, thin seed pods appear after flowering.'
                 ],
-                habitat: 'Found in hedgerows, shaded woodland edges, and disturbed ground. Very common in Denmark, particularly in shaded urban environments. Often found growing alongside nettles and ground elder.',
-                warning: 'No serious lookalikes when the smell is confirmed. The garlic-mustard smell is highly distinctive and present throughout the plant. Avoid picking from polluted urban sites.',
-                about: 'Garlic Mustard is one of the earliest spring greens available and has been eaten across Europe since the Mesolithic period. It has a complex flavour that combines garlic, mustard, and a slightly bitter green note. All parts of the plant are edible — leaves, flowers, seeds, and roots. The seeds can be ground as a mustard substitute.',
+                habitat: 'Found in hedgerows, shaded woodland edges, and disturbed ground. Very common in Denmark, particularly in shaded urban environments.',
+                warning: 'No serious lookalikes when the smell is confirmed. The garlic-mustard smell is highly distinctive throughout the plant.',
+                about: 'Garlic Mustard has been eaten across Europe since the Mesolithic period. It has a complex flavour combining garlic, mustard, and a slightly bitter green note. All parts are edible — leaves, flowers, seeds, and roots.',
                 uses: [
                     'Use young leaves in salads or as a sandwich green for a peppery, garlicky flavour.',
                     'Blend into pesto with nuts and oil as an alternative to basil.',
                     'Pickle leaves in a light brine for a zesty condiment that keeps for months.',
-                    'Grind seeds as a mustard substitute — they have a sharp, wasabi-like heat.',
-                    'Use flowers as a garnish — they are mild and pretty on spring salads.'
+                    'Grind seeds as a mustard substitute with a sharp, wasabi-like heat.',
+                    'Use flowers as a garnish on spring salads.'
                 ],
                 recipes: ['pickled-garlic-mustard']
             },
             'yarrow': {
                 name: 'Yarrow', danish: 'Røllike', peak: 'jul',
                 season: [false,false,false,false,false,true,true,true,false,false,false,false],
+                photos: [],
                 spot: [
                     'Finely divided, feathery leaves that are soft and slightly aromatic.',
                     'Flat-topped clusters of small white or pale pink flowers.',
                     'Leaves are alternate along the stem and feel slightly woolly.',
                     'Strong, complex herbal scent — slightly camphorous and medicinal.'
                 ],
-                habitat: 'Found on dry grassland, meadows, roadsides, and field edges throughout Denmark. Extremely common and flowers from June through September. One of the most widespread wild plants in the country.',
-                warning: 'Can cause skin irritation in sensitive individuals. Avoid during pregnancy. No dangerous lookalikes when the feathery leaves and distinctive scent are confirmed.',
-                about: 'Yarrow is one of the oldest medicinal plants known, used for at least 60,000 years based on archaeological evidence. It has a long history of use in Scandinavian folk medicine and brewing. In cooking it is used sparingly as an aromatic herb — its flavour is complex and slightly bitter, working well in small quantities as a flavouring rather than a main ingredient.',
+                habitat: 'Found on dry grassland, meadows, roadsides, and field edges throughout Denmark. Extremely common and flowers from June through September.',
+                warning: 'Can cause skin irritation in sensitive individuals. Avoid during pregnancy.',
+                about: 'Yarrow is one of the oldest medicinal plants known, used for at least 60,000 years based on archaeological evidence. It has a long history in Scandinavian folk medicine and brewing.',
                 uses: [
                     'Use a few leaves as an aromatic herb in stocks, soups, and stews.',
                     'Add to home-brewed beer or fermented drinks as a bittering agent.',
-                    'Dry flowers and leaves for a medicinal tea traditionally used for colds and fevers.',
+                    'Dry flowers and leaves for a medicinal tea traditionally used for colds.',
                     'Infuse in oil or vinegar for a complex herbal condiment.',
-                    'Use as a garnish — the flat flower heads are beautiful on a plate.'
+                    'Use the flat flower heads as a beautiful plate garnish.'
                 ],
                 recipes: []
             },
             'white-dead-nettle': {
                 name: 'White Dead-nettle', danish: 'Hvid Døvnælde', peak: 'jan',
                 season: [true,true,true,false,false,false,false,false,false,false,false,true],
+                photos: [],
                 spot: [
-                    'Leaves look very similar to stinging nettle but with no sting whatsoever.',
+                    'Leaves look very similar to stinging nettle but with absolutely no sting.',
                     'Distinctive white hooded flowers in whorls around the stem.',
                     'Square stem, typical of the mint family.',
-                    'Leaves are softly hairy and have a mild, slightly unpleasant smell when crushed.'
+                    'Leaves are softly hairy with a mild, slightly unpleasant smell when crushed.'
                 ],
                 habitat: 'Found on roadsides, hedgerows, urban edges, and disturbed ground throughout Denmark. Flowers almost year-round in mild weather, making it one of the few plants available in winter.',
-                warning: 'No dangerous lookalikes — it closely resembles stinging nettle but the absence of any sting and the presence of white flowers make it easy to distinguish. Touch the leaves to confirm there is no sting.',
-                about: 'White Dead-nettle is a reliable winter green, one of the few wild plants available in the lean months of January and February. The flowers are sweet and can be sucked for nectar. The leaves are nutritious and mild-flavoured. It has been used as a pot herb across northern Europe for centuries and deserves to be better known.',
+                warning: 'No dangerous lookalikes. Touch the leaves to confirm there is no sting — this immediately distinguishes it from stinging nettle.',
+                about: 'White Dead-nettle is a reliable winter green, one of the few wild plants available in January and February. The flowers are sweet and can be sucked for nectar. It has been used as a pot herb across northern Europe for centuries.',
                 uses: [
                     'Use leaves as a pot herb — cook like spinach in soups, stews, and stir-fries.',
                     'Add flowers to salads as a sweet, mild garnish.',
@@ -416,22 +507,23 @@
                 ],
                 recipes: []
             },
-            'shepherd\'s-purse': {
+            'shepherds-purse': {
                 name: "Shepherd's Purse", danish: 'Hyrdetaske', peak: 'mar',
                 season: [true,true,true,true,false,false,false,false,false,false,true,true],
+                photos: [],
                 spot: [
-                    'Small heart-shaped or triangular seed pods that look like old-fashioned purses — the key identifying feature.',
+                    'Small heart-shaped seed pods that look like old-fashioned purses — the key identifying feature.',
                     'Basal rosette of deeply lobed leaves similar to dandelion.',
                     'Tiny white four-petalled flowers at the top of branching stems.',
                     'Mild peppery smell when leaves are crushed.'
                 ],
-                habitat: 'Found on disturbed ground, arable fields, roadsides, and gardens throughout Denmark. One of the most common and widespread weeds in the country. Available almost year-round in mild climates.',
+                habitat: 'Found on disturbed ground, arable fields, roadsides, and gardens throughout Denmark. One of the most common weeds in the country. Available almost year-round.',
                 warning: 'No dangerous lookalikes — the distinctive heart-shaped seed pods make it unmistakable. Avoid picking from sprayed agricultural land.',
-                about: "Shepherd's Purse is one of the most overlooked and underrated edible plants in Denmark. Available almost year-round, it is a reliable source of fresh greens in winter and early spring. The flavour is mild and peppery, similar to watercress, and the whole plant is edible including the seed pods which have a mustard-like bite.",
+                about: "Shepherd's Purse is one of the most overlooked edible plants in Denmark. Available almost year-round, it is a reliable source of fresh greens in winter and early spring. The whole plant is edible including the seed pods.",
                 uses: [
                     'Use young leaves in salads for a mild peppery flavour.',
                     'Add to stir-fries and soups as a nutritious green.',
-                    'Use green seed pods as a peppery condiment — they taste of mustard and capers.',
+                    'Use green seed pods as a peppery condiment tasting of mustard and capers.',
                     'Dry seeds and grind as a mustard-like spice.',
                     'Blend into green sauces and pestos for a watercress-like flavour.'
                 ],
@@ -439,7 +531,6 @@
             }
         };
 
-        // Recipe data for linking
         const recipeData = {
             'wild-garlic-pesto': { name: 'Wild Garlic Pesto', type: 'Preserve' },
             'nettle-soup': { name: 'Nettle Soup', type: 'Fresh' },
@@ -457,53 +548,73 @@
         const typeBadgeColors = { Fresh: '#DDF0E4', Preserve: '#F8F8D0', Drink: '#D8EBF8' };
         const typeBadgeText = { Fresh: '#3A5C3A', Preserve: '#6B6B00', Drink: '#1A4A6B' };
 
-        function makeDots(seasonArr, peakKey) {
+        function makeDots(seasonArr) {
             return MONTH_KEYS.map((m, i) => {
                 const color = seasonArr[i] ? hexMap[m] : 'white';
                 return `<span class="dot" style="background-color:${color};"></span>`;
             }).join('');
         }
 
-        function getParam() {
-            return new URLSearchParams(window.location.search).get('id') || '';
+        function openLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').classList.add('open');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('open');
         }
 
         function formatDate(dateStr) {
             if (!dateStr) return '';
-            const d = new Date(dateStr + 'T12:00:00');
-            return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+            return new Date(dateStr + 'T12:00:00').toLocaleDateString('en-GB', {
+                day: 'numeric', month: 'long', year: 'numeric'
+            });
         }
 
         function render() {
-            const id = getParam();
+            const id = new URLSearchParams(window.location.search).get('id') || '';
             const plant = plantData[id];
 
             if (!plant) {
-                document.querySelector('main').innerHTML = '<p class="text-center text-gray-400 py-20">Plant not found.</p>';
+                document.querySelector('main').innerHTML = '<p class="text-center text-gray-400 py-20">Plant not found. <a href="plants.html" class="underline">Back to Field Guide</a></p>';
                 lucide.createIcons();
                 return;
             }
 
-            // Page title
             document.title = `FORAGER — ${plant.name}`;
 
             // Hero
-            const hero = document.getElementById('hero');
-            hero.style.backgroundColor = hexMap[plant.peak];
+            document.getElementById('hero').style.backgroundColor = hexMap[plant.peak];
+
+            // Photo strip
+            const strip = document.getElementById('photo-strip');
+            const photoCount = Math.max(plant.photos.length, 3);
+            for (let i = 0; i < photoCount; i++) {
+                if (i < plant.photos.length) {
+                    const img = document.createElement('img');
+                    img.src = plant.photos[i];
+                    img.alt = `${plant.name} photo ${i + 1}`;
+                    img.className = 'photo-thumb';
+                    img.onclick = () => openLightbox(plant.photos[i]);
+                    strip.appendChild(img);
+                } else {
+                    const ph = document.createElement('div');
+                    ph.className = 'photo-placeholder';
+                    ph.innerHTML = `<i data-lucide="image" class="w-5 h-5 text-gray-300"></i>`;
+                    strip.appendChild(ph);
+                }
+            }
 
             // Name
             document.getElementById('plant-name').textContent = plant.name;
             document.getElementById('plant-danish').textContent = `(${plant.danish})`;
-
-            // Season dots
-            document.getElementById('season-dots').innerHTML = makeDots(plant.season, plant.peak);
+            document.getElementById('season-dots').innerHTML = makeDots(plant.season);
 
             // How to spot it
-            const spotList = document.getElementById('spot-list');
             plant.spot.forEach(s => {
                 const li = document.createElement('li');
                 li.textContent = s;
-                spotList.appendChild(li);
+                document.getElementById('spot-list').appendChild(li);
             });
 
             // Habitat
@@ -519,18 +630,15 @@
             document.getElementById('about-text').textContent = plant.about;
 
             // Uses
-            const usesList = document.getElementById('uses-list');
             plant.uses.forEach(u => {
                 const li = document.createElement('li');
                 li.textContent = u;
-                usesList.appendChild(li);
+                document.getElementById('uses-list').appendChild(li);
             });
 
             // Recipe links
             if (plant.recipes && plant.recipes.length > 0) {
-                const recipeSection = document.getElementById('recipes-section');
-                const recipeLinks = document.getElementById('recipe-links');
-                recipeSection.classList.remove('hidden');
+                document.getElementById('recipes-section').classList.remove('hidden');
                 plant.recipes.forEach(rId => {
                     const r = recipeData[rId];
                     if (!r) return;
@@ -549,24 +657,23 @@
                             <i data-lucide="chevron-right" class="w-4 h-4 text-gray-300"></i>
                         </div>
                     `;
-                    recipeLinks.appendChild(link);
+                    document.getElementById('recipe-links').appendChild(link);
                 });
             }
 
-            // Log entries — filter by plant name or danish name
+            // Log entries
             const logEntries = JSON.parse(localStorage.getItem('forager-log') || '[]');
-            const searchTerms = [plant.name.toLowerCase(), plant.danish.toLowerCase()];
-            const matching = logEntries.filter(e => {
-                const found = (e.found || '').toLowerCase();
-                const notes = (e.notes || '').toLowerCase();
-                return searchTerms.some(t => found.includes(t) || notes.includes(t));
-            }).sort((a, b) => b.date.localeCompare(a.date));
+            const terms = [plant.name.toLowerCase(), plant.danish.toLowerCase()];
+            const matching = logEntries.filter(e =>
+                terms.some(t =>
+                    (e.found || '').toLowerCase().includes(t) ||
+                    (e.notes || '').toLowerCase().includes(t)
+                )
+            ).sort((a, b) => b.date.localeCompare(a.date));
 
             const logContainer = document.getElementById('log-entries');
-            const logEmpty = document.getElementById('log-empty');
-
             if (matching.length === 0) {
-                logEmpty.classList.remove('hidden');
+                document.getElementById('log-empty').classList.remove('hidden');
             } else {
                 matching.forEach(entry => {
                     const hasCoords = entry.lat && entry.lng;
@@ -583,9 +690,7 @@
                             ${entry.location ? `
                             <p class="text-xs text-gray-400 flex items-center gap-1 mt-1">
                                 ${mapsUrl
-                                    ? `<a href="${mapsUrl}" target="_blank" rel="noopener" class="flex items-center gap-1 hover:text-green-700">
-                                           <i data-lucide="map-pin" class="w-3 h-3"></i><span class="underline underline-offset-2">${entry.location}</span>
-                                       </a>`
+                                    ? `<a href="${mapsUrl}" target="_blank" rel="noopener" class="flex items-center gap-1 hover:text-green-700"><i data-lucide="map-pin" class="w-3 h-3"></i><span class="underline underline-offset-2">${entry.location}</span></a>`
                                     : `<i data-lucide="map-pin" class="w-3 h-3"></i>${entry.location}`}
                             </p>` : ''}
                             ${entry.notes ? `<p class="text-sm text-gray-600 mt-2 leading-relaxed">${entry.notes}</p>` : ''}
@@ -595,9 +700,7 @@
                 });
             }
 
-            // Header month dot
             document.getElementById('month-dot').style.backgroundColor = hexMap[MONTH_KEYS[new Date().getMonth()]];
-
             lucide.createIcons();
         }
 
