@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FORAGER — Recipe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #FDFCFB; color: #1A1C19; }
+        h1, h2, h3 { font-family: 'Outfit', sans-serif; }
+        .dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1px solid #D1D5DB;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+        .nav-shadow { box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .step-number {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+        .tip-band {
+            background-color: #F0FAF2;
+            border: 1px solid #BBE5C4;
+            border-radius: 0.75rem;
+            padding: 0.875rem 1rem;
+        }
+    </style>
+</head>
+<body class="pb-24">
+
+    <header class="sticky top-0 bg-[#FDFCFB]/90 backdrop-blur-md z-50 p-4 flex justify-between items-center border-b border-gray-100">
+        <a href="recipes.html" class="flex items-center gap-2 text-gray-500 hover:text-gray-900">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            <span class="text-sm font-semibold">Kitchen</span>
+        </a>
+        <a href="index.html" class="text-base font-bold tracking-tight hover:opacity-70 transition-opacity">FORAGER</a>
+        <div id="month-dot" class="dot" style="width:14px;height:14px;"></div>
+    </header>
+
+    <!-- Hero band -->
+    <div id="hero" class="w-full h-40 flex flex-col items-center justify-center gap-2 px-6">
+        <span id="type-badge" class="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full"></span>
+        <h1 id="recipe-name" class="text-3xl font-bold text-center leading-tight"></h1>
+    </div>
+
+    <main class="mx-auto px-5 pt-5 pb-4 md:max-w-[720px]">
+
+        <!-- Main ingredient + dots -->
+        <div class="mb-6 bg-white border border-gray-100 card-shadow rounded-xl p-4 flex items-center justify-between gap-4">
+            <div>
+                <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Main ingredient</p>
+                <a id="plant-link" href="#" class="font-bold text-base hover:underline underline-offset-2"></a>
+                <p id="plant-danish" class="text-sm text-gray-400 italic"></p>
+            </div>
+            <div id="season-dots" class="flex gap-1 flex-wrap justify-end max-w-[120px]"></div>
+        </div>
+
+        <!-- Description -->
+        <p id="recipe-desc" class="text-sm text-gray-600 leading-relaxed mb-7"></p>
+
+        <!-- Ingredients -->
+        <section class="mb-7">
+            <h2 class="text-lg font-bold mb-3">Ingredients</h2>
+            <ul id="ingredients-list" class="space-y-2"></ul>
+        </section>
+
+        <!-- Method -->
+        <section class="mb-7">
+            <h2 class="text-lg font-bold mb-4">Method</h2>
+            <div id="method-steps" class="space-y-5"></div>
+        </section>
+
+        <!-- Foraging tip -->
+        <section id="tip-section" class="mb-7 hidden">
+            <h2 class="text-lg font-bold mb-2">Foraging tip</h2>
+            <div class="tip-band">
+                <p id="tip-text" class="text-sm text-green-900 leading-relaxed"></p>
+            </div>
+        </section>
+
+        <!-- Makes / stores -->
+        <section id="makes-section" class="mb-7 hidden">
+            <div class="bg-gray-50 rounded-xl p-4 flex gap-6">
+                <div id="makes-block" class="hidden">
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Makes</p>
+                    <p id="makes-text" class="text-sm font-semibold"></p>
+                </div>
+                <div id="stores-block" class="hidden">
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Stores</p>
+                    <p id="stores-text" class="text-sm font-semibold"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- See also -->
+        <section id="seealso-section" class="mb-7 hidden">
+            <h2 class="text-lg font-bold mb-3">See also</h2>
+            <div id="seealso-links" class="space-y-2"></div>
+        </section>
+
+    </main>
+
+    <nav class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 nav-shadow px-6 py-2 flex justify-around items-center z-50">
+        <a href="index.html" class="flex flex-col items-center text-gray-400 hover:text-gray-900">
+            <i data-lucide="home" class="w-5 h-5 mb-1"></i>
+            <span class="text-[10px] uppercase font-bold tracking-wider">Home</span>
+        </a>
+        <a href="plants.html" class="flex flex-col items-center text-gray-400 hover:text-gray-900">
+            <i data-lucide="search" class="w-5 h-5 mb-1"></i>
+            <span class="text-[10px] uppercase font-bold tracking-wider">Find</span>
+        </a>
+        <a href="recipes.html" class="flex flex-col items-center text-gray-900">
+            <i data-lucide="flame" class="w-5 h-5 mb-1"></i>
+            <span class="text-[10px] uppercase font-bold tracking-wider">Kitchen</span>
+        </a>
+        <a href="log.html" class="flex flex-col items-center text-gray-400 hover:text-gray-900">
+            <i data-lucide="book-open" class="w-5 h-5 mb-1"></i>
+            <span class="text-[10px] uppercase font-bold tracking-wider">Log</span>
+        </a>
+    </nav>
+
+    <script>
+        const MONTH_KEYS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+        const hexMap = {
+            jan: '#E8ECF0', feb: '#D8EBF8', mar: '#DDF0E4', apr: '#F8F8D0',
+            may: '#5FAD6A', jun: '#F0B8CC', jul: '#2E8FD8', aug: '#E8907A',
+            sep: '#7A4A6E', oct: '#8A4A28', nov: '#425A72', dec: '#2C5A3A'
+        };
+        const darkMonths = ['may','jul','sep','oct','nov','dec'];
+
+        const typeBadgeColors = { Fresh: '#DDF0E4', Preserve: '#F8F8D0', Drink: '#D8EBF8' };
+        const typeBadgeText = { Fresh: '#3A5C3A', Preserve: '#6B6B00', Drink: '#1A4A6B' };
+
+        // ── Recipe data ───────────────────────────────────────────
+        // To add a new recipe, copy an existing entry and fill in the fields.
+        // plantId must match the key used in plant-detail.html
+        // season is a 12-boolean array: Jan through Dec
+
+        const recipeData = {
+            'wild-garlic-pesto': {
+                name: 'Wild Garlic Pesto',
+                type: 'Preserve',
+                peak: 'mar',
+                plantId: 'wild-garlic',
+                plantName: 'Wild Garlic',
+                plantDanish: 'Ramsløg',
+                season: [false,false,true,true,true,false,false,false,false,false,false,false],
+                desc: 'A vivid green pesto that captures spring at its most intense. Better than basil pesto and made in minutes. Keeps in the fridge for weeks under a layer of oil and freezes beautifully.',
+                ingredients: [
+                    '100g fresh wild garlic leaves, washed and dried',
+                    '50g pine nuts or walnuts, lightly toasted',
+                    '50g Parmesan or Pecorino, finely grated',
+                    '100ml good olive oil',
+                    'Juice of half a lemon',
+                    'Salt and black pepper to taste'
+                ],
+                method: [
+                    { title: 'Toast the nuts', text: 'Toast the nuts in a dry frying pan over medium heat for 2–3 minutes until golden and fragrant. Watch them carefully — they burn fast. Set aside to cool.' },
+                    { title: 'Blend', text: 'Add the wild garlic leaves, cooled nuts, and lemon juice to a food processor. Pulse until roughly chopped.' },
+                    { title: 'Add oil', text: 'With the processor running, slowly pour in the olive oil until you have a loose, textured paste. Do not over-blend — some texture is good.' },
+                    { title: 'Add cheese and season', text: 'Stir in the grated cheese by hand rather than blending it, which keeps the texture better. Season generously with salt and pepper. Taste and adjust lemon if needed.' },
+                    { title: 'Jar and store', text: 'Transfer to a clean jar and pour a thin layer of olive oil over the surface to prevent browning. Keeps in the fridge for up to 3 weeks. Freeze in ice cube trays for longer storage.' }
+                ],
+                tip: 'Harvest wild garlic leaves before the flowers open for the best flavour and deepest green colour. Once flowers appear the leaves become slightly more bitter and lose their brightness.',
+                makes: 'Around 250ml',
+                stores: 'Up to 3 weeks in the fridge, 6 months frozen',
+                seeAlso: ['nettle-soup']
+            },
+            'nettle-soup': {
+                name: 'Nettle Soup',
+                type: 'Fresh',
+                peak: 'apr',
+                plantId: 'stinging-nettle',
+                plantName: 'Stinging Nettle',
+                plantDanish: 'Brændenælde',
+                season: [false,false,true,true,true,false,false,false,false,false,false,false],
+                desc: 'A classic Nordic spring soup, deep green and mineral-tasting with a silky texture. Rich in iron, vitamins, and the taste of early spring. Use only the young top shoots for the best flavour.',
+                ingredients: [
+                    '200g young nettle tops (top 4 leaves only), washed',
+                    '1 medium onion, roughly chopped',
+                    '2 cloves garlic, sliced',
+                    '2 medium potatoes, peeled and diced',
+                    '800ml vegetable stock',
+                    '100ml cream or crème fraîche',
+                    '1 tbsp butter',
+                    'Salt, pepper, and nutmeg to taste',
+                    'Soft-boiled egg and rye bread to serve'
+                ],
+                method: [
+                    { title: 'Prepare the nettles', text: 'Wear gloves when handling raw nettles. Pick only the top four leaves from young spring shoots. Wash thoroughly in cold water.' },
+                    { title: 'Soften the base', text: 'Melt butter in a large pan over medium heat. Add onion and cook gently for 8–10 minutes until soft and translucent. Add garlic and cook for another 2 minutes.' },
+                    { title: 'Add potato and stock', text: 'Add the diced potato and vegetable stock. Bring to a gentle boil and cook for 12–15 minutes until the potato is completely tender.' },
+                    { title: 'Add nettles', text: 'Add the nettles to the pan and stir them down into the liquid. The sting disappears within 30 seconds of heat. Simmer for 3 minutes only — longer cooking loses the colour.' },
+                    { title: 'Blend and finish', text: 'Blend until completely smooth. Stir in the cream, season generously with salt, pepper, and a little grated nutmeg. Reheat gently without boiling.' },
+                    { title: 'Serve', text: 'Ladle into bowls and top with a halved soft-boiled egg, a swirl of cream, and fresh chives if available. Serve with rye bread.' }
+                ],
+                tip: 'Harvest nettles in March and April before they flower, when the shoots are young and tender. Older nettles become coarse and develop a less pleasant flavour. Wear thick gloves — the sting is persistent on skin even if harmless.',
+                makes: '4 servings',
+                stores: '3 days in the fridge, freezes well without the cream',
+                seeAlso: ['nettle-tea', 'wild-garlic-pesto']
+            },
+            'nettle-tea': {
+                name: 'Nettle Tea',
+                type: 'Drink',
+                peak: 'apr',
+                plantId: 'stinging-nettle',
+                plantName: 'Stinging Nettle',
+                plantDanish: 'Brændenælde',
+                season: [false,false,true,true,true,true,true,true,false,false,false,false],
+                desc: 'A mineral-rich infusion that tastes clean and grassy, nothing like the stinging plant it comes from. One of the best sources of iron, calcium and magnesium available from a wild plant. Drink fresh or make a big batch to keep in the fridge.',
+                ingredients: [
+                    'A large handful of fresh young nettle tops, or 2 tbsp dried nettle leaf',
+                    '500ml just-boiled water',
+                    'Honey to taste (optional)',
+                    'Slice of lemon (optional)'
+                ],
+                method: [
+                    { title: 'Prepare the nettles', text: 'If using fresh nettles, wear gloves and pick the young top leaves. Rinse well. If using dried nettles, measure out 2 tablespoons.' },
+                    { title: 'Steep', text: 'Place the nettles in a teapot or heatproof jug. Pour over just-boiled water — not a full rolling boil, which damages the delicate compounds. Steep for 5–10 minutes depending on how strong you like it.' },
+                    { title: 'Strain and serve', text: 'Strain through a fine sieve into a cup. The sting is completely neutralised by the hot water. Add honey or lemon to taste. Drink hot or allow to cool and serve over ice.' },
+                    { title: 'Drying for winter', text: 'To dry nettles: spread young leaves on a clean rack in a warm, airy spot out of direct sunlight. They are ready when completely crisp and crumble easily, usually 2–3 days. Store in a sealed glass jar away from light.' }
+                ],
+                tip: 'The best nettle tea comes from leaves harvested in early spring when the plants are young and the mineral content is highest. You can harvest through summer too, but always pick fresh new growth from the top rather than older leaves.',
+                makes: '2 cups',
+                stores: '48 hours in the fridge as cold brew. Dried leaves keep for 12 months in a sealed jar.',
+                seeAlso: ['nettle-soup']
+            },
+            'elderflower-cordial': {
+                name: 'Elderflower Cordial',
+                type: 'Drink',
+                peak: 'jun',
+                plantId: 'elder',
+                plantName: 'Elder',
+                plantDanish: 'Hyld',
+                season: [false,false,false,false,true,true,false,false,false,false,false,false],
+                desc: 'The most iconic Danish summer drink. Every family has a version. This one is clean, bright, and intensely floral — dilute with sparkling water, use in cocktails, or freeze into ice lollies. Make as much as you can because the season is short.',
+                ingredients: [
+                    '20 large elderflower heads, fully open and freshly picked',
+                    '1.5 litres water',
+                    '1.2 kg white sugar',
+                    '2 unwaxed lemons, sliced',
+                    '50g citric acid (from a pharmacy or baking shop)'
+                ],
+                method: [
+                    { title: 'Pick and check', text: 'Harvest flower heads on a dry, sunny morning when the scent is strongest. Shake gently to remove any insects — do not wash, as you will rinse away the pollen and much of the flavour.' },
+                    { title: 'Make the syrup', text: 'Bring the water and sugar to a boil, stirring until the sugar is completely dissolved. Remove from heat and allow to cool for 10 minutes.' },
+                    { title: 'Steep', text: 'Place the flower heads, lemon slices, and citric acid in a large bowl or pot. Pour the warm (not hot) syrup over them. Stir gently, cover with a clean cloth, and leave to steep at room temperature for 24–48 hours.' },
+                    { title: 'Strain and bottle', text: 'Strain through a muslin cloth or fine sieve lined with a clean tea towel into a large jug. Pour into sterilised bottles. The cordial is shelf-stable for up to 6 months unopened.' },
+                    { title: 'Serve', text: 'Dilute 1 part cordial to 5–8 parts sparkling or still water. Serve over ice with a slice of lemon. Also excellent with prosecco or as a base for cocktails.' }
+                ],
+                tip: 'Pick flower heads when they are fully open and at peak scent — this is usually a window of just a few days per tree. Flowers that have started to fade or brown will make a bitter cordial. The best time to pick is mid-morning on a warm dry day after the dew has lifted.',
+                makes: 'Around 2 litres of cordial',
+                stores: '6 months sealed, 4 weeks in the fridge once opened. Freezes well.',
+                seeAlso: []
+            },
+            'chanterelle-butter': {
+                name: 'Chanterelle Butter',
+                type: 'Preserve',
+                peak: 'aug',
+                plantId: 'chanterelle',
+                plantName: 'Chanterelle',
+                plantDanish: 'Kantarel',
+                season: [false,false,false,false,false,false,true,true,true,false,false,false],
+                desc: 'A way to preserve the flavour of chanterelles through the year. Intensely golden and fragrant, it melts into pasta, eggs, fish, or toast with outstanding results. Make a large batch when chanterelles are plentiful.',
+                ingredients: [
+                    '300g fresh chanterelles, cleaned and roughly chopped',
+                    '200g good quality unsalted butter, softened',
+                    '1 small shallot, very finely minced',
+                    '1 clove garlic, very finely minced',
+                    '1 tsp fresh thyme leaves',
+                    'Juice of half a lemon',
+                    'Salt and white pepper'
+                ],
+                method: [
+                    { title: 'Cook the mushrooms', text: 'Heat a dry frying pan over high heat until very hot. Add the chanterelles in a single layer — do not overcrowd or they will steam rather than colour. Cook without stirring for 2 minutes until golden on the base, then toss and cook for another 2 minutes. Season lightly.' },
+                    { title: 'Add aromatics', text: 'Reduce heat to medium. Add the shallot, garlic, and thyme and cook for 2 more minutes, stirring. The mushrooms should be deeply golden and reduced in volume.' },
+                    { title: 'Cool completely', text: 'Transfer to a plate and spread out to cool completely. The mushrooms must be completely cold before mixing with butter or the butter will melt rather than combine.' },
+                    { title: 'Combine', text: 'Finely chop the cooled mushrooms. Beat the softened butter until smooth, then fold in the chopped mushrooms, lemon juice, salt, and white pepper. Mix thoroughly.' },
+                    { title: 'Roll and store', text: 'Spoon the butter onto a sheet of baking paper. Roll into a log, twist the ends tightly, and refrigerate or freeze. Slice off rounds as needed.' }
+                ],
+                tip: 'Clean chanterelles with a soft brush rather than washing them — they absorb water easily and will steam rather than fry if wet. If you must wash them, dry thoroughly before cooking.',
+                makes: 'One large butter log, about 20 slices',
+                stores: '2 weeks in the fridge, 6 months frozen',
+                seeAlso: []
+            },
+            'dandelion-honey': {
+                name: 'Dandelion Honey',
+                type: 'Preserve',
+                peak: 'apr',
+                plantId: 'dandelion',
+                plantName: 'Dandelion',
+                plantDanish: 'Mælkebøtte',
+                season: [false,false,true,true,true,false,false,false,false,false,false,false],
+                desc: 'Not actually honey, but a golden syrup made from dandelion flowers that looks and pours exactly like it. Floral, sweet, and slightly vegetal. Beautiful on yoghurt, porridge, cheese, or drizzled over ice cream.',
+                ingredients: [
+                    '200 dandelion flower heads, freshly picked',
+                    '1 litre water',
+                    '800g white sugar',
+                    '1 unwaxed lemon, sliced',
+                    '1 orange, sliced (optional)'
+                ],
+                method: [
+                    { title: 'Prepare the flowers', text: 'Pick flowers on a sunny morning when fully open. Remove as much of the green base (calyx) as possible — it adds bitterness. You can do this by pinching and pulling, or snipping with scissors. Only the yellow petals are needed.' },
+                    { title: 'First simmer', text: 'Place flowers, lemon, and orange slices in a large pan. Pour over 1 litre of water. Bring to a gentle boil and simmer for 20 minutes. The water will turn bright golden.' },
+                    { title: 'Strain', text: 'Strain the liquid through a fine sieve or muslin cloth, pressing to extract as much liquid as possible. Discard the flowers and citrus. You should have around 800ml of golden liquid.' },
+                    { title: 'Make the syrup', text: 'Return the liquid to the pan. Add the sugar and stir over medium heat until completely dissolved. Bring to a low boil and simmer uncovered for 30–60 minutes, stirring occasionally, until the syrup thickens and coats the back of a spoon. It will thicken further as it cools.' },
+                    { title: 'Bottle', text: 'Pour into sterilised jars while hot. It keeps beautifully and improves with age.' }
+                ],
+                tip: 'Pick flowers in dry weather and use them the same day — they close up quickly once picked. The more green base you remove, the milder and less bitter the finished syrup will be.',
+                makes: 'Around 600ml',
+                stores: '12 months sealed in a sterilised jar',
+                seeAlso: []
+            },
+            'sea-buckthorn-sorbet': {
+                name: 'Sea Buckthorn Sorbet',
+                type: 'Fresh',
+                peak: 'sep',
+                plantId: 'sea-buckthorn',
+                plantName: 'Sea Buckthorn',
+                plantDanish: 'Havtorn',
+                season: [false,false,false,false,false,false,false,true,true,true,false,false],
+                desc: 'Electric orange, searingly tart, and extraordinary. One of the most vivid and distinctive flavours in the Nordic kitchen. No ice cream machine needed — this method produces a smooth, scoopable sorbet with nothing but berries, sugar, and a freezer.',
+                ingredients: [
+                    '500g sea buckthorn berries, fresh or frozen',
+                    '200g white sugar',
+                    '200ml water',
+                    'Juice of half a lemon',
+                    '1 egg white (optional — improves texture)'
+                ],
+                method: [
+                    { title: 'Extract the juice', text: 'If using fresh berries, press them through a fine sieve to extract the juice — wear gloves, the juice stains deeply. If using frozen, defrost first then sieve. You should get around 300–350ml of intensely orange juice.' },
+                    { title: 'Make a syrup', text: 'Combine the sugar and water in a small pan. Bring to a boil, stirring until dissolved. Simmer for 2 minutes then remove from heat and cool completely.' },
+                    { title: 'Combine', text: 'Mix the sea buckthorn juice with the cooled syrup and lemon juice. Taste — it should be sweet but still very tart. Adjust sugar if needed.' },
+                    { title: 'First freeze', text: 'Pour into a shallow freezer-proof container. Freeze for 2 hours until the edges are frozen but the centre is still slushy.' },
+                    { title: 'Beat and freeze again', text: 'If using the egg white, whisk it to soft peaks. Scrape the semi-frozen sorbet into a food processor or blender, add the egg white if using, and blend until smooth. Return to the container and freeze for at least 4 more hours or overnight.' },
+                    { title: 'Serve', text: 'Remove from the freezer 5–10 minutes before serving to soften slightly. Serve in small portions — the flavour is intense.' }
+                ],
+                tip: 'Sea buckthorn berries are extremely difficult to pick by hand because of the dense thorns. The traditional method is to freeze entire branches and then shake the berries off over a sheet. Wear thick gloves and old clothes — the juice stains permanently.',
+                makes: '6 servings',
+                stores: '3 months in the freezer',
+                seeAlso: []
+            },
+            'meadowsweet-tea': {
+                name: 'Meadowsweet Tea',
+                type: 'Drink',
+                peak: 'jul',
+                plantId: 'meadowsweet',
+                plantName: 'Meadowsweet',
+                plantDanish: 'Mødurt',
+                season: [false,false,false,false,false,true,true,false,false,false,false,false],
+                desc: 'One of the most beautiful wild teas you can make. The scent of meadowsweet is almost impossibly complex — honey, almond, and vanilla all at once. The dried version keeps perfectly through winter and is a reminder of summer meadows in the dark months.',
+                ingredients: [
+                    'A large handful of fresh meadowsweet flower heads, or 2 tbsp dried',
+                    '500ml just-boiled water',
+                    'Honey to taste'
+                ],
+                method: [
+                    { title: 'Harvest at peak', text: 'Pick flower heads when freshly open and at their most fragrant — usually July. Pick in the morning on a dry day. Use immediately or dry.' },
+                    { title: 'To dry for winter', text: 'Spread flower heads loosely on a drying rack or hang in small bunches in a warm, airy place out of direct sunlight. They should be completely crisp and dry within 3–5 days. The scent concentrates beautifully as they dry. Store in a sealed glass jar.' },
+                    { title: 'Brew the tea', text: 'Place fresh or dried flower heads in a teapot or jug. Pour over just-boiled water. Steep for 5–7 minutes — longer steeping brings out more of the almond bitterness, shorter keeps it delicate and floral.' },
+                    { title: 'Strain and serve', text: 'Strain through a fine sieve. Add honey if desired. The flavour is complex enough that it rarely needs sweetening. Serve hot or over ice.' }
+                ],
+                tip: 'Meadowsweet contains salicylates, the same compounds as aspirin. The tea should not be drunk in large quantities by anyone sensitive to aspirin or taking blood-thinning medication. For most people a cup or two is a gentle, pleasant drink with no concerns.',
+                makes: '2 cups',
+                stores: 'Dried flowers keep for 12 months in a sealed jar away from light',
+                seeAlso: []
+            },
+            'juniper-salt': {
+                name: 'Juniper Salt',
+                type: 'Preserve',
+                peak: 'dec',
+                plantId: 'juniper',
+                plantName: 'Juniper',
+                plantDanish: 'Ene',
+                season: [true,true,false,false,false,false,false,false,false,false,true,true],
+                desc: 'A simple, deeply Nordic seasoning that transforms roast vegetables, grilled fish, and cured meats. The resinous, piney flavour of juniper combined with good sea salt is one of the great flavour combinations of the Nordic kitchen. Takes five minutes to make.',
+                ingredients: [
+                    '3 tbsp ripe juniper berries (blue-black, not green)',
+                    '100g good flaky sea salt (Maldon or similar)',
+                    '1 tsp dried thyme (optional)',
+                    'Zest of half a lemon (optional)'
+                ],
+                method: [
+                    { title: 'Dry the berries', text: 'If your juniper berries are freshly picked, spread them on a baking tray and dry in the oven at 80°C for 30 minutes, or leave them to air dry for a few days. Completely dry berries grind much better.' },
+                    { title: 'Grind', text: 'Add the dried berries to a mortar and pestle or spice grinder. Grind until roughly broken down — you want some texture rather than a fine powder. Add the dried thyme if using.' },
+                    { title: 'Combine', text: 'Add the sea salt and lemon zest if using. Mix together and then give it a few more quick pulses in the grinder or a few turns of the pestle to bring it together without losing all texture.' },
+                    { title: 'Store', text: 'Transfer to a small sealed jar. The flavour improves after a few days as the juniper oils infuse into the salt.' },
+                    { title: 'Use', text: 'Use to season salmon before roasting, rub into duck legs, sprinkle over root vegetables before roasting, or use as a finishing salt on anything rich.' }
+                ],
+                tip: 'Only use fully ripe blue-black juniper berries — the green unripe ones are astringent and unpleasant. Berries take two to three years to ripen on the same branch, so you will find berries of different stages at the same time. Be selective.',
+                makes: 'Around 120g',
+                stores: '12 months in a sealed jar',
+                seeAlso: []
+            },
+            'oyster-mushroom-stew': {
+                name: 'Oyster Mushroom Stew',
+                type: 'Fresh',
+                peak: 'nov',
+                plantId: 'oyster-mushroom',
+                plantName: 'Oyster Mushroom',
+                plantDanish: 'Østershat',
+                season: [false,false,false,false,false,false,false,false,true,true,true,true],
+                desc: 'A warming autumn stew that is rich, deeply savoury, and satisfying enough to eat on its own or as a side to roasted meats. Oyster mushrooms have a wonderful meaty texture that holds up beautifully in long cooking.',
+                ingredients: [
+                    '400g fresh oyster mushrooms, torn into large pieces',
+                    '1 large onion, finely sliced',
+                    '3 cloves garlic, sliced',
+                    '200ml dry white wine or vegetable stock',
+                    '200ml cream',
+                    '1 tbsp butter',
+                    '1 tbsp olive oil',
+                    '2 sprigs fresh thyme',
+                    '1 bay leaf',
+                    'Salt, pepper, and a squeeze of lemon to finish',
+                    'Fresh parsley and crusty bread to serve'
+                ],
+                method: [
+                    { title: 'Colour the mushrooms', text: 'Heat a wide pan over high heat with the olive oil until very hot. Add the mushrooms in a single layer without stirring. Let them colour for 2–3 minutes until golden brown on one side, then toss and cook for another minute. Work in batches if needed — crowding the pan causes steaming. Remove and set aside.' },
+                    { title: 'Soften the onion', text: 'Reduce heat to medium. Add butter to the same pan. Add the onion and cook gently for 10–12 minutes until soft and golden. Add the garlic, thyme, and bay leaf and cook for 2 more minutes.' },
+                    { title: 'Deglaze', text: 'Pour in the wine or stock. Let it bubble and reduce by half, scraping up any brown bits from the base of the pan.' },
+                    { title: 'Add cream and mushrooms', text: 'Pour in the cream and return the mushrooms to the pan. Stir to combine. Simmer gently for 5–8 minutes until the sauce is thick and coats the mushrooms. Remove the bay leaf and thyme sprigs.' },
+                    { title: 'Season and serve', text: 'Season generously with salt and pepper. Add a squeeze of lemon to lift the richness. Scatter with fresh parsley and serve immediately with crusty bread or over soft polenta.' }
+                ],
+                tip: 'Fresh oyster mushrooms are at their best within a day or two of picking. Older mushrooms become soft and lose their flavour. Look for firm clusters with tight, unfurled edges.',
+                makes: '2–3 servings',
+                stores: '2 days in the fridge. Does not freeze well.',
+                seeAlso: []
+            },
+            'pickled-garlic-mustard': {
+                name: 'Pickled Garlic Mustard',
+                type: 'Preserve',
+                peak: 'apr',
+                plantId: 'garlic-mustard',
+                plantName: 'Garlic Mustard',
+                plantDanish: 'Løgkarse',
+                season: [false,false,true,true,true,false,false,false,false,false,false,false],
+                desc: 'A sharp, garlicky condiment that punches well above its weight. Use it anywhere you would use capers or a peppery relish — on smørrebrød, with smoked fish, alongside grilled vegetables, or stirred into dressings.',
+                ingredients: [
+                    'A large bowl of young garlic mustard leaves and stems',
+                    '200ml white wine vinegar or apple cider vinegar',
+                    '200ml water',
+                    '1 tbsp sugar',
+                    '1 tsp salt',
+                    '1 tsp mustard seeds',
+                    '1 tsp peppercorns',
+                    '1 small bay leaf'
+                ],
+                method: [
+                    { title: 'Prepare the leaves', text: 'Pick young leaves and stems before the plant flowers. Wash well and pat dry. Pack loosely into a sterilised jar.' },
+                    { title: 'Make the brine', text: 'Combine the vinegar, water, sugar, salt, mustard seeds, peppercorns, and bay leaf in a small pan. Bring to a boil, stirring until the sugar and salt dissolve. Simmer for 2 minutes.' },
+                    { title: 'Pour and seal', text: 'Pour the hot brine over the leaves, ensuring everything is submerged. Press down with a spoon if needed. Seal the jar immediately.' },
+                    { title: 'Wait', text: 'Leave for at least 48 hours before opening. The flavour mellows and develops over the first week. Best after 5–7 days.' }
+                ],
+                tip: 'Pick garlic mustard before it flowers for the mildest flavour. After flowering the leaves become more bitter and fibrous. The pickled leaves keep their garlic-mustard character beautifully and make an unusual and delicious condiment.',
+                makes: 'One medium jar',
+                stores: '3 months in the fridge',
+                seeAlso: []
+            }
+        };
+
+        function makeDots(seasonArr) {
+            return MONTH_KEYS.map((m, i) => {
+                const color = seasonArr[i] ? hexMap[m] : 'white';
+                return `<span class="dot" style="background-color:${color};"></span>`;
+            }).join('');
+        }
+
+        function render() {
+            const id = new URLSearchParams(window.location.search).get('id') || '';
+            const recipe = recipeData[id];
+
+            if (!recipe) {
+                document.querySelector('main').innerHTML = '<p class="text-center text-gray-400 py-20">Recipe not found. <a href="recipes.html" class="underline">Back to Kitchen</a></p>';
+                lucide.createIcons();
+                return;
+            }
+
+            document.title = `FORAGER — ${recipe.name}`;
+
+            // Hero
+            const heroColor = hexMap[recipe.peak];
+            const isDark = darkMonths.includes(recipe.peak);
+            const hero = document.getElementById('hero');
+            hero.style.backgroundColor = heroColor;
+
+            // Type badge
+            const badge = document.getElementById('type-badge');
+            badge.textContent = recipe.type;
+            badge.style.backgroundColor = typeBadgeColors[recipe.type];
+            badge.style.color = typeBadgeText[recipe.type];
+
+            // Recipe name
+            const nameEl = document.getElementById('recipe-name');
+            nameEl.textContent = recipe.name;
+            nameEl.style.color = isDark ? 'white' : '#1A1C19';
+
+            // Plant link
+            const plantLink = document.getElementById('plant-link');
+            plantLink.textContent = recipe.plantName;
+            plantLink.href = `plant-detail.html?id=${recipe.plantId}`;
+            plantLink.style.color = hexMap[recipe.peak];
+            document.getElementById('plant-danish').textContent = `(${recipe.plantDanish})`;
+
+            // Season dots
+            document.getElementById('season-dots').innerHTML = makeDots(recipe.season);
+
+            // Description
+            document.getElementById('recipe-desc').textContent = recipe.desc;
+
+            // Ingredients
+            const ingList = document.getElementById('ingredients-list');
+            recipe.ingredients.forEach(ing => {
+                const li = document.createElement('li');
+                li.className = 'flex items-start gap-3 text-sm text-gray-700';
+                li.innerHTML = `
+                    <span class="mt-1.5 w-2 h-2 rounded-full flex-shrink-0" style="background-color:${hexMap[recipe.peak]}"></span>
+                    <span>${ing}</span>
+                `;
+                ingList.appendChild(li);
+            });
+
+            // Method steps
+            const methodEl = document.getElementById('method-steps');
+            recipe.method.forEach((step, i) => {
+                const div = document.createElement('div');
+                div.className = 'flex gap-4';
+                div.innerHTML = `
+                    <div class="step-number" style="background-color:${hexMap[recipe.peak]};color:${isDark ? 'white' : '#1A1C19'}">${i + 1}</div>
+                    <div class="flex-1 pt-0.5">
+                        <p class="font-semibold text-sm mb-1">${step.title}</p>
+                        <p class="text-sm text-gray-600 leading-relaxed">${step.text}</p>
+                    </div>
+                `;
+                methodEl.appendChild(div);
+            });
+
+            // Foraging tip
+            if (recipe.tip) {
+                document.getElementById('tip-text').textContent = recipe.tip;
+                document.getElementById('tip-section').classList.remove('hidden');
+            }
+
+            // Makes / stores
+            if (recipe.makes || recipe.stores) {
+                document.getElementById('makes-section').classList.remove('hidden');
+                if (recipe.makes) {
+                    document.getElementById('makes-text').textContent = recipe.makes;
+                    document.getElementById('makes-block').classList.remove('hidden');
+                }
+                if (recipe.stores) {
+                    document.getElementById('stores-text').textContent = recipe.stores;
+                    document.getElementById('stores-block').classList.remove('hidden');
+                }
+            }
+
+            // See also
+            const relatedRecipes = recipe.seeAlso || [];
+            if (relatedRecipes.length > 0) {
+                document.getElementById('seealso-section').classList.remove('hidden');
+                const seealsoLinks = document.getElementById('seealso-links');
+                relatedRecipes.forEach(rId => {
+                    const r = recipeData[rId];
+                    if (!r) return;
+                    const link = document.createElement('a');
+                    link.href = `recipe-detail.html?id=${rId}`;
+                    link.className = 'flex items-center justify-between bg-white border border-gray-100 card-shadow rounded-xl p-4 hover:shadow-md transition-shadow';
+                    link.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background-color:${hexMap[r.peak]}">
+                                <i data-lucide="flame" class="w-4 h-4 ${darkMonths.includes(r.peak) ? 'text-white' : 'text-gray-700'} opacity-80"></i>
+                            </div>
+                            <span class="font-semibold text-sm">${r.name}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full" style="background-color:${typeBadgeColors[r.type]};color:${typeBadgeText[r.type]}">${r.type}</span>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-gray-300"></i>
+                        </div>
+                    `;
+                    seealsoLinks.appendChild(link);
+                });
+            }
+
+            // Header month dot
+            document.getElementById('month-dot').style.backgroundColor = hexMap[MONTH_KEYS[new Date().getMonth()]];
+
+            lucide.createIcons();
+        }
+
+        render();
+    </script>
+</body>
+</html>
