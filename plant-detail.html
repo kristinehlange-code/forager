@@ -353,6 +353,28 @@
                     'Make a simple tea from fresh or dried leaves for a warming, slightly medicinal drink.'
                 ],
                 recipes: []
+            'ground-elder': {
+                name: 'Ground Elder', danish: 'Skvalderkål', peak: 'apr',
+                season: [false,false,true,true,true,true,false,false,false,false,false,false],
+                photos: [],
+                spot: [
+                    'Triple-divided leaves with toothed leaflets, glossy and bright green when young.',
+                    'Smells distinctly of parsley or carrot when leaves are crushed — a key identifier.',
+                    'Flat-topped white flower clusters (umbels) appear from May to July.',
+                    'Hollow, furrowed stems, typically 40–100cm tall when flowering.',
+                    'Spreads aggressively by underground rhizomes, often forming dense stands.'
+                ],
+                habitat: 'Found in shaded gardens, hedgerows, woodland edges, and disturbed ground throughout Denmark. One of the most persistent garden weeds.',
+                warning: 'Belongs to the Apiaceae family which includes toxic species like Hemlock. Always confirm the parsley-like smell before eating. Young leaves before flowering are safest.',
+                about: 'Ground Elder, known in Danish as Skvalderkål, is one of the most abundant edible plants in Danish gardens. Introduced by medieval monks as a vegetable, it escaped and colonised northern Europe. Young spring leaves have a fresh parsley-like flavour.',
+                uses: [
+                    'Use young leaves like parsley or spinach — in soups, stews, pasta, and salads.',
+                    'Blanch briefly and dress with butter and lemon for a simple spring side dish.',
+                    'Blend into green sauces, herb oils, or pesto as a parsley substitute.',
+                    'Add to frittata or quiche as you would spinach.',
+                    'Dry young leaves for a herbal seasoning — keeps the parsley-like flavour well.'
+                ],
+                recipes: []
             },
             'sea-buckthorn': {
                 name: 'Sea Buckthorn', danish: 'Havtorn', peak: 'sep',
@@ -549,6 +571,11 @@
         const typeBadgeColors = { Fresh: '#DDF0E4', Preserve: '#F8F8D0', Drink: '#D8EBF8' };
         const typeBadgeText = { Fresh: '#3A5C3A', Preserve: '#6B6B00', Drink: '#1A4A6B' };
 
+        function firstMonth(seasonArr) {
+            const idx = seasonArr.findIndex(v => v);
+            return idx >= 0 ? MONTH_KEYS[idx] : 'jan';
+        }
+
         function makeDots(seasonArr) {
             return MONTH_KEYS.map((m, i) => {
                 const color = seasonArr[i] ? hexMap[m] : 'white';
@@ -585,7 +612,7 @@
             document.title = `FORAGER — ${plant.name}`;
 
             // Hero
-            document.getElementById('hero').style.backgroundColor = hexMap[plant.peak];
+            document.getElementById('hero').style.backgroundColor = hexMap[firstMonth(plant.season)];
 
             // Photo strip
             const strip = document.getElementById('photo-strip');
@@ -648,7 +675,7 @@
                     link.className = 'flex items-center justify-between bg-white border border-gray-100 card-shadow rounded-xl p-4 hover:shadow-md transition-shadow';
                     link.innerHTML = `
                         <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background-color:${hexMap[plant.peak]}">
+                            <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background-color:${hexMap[firstMonth(plant.season)]}">
                                 <i data-lucide="flame" class="w-4 h-4 text-white opacity-80"></i>
                             </div>
                             <span class="font-semibold text-sm">${r.name}</span>

@@ -84,14 +84,6 @@
             <div id="method-steps" class="space-y-5"></div>
         </section>
 
-        <!-- Foraging tip -->
-        <section id="tip-section" class="mb-7 hidden">
-            <h2 class="text-lg font-bold mb-2">Foraging tip</h2>
-            <div class="tip-band">
-                <p id="tip-text" class="text-sm text-green-900 leading-relaxed"></p>
-            </div>
-        </section>
-
         <!-- Makes / stores -->
         <section id="makes-section" class="mb-7 hidden">
             <div class="bg-gray-50 rounded-xl p-4 flex gap-6">
@@ -110,6 +102,14 @@
         <section id="seealso-section" class="mb-7 hidden">
             <h2 class="text-lg font-bold mb-3">See also</h2>
             <div id="seealso-links" class="space-y-2"></div>
+        </section>
+
+        <!-- Foraging tip -->
+        <section id="tip-section" class="mb-7 hidden">
+            <h2 class="text-lg font-bold mb-2">Foraging tip</h2>
+            <div class="tip-band">
+                <p id="tip-text" class="text-sm text-green-900 leading-relaxed"></p>
+            </div>
         </section>
 
     </main>
@@ -216,7 +216,7 @@
             'nettle-tea': {
                 name: 'Nettle Tea',
                 type: 'Drink',
-                peak: 'apr',
+                peak: 'may',
                 plantId: 'stinging-nettle',
                 plantName: 'Stinging Nettle',
                 plantDanish: 'Brændenælde',
@@ -469,6 +469,109 @@
                 makes: 'One medium jar',
                 stores: '3 months in the fridge',
                 seeAlso: []
+            },
+            'rosehip-syrup': {
+                name: 'Rosehip Syrup',
+                type: 'Drink',
+                peak: 'sep',
+                plantId: 'sea-buckthorn',
+                plantName: 'Rosehip',
+                plantDanish: 'Hyben',
+                season: [false,false,false,false,false,false,false,true,true,true,false,false],
+                desc: 'Rich, vitamin-packed and deeply autumnal. Rosehips contain more vitamin C than almost any other wild plant. Dilute with water, pour over porridge, or use as a cordial. Pick after the first frost for the sweetest hips.',
+                ingredients: [
+                    '500g ripe rosehips, stalks and blossom ends removed',
+                    '750ml water',
+                    '300g sugar',
+                    'Juice of half a lemon'
+                ],
+                method: [
+                    { title: 'Prepare the hips', text: 'Remove the stalks and the black blossom ends from each hip. Roughly chop or pulse in a food processor — this helps extract more colour and flavour.' },
+                    { title: 'First cook', text: 'Place the chopped hips in a pan with 500ml of the water. Bring to the boil then simmer for 20 minutes until soft. Strain through a jelly bag or double layer of muslin and set aside the liquid.' },
+                    { title: 'Second extraction', text: 'Return the pulp to the pan with the remaining 250ml of water. Boil again for 15 minutes, then strain again. Combine both strained liquids.' },
+                    { title: 'Make the syrup', text: 'Measure the combined liquid and add 300g of sugar per 600ml. Heat gently, stirring until the sugar dissolves completely. Add lemon juice. Do not boil hard — just a gentle simmer for 5 minutes.' },
+                    { title: 'Bottle', text: 'Pour into sterilised bottles while still hot. Seal immediately. The syrup will keep unopened for several months.' }
+                ],
+                tip: 'The small hairs inside rosehips are an irritant — never eat raw hips without straining very carefully through a fine cloth. The double-straining method here removes them safely. Hips from the dog rose (Rosa canina) give the best flavour.',
+                makes: 'Around 500ml',
+                stores: '3 months sealed, 4 weeks in the fridge once opened',
+                seeAlso: ['sea-buckthorn-sorbet']
+            },
+            'sorrel-salad': {
+                name: 'Sorrel Salad',
+                type: 'Fresh',
+                peak: 'may',
+                plantId: 'garlic-mustard',
+                plantName: 'Wood Sorrel',
+                plantDanish: 'Skovsyre',
+                season: [false,false,false,true,true,true,false,false,false,false,false,false],
+                desc: 'A sharp, lemony explosion of freshness. Wood sorrel has a clean citrus-like acidity that dresses itself — it barely needs anything added. The tiny heart-shaped leaves look as beautiful as they taste. Perfect as a garnish or a simple side.',
+                ingredients: [
+                    'A generous handful of fresh wood sorrel leaves and stems',
+                    '1 tbsp good olive oil',
+                    'Flaky sea salt',
+                    'Optional: thinly sliced radish, a few edible flowers, or a soft-boiled egg'
+                ],
+                method: [
+                    { title: 'Forage and wash', text: 'Pick wood sorrel from clean, shaded woodland edges, away from paths and roadsides. Rinse gently in cold water and spin dry or pat with a clean cloth.' },
+                    { title: 'Dress', text: 'Place the sorrel in a bowl and drizzle with olive oil. Toss very gently — the leaves are delicate. Season with a pinch of flaky salt. The sorrel provides all the acidity needed; no vinegar or lemon required.' },
+                    { title: 'Serve immediately', text: 'This salad wilts quickly once dressed. Serve straight away as a side, a garnish for fish or eggs, or as a fresh element in a larger plate.' }
+                ],
+                tip: 'Wood sorrel is not the same as common sorrel (Rumex acetosa) though both are edible. The wood sorrel has small three-lobed heart-shaped leaves and a finer, more delicate flavour. Do not eat in very large quantities as it contains oxalic acid.',
+                makes: '2 servings as a side',
+                stores: 'Best eaten immediately. Washed leaves keep unwilted in a damp cloth in the fridge for 1 day.',
+                seeAlso: ['wild-garlic-pesto']
+            },
+            'birch-sap-syrup': {
+                name: 'Birch Sap Syrup',
+                type: 'Drink',
+                peak: 'mar',
+                plantId: 'wild-garlic',
+                plantName: 'Birch',
+                plantDanish: 'Birk',
+                season: [false,false,true,false,false,false,false,false,false,false,false,false],
+                desc: 'The very first sweet taste of spring. Birch sap flows for only a brief window in late March, before the leaves open. Fresh it tastes like faintly sweet water. Reduced slowly it becomes a delicate, slightly caramel syrup unlike anything else.',
+                ingredients: [
+                    '2 litres fresh birch sap',
+                    'Sterilised glass jar or bottle for storage'
+                ],
+                method: [
+                    { title: 'Tap the tree', text: 'Choose a healthy birch at least 20cm diameter. Drill a small hole (8–10mm) at a slight upward angle, about 1 metre from the ground. Insert a clean food-grade tube and hang a collection vessel. The sap flows on warm days after cold nights. Never take more than 2–3 litres from one tree.' },
+                    { title: 'Collect', text: 'Collect the sap daily while it flows freely, usually for 2–3 weeks in late March to early April. Fresh sap is very perishable — refrigerate immediately and use within 3 days, or reduce it the same day.' },
+                    { title: 'Reduce', text: 'Pour the sap into a wide, heavy-bottomed pan. Simmer very gently over low heat — do not boil hard. It takes many hours to reduce significantly. For a light syrup, reduce to a quarter of the original volume. The longer you reduce, the darker and more complex the flavour.' },
+                    { title: 'Bottle', text: 'Pour the warm syrup into a sterilised bottle and seal. It will thicken slightly as it cools.' }
+                ],
+                tip: 'Always seal the tap hole after collection with a clean wooden peg or a plug of moss. The flow stops naturally when the leaves open, usually within 2–3 weeks. Never tap the same tree two years running — let it recover for at least a year.',
+                makes: 'Around 200ml syrup from 2 litres sap',
+                stores: '6 months sealed, 4 weeks in the fridge once opened',
+                seeAlso: ['nettle-tea']
+            },
+            'crab-apple-jelly': {
+                name: 'Crab Apple Jelly',
+                type: 'Preserve',
+                peak: 'oct',
+                plantId: 'wild-carrot',
+                plantName: 'Crab Apple',
+                plantDanish: 'Vildæble',
+                season: [false,false,false,false,false,false,false,false,true,true,false,false],
+                desc: 'Jewel-red and crystal clear, crab apple jelly is one of the most satisfying preserves you can make from a foraged ingredient. Naturally very high in pectin, it sets beautifully without anything added. Sharp, sweet and deeply autumnal.',
+                ingredients: [
+                    '1kg crab apples',
+                    '500ml water',
+                    'Sugar (measure after straining — see method)',
+                    'Juice of 1 lemon'
+                ],
+                method: [
+                    { title: 'Prepare the apples', text: 'Wash the crab apples and cut in half — no need to peel or core them. The pectin and colour come from the skins and cores. Place in a large pan with the water.' },
+                    { title: 'First cook', text: 'Bring to the boil, then simmer for 30–40 minutes until the apples are completely collapsed and pulpy. Mash them down with a potato masher to help extract all the juice.' },
+                    { title: 'Strain overnight', text: 'Pour the pulp into a jelly bag or fine muslin cloth suspended over a large bowl. Leave to drip overnight — do not squeeze the bag or the jelly will be cloudy.' },
+                    { title: 'Measure and cook', text: 'Measure the strained juice. Add 400g of sugar per 600ml of juice. Pour into a clean pan with the lemon juice. Bring to a rolling boil and cook hard for 10–15 minutes, testing for set on a cold plate — a small blob should wrinkle when pushed.' },
+                    { title: 'Jar', text: 'Pour into sterilised jars while hot. The jelly will set as it cools to a clear, firm preserve with a beautiful jewel-red colour.' }
+                ],
+                tip: 'The colour of the finished jelly depends on the variety of crab apple. Some give a pale gold, others a deep red. Either way the flavour is excellent. A sprig of rosemary or a few juniper berries added during cooking make an interesting variation.',
+                makes: 'Around 3–4 small jars',
+                stores: '12 months sealed in a cool dark place, 4 weeks in the fridge once opened',
+                seeAlso: ['rosehip-syrup', 'juniper-salt']
             }
         };
 
@@ -512,7 +615,7 @@
             const plantLink = document.getElementById('plant-link');
             plantLink.textContent = recipe.plantName;
             plantLink.href = `plant-detail.html?id=${recipe.plantId}`;
-            plantLink.style.color = hexMap[recipe.peak];
+            plantLink.style.color = '#2D6A4F';
             document.getElementById('plant-danish').textContent = `(${recipe.plantDanish})`;
 
             // Season dots

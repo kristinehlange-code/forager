@@ -198,6 +198,11 @@
 
         let activeFilter = null;
 
+        function firstMonth(seasonArr) {
+            const idx = seasonArr.findIndex(v => v);
+            return idx >= 0 ? MONTH_KEYS[idx] : 'jan';
+        }
+
         function makeDots(seasonArr) {
             return MONTH_KEYS.map((m, i) => {
                 const color = seasonArr[i] ? hexMap[m] : 'white';
@@ -240,7 +245,7 @@
                     card.href = `plant-detail.html?id=${p.name.toLowerCase().replace(/'/g, '').replace(/\s+/g, '-')}`;
                     card.className = 'bg-white rounded-2xl border border-gray-100 card-shadow block hover:shadow-md transition-shadow overflow-hidden';
                     card.innerHTML = `
-                        <div class="h-36 flex items-center justify-center rounded-t-2xl" style="background-color:${hexMap[p.peak]}">
+                        <div class="h-36 flex items-center justify-center rounded-t-2xl" style="background-color:${hexMap[firstMonth(p.season)]}">
                             <i data-lucide="leaf" class="w-8 h-8 text-white opacity-80"></i>
                         </div>
                         <div class="p-4">
