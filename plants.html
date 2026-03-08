@@ -38,7 +38,7 @@
 <body class="pb-24">
 
     <header class="sticky top-0 bg-[#FDFCFB]/90 backdrop-blur-md z-50 p-4 flex justify-between items-center border-b border-gray-100">
-        <h1 class="text-xl font-bold tracking-tight">FORAGER</h1>
+        <a href="index.html" class="text-xl font-bold tracking-tight hover:opacity-70 transition-opacity">FORAGER</a>
         <div id="month-dot" class="dot" style="width:14px;height:14px;"></div>
     </header>
 
@@ -125,7 +125,7 @@
                 warning: null
             },
             {
-                name: "Elderberry", dk: "Hyld", peak: "jun",
+                name: "Elder", dk: "Hyld", peak: "jun",
                 season: [false,false,false,false,false,true,false,true,true,true,false,false],
                 habitat: "Hedgerows, woodland edges, gardens",
                 tip: "Flowers in June, berries August to October. Cook all berries before eating.",
@@ -237,7 +237,7 @@
                 noResults.classList.add('hidden');
                 filtered.forEach(p => {
                     const card = document.createElement('a');
-                    card.href = `plant-detail.html?id=${p.name.toLowerCase().replace(/\s+/g, '-')}`;
+                    card.href = `plant-detail.html?id=${p.name.toLowerCase().replace(/'/g, '').replace(/\s+/g, '-')}`;
                     card.className = 'bg-white rounded-2xl border border-gray-100 card-shadow block hover:shadow-md transition-shadow overflow-hidden';
                     card.innerHTML = `
                         <div class="h-36 flex items-center justify-center rounded-t-2xl" style="background-color:${hexMap[p.peak]}">
