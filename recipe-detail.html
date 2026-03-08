@@ -575,6 +575,11 @@
             }
         };
 
+        function firstMonth(seasonArr) {
+            const idx = seasonArr.findIndex(v => v);
+            return idx >= 0 ? MONTH_KEYS[idx] : 'jan';
+        }
+
         function makeDots(seasonArr) {
             return MONTH_KEYS.map((m, i) => {
                 const color = seasonArr[i] ? hexMap[m] : 'white';
@@ -595,8 +600,8 @@
             document.title = `FORAGER — ${recipe.name}`;
 
             // Hero
-            const heroColor = hexMap[recipe.peak];
-            const isDark = darkMonths.includes(recipe.peak);
+            const heroColor = hexMap[firstMonth(recipe.season)];
+            const isDark = darkMonths.includes(firstMonth(recipe.season));
             const hero = document.getElementById('hero');
             hero.style.backgroundColor = heroColor;
 
@@ -630,7 +635,7 @@
                 const li = document.createElement('li');
                 li.className = 'flex items-start gap-3 text-sm text-gray-700';
                 li.innerHTML = `
-                    <span class="mt-1.5 w-2 h-2 rounded-full flex-shrink-0" style="background-color:${hexMap[recipe.peak]}"></span>
+                    <span class="mt-1.5 w-2 h-2 rounded-full flex-shrink-0" style="background-color:${hexMap[firstMonth(recipe.season)]}"></span>
                     <span>${ing}</span>
                 `;
                 ingList.appendChild(li);
@@ -642,7 +647,7 @@
                 const div = document.createElement('div');
                 div.className = 'flex gap-4';
                 div.innerHTML = `
-                    <div class="step-number" style="background-color:${hexMap[recipe.peak]};color:${isDark ? 'white' : '#1A1C19'}">${i + 1}</div>
+                    <div class="step-number" style="background-color:${hexMap[firstMonth(recipe.season)]};color:${isDark ? 'white' : '#1A1C19'}">${i + 1}</div>
                     <div class="flex-1 pt-0.5">
                         <p class="font-semibold text-sm mb-1">${step.title}</p>
                         <p class="text-sm text-gray-600 leading-relaxed">${step.text}</p>
@@ -683,8 +688,8 @@
                     link.className = 'flex items-center justify-between bg-white border border-gray-100 card-shadow rounded-xl p-4 hover:shadow-md transition-shadow';
                     link.innerHTML = `
                         <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background-color:${hexMap[r.peak]}">
-                                <i data-lucide="flame" class="w-4 h-4 ${darkMonths.includes(r.peak) ? 'text-white' : 'text-gray-700'} opacity-80"></i>
+                            <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background-color:${hexMap[firstMonth(r.season)]}">
+                                <i data-lucide="flame" class="w-4 h-4 ${darkMonths.includes(firstMonth(r.season)) ? 'text-white' : 'text-gray-700'} opacity-80"></i>
                             </div>
                             <span class="font-semibold text-sm">${r.name}</span>
                         </div>

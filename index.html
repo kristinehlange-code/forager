@@ -50,63 +50,17 @@
     </header>
 
     <main class="pt-24 px-6 mx-auto main-container max-w-md">
-        <div class="mb-4">
-            <p class="text-secondary text-sm mb-1">Good morning, Forager.</p>
-            <h2 class="text-3xl font-bold">In season now</h2>
-        </div>
 
         <div style="width: 100%; max-width: 520px; margin: 0 auto;" class="my-4 relative overflow-hidden flex justify-center">
             <canvas id="petalWheel" width="520" height="520" class="cursor-pointer"></canvas>
         </div>
 
+        <div class="mb-4 mt-2">
+            <p class="text-secondary text-sm mb-1">Hello, Forager.</p>
+            <h2 class="text-3xl font-bold">In season now</h2>
+        </div>
+
         <div class="plant-grid space-y-4 md:space-y-0">
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-50">
-                <div class="mb-2">
-                    <h3 class="text-lg font-bold">Wild Garlic</h3>
-                    <p class="text-secondary text-sm italic">(Ramsløg)</p>
-                </div>
-                <div class="flex gap-1 mb-3">
-                    <span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span><span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span>
-                    <span class="w-[9px] h-[9px] rounded-full bg-mar"></span><span class="w-[9px] h-[9px] rounded-full bg-apr"></span>
-                    <span class="w-[9px] h-[9px] rounded-full bg-may"></span><span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span>
-                    <span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span><span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span>
-                    <span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span><span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span>
-                    <span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span><span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span>
-                </div>
-                <p class="text-sm text-secondary">Found in moist deciduous forests. Smells strongly of garlic. Watch for toxic Lily of the Valley.</p>
-            </div>
-
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-50">
-                <div class="mb-2">
-                    <h3 class="text-lg font-bold">Stinging Nettle</h3>
-                    <p class="text-secondary text-sm italic">(Brændenælde)</p>
-                </div>
-                <div class="flex gap-1 mb-3">
-                    <span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span><span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span>
-                    <span class="w-[9px] h-[9px] rounded-full bg-mar"></span><span class="w-[9px] h-[9px] rounded-full bg-apr"></span>
-                    <span class="w-[9px] h-[9px] rounded-full bg-may"></span><span class="w-[9px] h-[9px] rounded-full bg-jun"></span>
-                    <span class="w-[9px] h-[9px] rounded-full bg-jul"></span><span class="w-[9px] h-[9px] rounded-full bg-aug"></span>
-                    <span class="w-[9px] h-[9px] rounded-full bg-sep"></span><span class="w-[9px] h-[9px] rounded-full bg-oct"></span>
-                    <span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span><span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span>
-                </div>
-                <p class="text-sm text-secondary">A nutritional powerhouse. Harvest top shoots in spring. Always wear gloves when picking.</p>
-            </div>
-
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-50">
-                <div class="mb-2">
-                    <h3 class="text-lg font-bold">Ground Elder</h3>
-                    <p class="text-secondary text-sm italic">(Skvalderkål)</p>
-                </div>
-                <div class="flex gap-1 mb-3">
-                    <span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span><span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span>
-                    <span class="w-[9px] h-[9px] rounded-full bg-mar"></span><span class="w-[9px] h-[9px] rounded-full bg-apr"></span>
-                    <span class="w-[9px] h-[9px] rounded-full bg-may"></span><span class="w-[9px] h-[9px] rounded-full bg-jun"></span>
-                    <span class="w-[9px] h-[9px] rounded-full bg-jul"></span><span class="w-[9px] h-[9px] rounded-full bg-aug"></span>
-                    <span class="w-[9px] h-[9px] rounded-full bg-sep"></span><span class="w-[9px] h-[9px] rounded-full bg-oct"></span>
-                    <span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span><span class="w-[9px] h-[9px] rounded-full bg-gray-200"></span>
-                </div>
-                <p class="text-sm text-secondary">Pick when leaves are shiny and "folded" for best flavor. Tastes like a mix of celery and parsley.</p>
-            </div>
         </div>
     </main>
 
@@ -217,6 +171,79 @@
         document.fonts.ready.then(() => {
             drawWheel();
         });
+
+        // Plant data — season arrays drive the dynamic cards
+        const MONTH_KEYS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+        const hexMap = {
+            jan:'#E8ECF0', feb:'#D8EBF8', mar:'#DDF0E4', apr:'#F8F8D0',
+            may:'#5FAD6A', jun:'#F0B8CC', jul:'#2E8FD8', aug:'#E8907A',
+            sep:'#7A4A6E', oct:'#8A4A28', nov:'#425A72', dec:'#2C5A3A'
+        };
+
+        const plantData = {
+            'wild-garlic':      { name: 'Wild Garlic',          danish: 'Ramsløg',         season: [0,0,1,1,1,0,0,0,0,0,0,0], tip: 'Unmistakable garlic scent when crushed. Watch for Lily of the Valley.' },
+            'stinging-nettle':  { name: 'Stinging Nettle',      danish: 'Brændenælde',     season: [0,0,1,1,1,1,1,1,1,1,0,0], tip: 'Harvest top shoots in spring. Always wear gloves when picking.' },
+            'ground-elder':     { name: 'Ground Elder',         danish: 'Skvalderkål',     season: [0,0,1,1,1,1,0,0,0,0,0,0], tip: 'Pick when leaves are shiny and folded for best flavour.' },
+            'elder':            { name: 'Elder',                 danish: 'Hyld',            season: [0,0,0,0,1,1,0,1,1,1,0,0], tip: 'Pick flower heads on a dry morning. Season is just two to three weeks.' },
+            'dandelion':        { name: 'Dandelion',             danish: 'Mælkebøtte',      season: [0,0,1,1,1,1,1,0,0,0,0,0], tip: 'Every part is edible. Young spring leaves are far less bitter.' },
+            'ground-ivy':       { name: 'Ground Ivy',           danish: 'Korsknap',        season: [0,0,1,1,1,1,0,0,0,0,0,0], tip: 'Treat like oregano — it is strong. Great in broths and herbal teas.' },
+            'garlic-mustard':   { name: 'Garlic Mustard',       danish: 'Løgkarse',        season: [0,0,1,1,1,1,0,0,0,0,0,0], tip: 'Garlicky and peppery. Leaves, flowers, seeds, and roots all edible.' },
+            'hawthorn-blossom': { name: 'Hawthorn Blossom',     danish: 'Tjørnblomst',     season: [0,0,0,0,1,0,0,0,0,0,0,0], tip: 'Almond-scented clusters. Peak is just a few days — check daily.' },
+            'beech-leaves':     { name: 'Beech Leaves',         danish: 'Bøgeblade',       season: [0,0,0,1,0,0,0,0,0,0,0,0], tip: 'Harvest only in the very first week they open. Silky and nutty.' },
+            'sweet-woodruff':   { name: 'Sweet Woodruff',       danish: 'Skovmærke',       season: [0,0,0,1,1,0,0,0,0,0,0,0], tip: 'Must be dried before eating to develop its vanilla-coumarin scent.' },
+            'wild-rose':        { name: 'Wild Rose',             danish: 'Hunderose',       season: [0,0,0,0,0,1,1,0,0,0,0,0], tip: 'Pick petals early morning before they drop. Fragrant and delicate.' },
+            'meadowsweet':      { name: 'Meadowsweet',           danish: 'Mødurt',          season: [0,0,0,0,0,1,1,0,0,0,0,0], tip: 'Honey-almond scent. Infuse in cream overnight for stunning desserts.' },
+            'sea-purslane':     { name: 'Sea Purslane',          danish: 'Strandbede',      season: [0,0,0,0,1,1,1,1,0,0,0,0], tip: 'Fleshy coastal green with natural saltiness. Great raw or blanched.' },
+            'wild-strawberry':  { name: 'Wild Strawberry',       danish: 'Markjordbær',     season: [0,0,0,0,0,1,1,0,0,0,0,0], tip: 'Tiny but intensely flavoured. Check sunny south-facing banks.' },
+            'bilberry':         { name: 'Bilberry',              danish: 'Blåbær',          season: [0,0,0,0,0,0,1,1,0,0,0,0], tip: 'Small blue-black berries, stains fingers purple. Heathland and pine floors.' },
+            'linden-flower':    { name: 'Linden Flower',         danish: 'Lindeblomst',     season: [0,0,0,0,0,1,1,0,0,0,0,0], tip: 'Intensely honey-scented. Dry immediately after picking.' },
+            'wild-carrot':      { name: 'Wild Carrot',           danish: 'Vild Gulerod',    season: [0,0,0,0,0,1,1,1,0,0,0,0], tip: 'Always confirm the carrot smell before eating any part.' },
+            'yarrow':           { name: 'Yarrow',                danish: 'Røllike',         season: [0,0,0,0,0,1,1,1,0,0,0,0], tip: 'Complex herbal scent. Use sparingly like oregano in stocks and broths.' },
+            'chanterelle':      { name: 'Chanterelle',           danish: 'Kantarel',        season: [0,0,0,0,0,0,1,1,1,0,0,0], tip: 'Forked ridges, never true gills. Apricot scent. Check after warm rain.' },
+            'blackberry':       { name: 'Blackberry',            danish: 'Brombær',         season: [0,0,0,0,0,0,0,1,1,0,0,0], tip: 'Pick in the morning before the sun softens them.' },
+            'rosehip':          { name: 'Rosehip',               danish: 'Hyben',           season: [0,0,0,0,0,0,0,1,1,1,0,0], tip: 'Best after first frost. Rich in vitamin C.' },
+            'sea-buckthorn':    { name: 'Sea Buckthorn',         danish: 'Havtorn',         season: [0,0,0,0,0,0,0,1,1,1,0,0], tip: 'Intensely tart orange berries. Wear thick gloves — very sharp thorns.' },
+            'porcini':          { name: 'Porcini',               danish: 'Karljohan',       season: [0,0,0,0,0,0,0,1,1,1,0,0], tip: 'White sponge pores, no ring at base. Check for worms.' },
+            'sloe':             { name: 'Sloe',                  danish: 'Slåen',           season: [0,0,0,0,0,0,0,0,1,1,0,0], tip: 'Better after frost. Pick early and freeze to simulate it.' },
+            'hawthorn-berry':   { name: 'Hawthorn Berry',        danish: 'Tjørnbær',        season: [0,0,0,0,0,0,0,0,1,1,0,0], tip: 'Deep red clusters. Excellent for hedgerow jelly.' },
+            'hen-of-the-woods': { name: 'Hen of the Woods',      danish: 'Mosaikporesvamp', season: [0,0,0,0,0,0,0,0,1,1,0,0], tip: 'Overlapping grey-brown fronds at the base of oak trees.' },
+            'sweet-chestnut':   { name: 'Sweet Chestnut',        danish: 'Ægte Kastanje',   season: [0,0,0,0,0,0,0,0,0,1,0,0], tip: 'Spiny cases open in October. Gather from the ground.' },
+            'crab-apple':       { name: 'Crab Apple',            danish: 'Vildæble',        season: [0,0,0,0,0,0,0,0,1,1,0,0], tip: 'Bitter raw but exceptional jelly. High natural pectin.' },
+            'oyster-mushroom':  { name: 'Oyster Mushroom',       danish: 'Østershat',       season: [0,0,0,0,0,0,0,0,1,1,1,1], tip: 'Grows on dead beech. Reliable through autumn and into winter.' },
+            'burdock-root':     { name: 'Burdock Root',          danish: 'Burrerod',        season: [0,0,0,0,0,0,0,0,0,1,1,0], tip: 'Dig first-year roots before the ground freezes.' },
+            'velvet-shank':     { name: 'Velvet Shank',          danish: 'Fløjlsfodsvampe', season: [1,1,0,0,0,0,0,0,0,0,1,1], tip: 'Survives frost. Caramel caps in clusters on dead wood.' },
+            'juniper':          { name: 'Juniper',               danish: 'Ene',             season: [1,1,0,0,0,0,0,0,0,0,1,1], tip: 'Only harvest blue-black ripe berries. Resinous and aromatic.' },
+            'white-dead-nettle':{ name: 'White Dead-nettle',     danish: 'Hvid Døvnælde',   season: [1,1,1,0,0,0,0,0,0,0,0,1], tip: 'No sting. White hooded flowers. One of the few winter greens.' },
+            'shepherds-purse':  { name: "Shepherd's Purse",      danish: 'Hyrdetaske',      season: [1,1,1,1,0,0,0,0,0,0,1,1], tip: 'Heart-shaped seed pods make it unmistakable. Almost year-round.' }
+        };
+
+        function makeDots(season) {
+            return MONTH_KEYS.map((m, i) =>
+                `<span style="width:14px;height:14px;border-radius:50%;display:inline-block;background:${season[i] ? hexMap[m] : '#E5E7EB'};flex-shrink:0;"></span>`
+            ).join('');
+        }
+
+        function renderCards() {
+            const grid = document.querySelector('.plant-grid');
+            grid.innerHTML = '';
+            const inSeason = Object.entries(plantData).filter(([, p]) => p.season[currentMonthIdx]);
+            inSeason.forEach(([id, p]) => {
+                const card = document.createElement('a');
+                card.href = `plant-detail.html?id=${id}`;
+                card.className = 'bg-white p-4 rounded-2xl shadow-sm border border-gray-50 block hover:shadow-md transition-shadow';
+                card.innerHTML = `
+                    <div class="mb-2">
+                        <h3 style="font-family:'Outfit',sans-serif;font-size:1.125rem;font-weight:700;">${p.name}</h3>
+                        <p style="font-size:0.875rem;font-style:italic;color:#5E635E;">(${p.danish})</p>
+                    </div>
+                    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:0.75rem;">${makeDots(p.season)}</div>
+                    <p style="font-size:0.875rem;color:#5E635E;">${p.tip}</p>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        renderCards();
     </script>
 </body>
 </html>
