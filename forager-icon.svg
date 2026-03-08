@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="112" fill="#FDFCFB"/>
+
+  <!-- 12 equal petals, March at top (-90deg), each 30deg apart -->
+
+  <!-- MAR: -90deg -->
+  <g transform="translate(256,256) rotate(-90)">
+    <path d="M18,0 C90,-68 175,-68 175,0 C175,68 90,68 18,0Z" fill="#DDF0E4"/>
+  </g>
+  <!-- APR: -60deg -->
+  <g transform="translate(256,256) rotate(-60)">
+    <path d="M18,0 C90,-68 175,-68 175,0 C175,68 90,68 18,0Z" fill="#F8F8D0"/>
+  </g>
+  <!-- MAY: -30deg -->
+  <g transform="translate(256,256) rotate(-30)">
+    <path d="M18,0 C90,-68 175,-68 175,0 C175,68 90,68 18,0Z" fill="#5FAD6A"/>
+  </g>
+  <!-- JUN: 0deg -->
+  <g transform="translate(256,256) rotate(0)">
+    <path d="M18,0 C90,-68 175,-68 175,0 C175,68 90,68 18,0Z" fill="#F0B8CC"/>
+  </g>
+  <!-- JUL: 30deg -->
+  <g transform="translate(256,256) rotate(30)">
+    <path d="M18,0 C90,-68 175,-68 175,0 C175,68 90,68 18,0Z" fill="#2E8FD8"/>
+  </g>
+  <!-- AUG: 60deg -->
+  <g transform="translate(256,256) rotate(60)">
+    <path d="M18,0 C90,-68 175,-68 175,0 C175,68 90,68 18,0Z" fill="#E8907A"/>
+  </g>
+  <!-- SEP: 90deg -->
+  <g transform="translate(256,256) rotate(90)">
+    <path d="M18,0 C90,-68 175,-68 175,0 C175,68 90,68 18,0Z" fill="#7A4A6E"/>
+  </g>
+  <!-- OCT: 120deg -->
+  <g transform="translate(256,256) rotate(120)">
+    <path d="M18,0 C90,-68 175,-68 175,0 C175,68 90,68 18,0Z" fill="#8A4A28"/>
+  </g>
+  <!-- NOV: 150deg -->
+  <g transform="translate(256,256) rotate(150)">
+    <path d="M18,0 C90,-68 175,-68 175,0 C175,68 90,68 18,0Z" fill="#425A72"/>
+  </g>
+  <!-- DEC: 180deg -->
+  <g transform="translate(256,256) rotate(180)">
+    <path d="M18,0 C90,-68 175,-68 175,0 C175,68 90,68 18,0Z" fill="#2C5A3A"/>
+  </g>
+  <!-- JAN: 210deg -->
+  <g transform="translate(256,256) rotate(210)">
+    <path d="M18,0 C90,-68 175,-68 175,0 C175,68 90,68 18,0Z" fill="#E8ECF0"/>
+  </g>
+  <!-- FEB: 240deg -->
+  <g transform="translate(256,256) rotate(240)">
+    <path d="M18,0 C90,-68 175,-68 175,0 C175,68 90,68 18,0Z" fill="#D8EBF8"/>
+  </g>
+
+  <!-- Centre circle -->
+  <circle cx="256" cy="256" r="68" fill="#FDFCFB"/>
+
+  <!-- F mark -->
+  <text x="256" y="256"
+    font-family="Outfit, Georgia, serif"
+    font-weight="700"
+    font-size="58"
+    fill="#1A1C19"
+    text-anchor="middle"
+    dominant-baseline="middle">F</text>
+
+</svg>

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <style>
+      @font-face {
+        font-family: 'Outfit';
+        font-weight: 700;
+        src: url('https://fonts.gstatic.com/s/outfit/v11/QGYyz_MVcBeNP4NjuGObqx1XmO1I4TC1C4G-EiAou6Y.woff2') format('woff2');
+      }
+    </style>
+    <!--
+      Exact website petal shape from canvas code:
+        ctx.moveTo(20, 0)
+        ctx.bezierCurveTo(radius/2, -radius*width, radius, -radius*(width/2), radius, 0)
+        ctx.bezierCurveTo(radius, radius*(width/2), radius/2, radius*width, 20, 0)
+      where radius=170, width=0.38
+      So: moveTo(20,0)
+          bezierCurveTo(85,-64.6, 170,-32.3, 170,0)
+          bezierCurveTo(170,32.3, 85,64.6, 20,0)
+      Petal points right. We rotate each one.
+      March at top = rotate(-90deg from rightward default)
+      Then each subsequent month +30deg
+    -->
+    <path id="petal" d="M20,0 C85,-64.6 170,-32.3 170,0 C170,32.3 85,64.6 20,0Z"/>
+  </defs>
+
+  <!-- White background -->
+  <rect width="512" height="512" rx="112" fill="#FDFCFB"/>
+
+  <!-- MAR at top: -90deg -->
+  <use href="#petal" transform="translate(256,256) rotate(-90)"  fill="#DDF0E4"/>
+  <!-- APR: -60deg -->
+  <use href="#petal" transform="translate(256,256) rotate(-60)"  fill="#F8F8D0"/>
+  <!-- MAY: -30deg -->
+  <use href="#petal" transform="translate(256,256) rotate(-30)"  fill="#5FAD6A"/>
+  <!-- JUN: 0deg -->
+  <use href="#petal" transform="translate(256,256) rotate(0)"    fill="#F0B8CC"/>
+  <!-- JUL: 30deg -->
+  <use href="#petal" transform="translate(256,256) rotate(30)"   fill="#2E8FD8"/>
+  <!-- AUG: 60deg -->
+  <use href="#petal" transform="translate(256,256) rotate(60)"   fill="#E8907A"/>
+  <!-- SEP: 90deg -->
+  <use href="#petal" transform="translate(256,256) rotate(90)"   fill="#7A4A6E"/>
+  <!-- OCT: 120deg -->
+  <use href="#petal" transform="translate(256,256) rotate(120)"  fill="#8A4A28"/>
+  <!-- NOV: 150deg -->
+  <use href="#petal" transform="translate(256,256) rotate(150)"  fill="#425A72"/>
+  <!-- DEC: 180deg -->
+  <use href="#petal" transform="translate(256,256) rotate(180)"  fill="#2C5A3A"/>
+  <!-- JAN: 210deg -->
+  <use href="#petal" transform="translate(256,256) rotate(210)"  fill="#E8ECF0"/>
+  <!-- FEB: 240deg -->
+  <use href="#petal" transform="translate(256,256) rotate(240)"  fill="#D8EBF8"/>
+
+  <!-- White centre circle — small, like the mockup -->
+  <circle cx="256" cy="256" r="58" fill="#FDFCFB"/>
+
+  <!-- F in Outfit Bold, small and tight -->
+  <text x="256" y="256"
+    font-family="Outfit, sans-serif"
+    font-weight="700"
+    font-size="52"
+    fill="#1A1C19"
+    text-anchor="middle"
+    dominant-baseline="central">F</text>
+
+</svg>
