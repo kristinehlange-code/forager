@@ -138,6 +138,14 @@
         const typeBadgeText = { Fresh: '#3A5C3A', Preserve: '#6B6B00', Drink: '#1A4A6B' };
 
         const recipeMeta = {
+            'wild-garlic-pesto': { type: 'Preserve', peak: 'mar', dk: 'Ramsløg' },
+            'nettle-soup': { type: 'Fresh', peak: 'apr', dk: 'Brændenælde' },
+            'elderflower-cordial': { type: 'Drink', peak: 'jun', dk: 'Hyld' },
+            'hawthorn-bud-salad': { type: 'Fresh', peak: 'mar', dk: 'Tjørn' },
+            'wild-strawberry-tart': { type: 'Fresh', peak: 'jun', dk: 'Skovstrawbær' },
+            'burdock-kinpira': { type: 'Fresh', peak: 'oct', dk: 'Burre' },
+            'velvet-shank-toast': { type: 'Fresh', peak: 'nov', dk: 'Østershat' },
+            'velvet-shank-broth': { type: 'Fresh', peak: 'nov', dk: 'Hønseporesvamp' },
             'chanterelle-butter': { type: 'Preserve', peak: 'aug', dk: 'Kantarel' },
             'oyster-mushroom-stew': { type: 'Fresh', peak: 'nov', dk: 'Østershat' },
             'wild-herb-pesto': { type: 'Preserve', peak: 'feb', dk: 'Ramsløg' },
@@ -191,6 +199,79 @@
         };
 
         const recipeData = {
+
+            'wild-garlic-pesto': {
+                name: 'Wild Garlic Pesto', plant: 'Wild Garlic', plant_id: 'wild-garlic',
+                season: [false, true, true, true, true, false, false, false, false, false, false, false],
+                time: '15 mins', serves: '250ml jar',
+                intro: 'A vivid green pesto that captures spring at its most intense. Better than basil pesto and made in minutes.',
+                ingredients: ['100g fresh wild garlic leaves, washed and dried','50g pine nuts or walnuts, lightly toasted','50g Parmesan or Pecorino, finely grated','100ml good olive oil','Juice of half a lemon','Salt and black pepper to taste'],
+                method: ['Toast the nuts in a dry pan for 2–3 minutes until golden. Watch carefully — they burn fast. Cool.','Add wild garlic leaves, cooled nuts, and lemon juice to a food processor. Pulse until roughly chopped.','With the processor running, slowly pour in the olive oil until you have a loose, textured paste. Do not over-blend.','Stir in the grated cheese by hand. Season generously with salt and pepper.','Transfer to a clean jar and pour a thin layer of olive oil over the surface to prevent browning.'],
+                tip: 'Harvest wild garlic before the flowers open for the best flavour and deepest green colour.'
+            },
+            'nettle-soup': {
+                name: 'Nettle Soup', plant: 'Stinging Nettle', plant_id: 'stinging-nettle',
+                season: [false, false, true, true, true, false, false, false, false, false, false, false],
+                time: '35 mins', serves: '4',
+                intro: 'A classic Nordic spring soup — deep green and mineral-tasting with a silky texture. Rich in iron, vitamins, and the taste of early spring.',
+                ingredients: ['200g young nettle tops (top 4 leaves only), washed','1 medium onion, roughly chopped','2 cloves garlic, sliced','2 medium potatoes, peeled and diced','800ml vegetable stock','100ml cream or crème fraîche','1 tbsp butter','Salt, pepper, and nutmeg to taste','Soft-boiled egg and rye bread to serve'],
+                method: ['Wear gloves when handling raw nettles. Pick only the young top leaves from fresh spring shoots. Rinse well.','Melt butter in a large pan over medium heat. Cook onion gently for 8–10 minutes until soft. Add garlic for 2 more minutes.','Add diced potato and vegetable stock. Bring to a boil and cook for 12–15 minutes until potato is completely tender.','Add nettles and stir into the liquid. The sting disappears within 30 seconds of heat. Simmer for 3 minutes only.','Blend until smooth. Stir in cream, season with salt, pepper, and a little nutmeg. Reheat gently without boiling.','Serve topped with a soft-boiled egg, a swirl of cream, and rye bread.'],
+                tip: 'Harvest nettles in March and April before they flower. Older nettles become coarse and less pleasant. Always wear thick gloves.'
+            },
+            'elderflower-cordial': {
+                name: 'Elderflower Cordial', plant: 'Elder', plant_id: 'elder',
+                season: [false, false, false, false, true, true, false, false, false, false, false, false],
+                time: '48 hrs', serves: '2 litres',
+                intro: 'The most iconic Danish summer drink. Clean, bright, and intensely floral — dilute with sparkling water or freeze into ice lollies.',
+                ingredients: ['20 large elderflower heads, freshly picked','1.5 litres water','1.2 kg white sugar','2 unwaxed lemons, sliced','50g citric acid'],
+                method: ['Harvest flower heads on a dry morning when scent is strongest. Shake gently to remove insects — do not wash.','Bring water and sugar to a boil, stirring until dissolved. Remove from heat and cool for 10 minutes.','Place flower heads, lemon slices, and citric acid in a large bowl. Pour warm syrup over. Cover and steep 24–48 hours.','Strain through muslin into a jug. Pour into sterilised bottles. Shelf-stable for up to 6 months unopened.','Dilute 1 part cordial to 5–8 parts sparkling or still water. Serve over ice.'],
+                tip: 'Pick flower heads when fully open and at peak scent — a window of just a few days per tree. Fading flowers make bitter cordial.'
+            },
+            'hawthorn-bud-salad': {
+                name: 'Hawthorn Bud Salad', plant: 'Hawthorn', plant_id: 'hawthorn',
+                season: [false, false, true, true, false, false, false, false, false, false, false, false],
+                time: '10 mins', serves: '2',
+                intro: 'The youngest hawthorn buds taste nutty and fresh — an early spring wild green that needs almost nothing added.',
+                ingredients: ['A large handful of young hawthorn buds and leaves','1 tbsp good olive oil','1 tsp lemon juice','Flaky sea salt','Optional: shaved Parmesan, radish'],
+                method: ['Pick the very youngest hawthorn buds in March and April before they open fully. Rinse gently.','Toss with olive oil, lemon juice, and a pinch of flaky salt.','Serve immediately as a side or scattered over eggs, soup, or smørrebrød.'],
+                tip: 'Only use the youngest buds — once the leaves are fully open they become tougher and lose the nutty sweetness.'
+            },
+            'wild-strawberry-tart': {
+                name: 'Wild Strawberry Tart', plant: 'Wild Strawberry', plant_id: 'wild-strawberry',
+                season: [false, false, false, false, false, true, true, false, false, false, false, false],
+                time: '45 mins', serves: '6',
+                intro: 'Tiny wild strawberries are intensely flavoured — far more than cultivated varieties. A simple tart lets them shine completely.',
+                ingredients: ['200g wild strawberries, hulled','1 pre-baked shortcrust tart shell (20cm)','200ml double cream','2 tbsp icing sugar','1 tsp vanilla extract','Zest of half a lemon'],
+                method: ['Whip the cream with icing sugar and vanilla to soft peaks. Fold in lemon zest.','Spread the cream evenly in the cooled tart shell.','Arrange the wild strawberries over the cream. They are small so pack them generously.','Dust with a little extra icing sugar and serve within an hour of assembling.'],
+                tip: 'Wild strawberries must be used the same day they are picked — they collapse and lose flavour quickly. Pick and assemble on the same afternoon.'
+            },
+            'burdock-kinpira': {
+                name: 'Burdock Kinpira', plant: 'Burdock Root', plant_id: 'burdock-root',
+                season: [false, false, false, false, false, false, false, false, true, true, true, false],
+                time: '25 mins', serves: '4',
+                intro: 'A Japanese-inspired preparation that brings out the earthy, slightly sweet depth of fresh burdock root. Excellent alongside fish or rice.',
+                ingredients: ['2 large burdock roots, peeled and julienned','1 tbsp sesame oil','2 tbsp soy sauce','1 tbsp mirin or honey','1 tbsp rice vinegar','1 tsp sesame seeds','Optional: dried chilli flakes'],
+                method: ['Peel burdock roots and cut into thin matchsticks. Soak in cold water for 10 minutes to remove bitterness, then drain and pat dry.','Heat sesame oil in a wide pan over medium-high heat. Add burdock and stir-fry for 5 minutes until starting to colour.','Add soy sauce, mirin, and vinegar. Toss to coat and cook for another 3–4 minutes until the liquid is absorbed and the roots are tender.','Scatter with sesame seeds and serve warm or at room temperature.'],
+                tip: 'Soak the julienned burdock in water with a splash of vinegar to prevent browning and reduce the bitter edge before cooking.'
+            },
+            'velvet-shank-toast': {
+                name: 'Mushroom Toast Two Ways', plant: 'Oyster Mushroom', plant_id: 'oyster-mushroom',
+                season: [false, false, false, false, false, false, false, false, true, true, true, true],
+                time: '20 mins', serves: '2',
+                intro: 'One pan, good bread, and autumnal mushrooms. Two variations — one creamy, one sharp — depending on what you have.',
+                ingredients: ['300g oyster mushrooms, torn into pieces','2 thick slices sourdough, toasted','2 tbsp butter','1 clove garlic, minced','Fresh thyme','Salt and pepper','Option A: 3 tbsp crème fraîche + lemon','Option B: 1 tbsp soy + 1 tsp vinegar + chilli'],
+                method: ['Heat butter in a wide pan over high heat until foaming. Add mushrooms in a single layer. Do not stir for 2 minutes — let them colour.','Add garlic and thyme, toss and cook 1 more minute.','For Option A: stir in crème fraîche and a squeeze of lemon. For Option B: add soy, vinegar, and chilli. Let bubble 30 seconds.','Pile onto hot toast and eat immediately.'],
+                tip: 'The key is a very hot pan and not moving the mushrooms too early. Colour equals flavour here.'
+            },
+            'velvet-shank-broth': {
+                name: 'Miso Mushroom Broth', plant: 'Hen of the Woods', plant_id: 'hen-of-the-woods',
+                season: [false, false, false, false, false, false, false, false, true, true, true, false],
+                time: '25 mins', serves: '2',
+                intro: 'A deeply warming broth built on the umami backbone of wild mushrooms and miso. Clean, restorative, and ready in under 30 minutes.',
+                ingredients: ['200g hen-of-the-woods or oyster mushrooms, torn','2 tbsp white or brown miso paste','800ml water or light vegetable stock','1 tsp sesame oil','2 spring onions, sliced','Optional: tofu, soba noodles, dried seaweed'],
+                method: ['Bring stock to a gentle simmer. Add mushrooms and cook for 8–10 minutes until tender.','Remove from heat. Dissolve miso in a small cup with a ladle of hot stock, then stir back into the pan. Do not boil after adding miso.','Drizzle with sesame oil. Serve topped with spring onions and any optional additions.'],
+                tip: 'Never boil miso — it destroys the beneficial bacteria and dulls the flavour. Add it off the heat.'
+            },
 
             'chanterelle-butter': {
                 name: 'Chanterelle Butter', plant: 'Chanterelle', plant_id: 'chanterelle',

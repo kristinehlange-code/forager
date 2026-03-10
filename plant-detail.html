@@ -2838,39 +2838,36 @@
                 hero.style.backgroundColor = monthColor;
             }
 
-            // Photo strip — remaining photos as thumbnails (skip first, shown as hero)
+            // Photo strip — thumbnails for photos 2+ then colour swatches to fill 3 slots
             const strip = document.getElementById('photo-strip');
+            const STRIP_SLOTS = 3;
             const remaining = plant.photos.slice(1);
-            if (remaining.length > 0) {
-                remaining.forEach((src, i) => {
-                    const img = document.createElement('img');
-                    img.src = src;
-                    img.alt = `${plant.name} photo ${i + 2}`;
-                    img.className = 'photo-thumb';
-                    img.onclick = () => openLightbox(src);
-                    img.onerror = function() {
-                        // Replace broken image with colour swatch
-                        const sw = document.createElement('div');
-                        sw.className = 'photo-thumb';
-                        sw.style.backgroundColor = monthColor;
-                        sw.style.opacity = '0.4';
-                        strip.replaceChild(sw, this);
-                    };
-                    strip.appendChild(img);
-                });
-                // Keep colour swatch as last thumb
-                const swatch = document.createElement('div');
-                swatch.className = 'photo-thumb flex items-center justify-center';
-                swatch.style.backgroundColor = monthColor;
-                swatch.style.flexShrink = '0';
-                strip.appendChild(swatch);
-            } else if (plant.photos.length === 1) {
-                // Just show colour swatch
-                const swatch = document.createElement('div');
-                swatch.className = 'photo-thumb flex items-center justify-center';
-                swatch.style.backgroundColor = monthColor;
-                swatch.style.flexShrink = '0';
-                strip.appendChild(swatch);
+
+            // Real photo thumbs
+            remaining.forEach((src, i) => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = `${plant.name} photo ${i + 2}`;
+                img.className = 'photo-thumb';
+                img.onclick = () => openLightbox(src);
+                img.onerror = function() {
+                    const sw = document.createElement('div');
+                    sw.className = 'photo-thumb';
+                    sw.style.backgroundColor = monthColor;
+                    sw.style.opacity = '0.35';
+                    strip.replaceChild(sw, this);
+                };
+                strip.appendChild(img);
+            });
+
+            // Fill remaining slots with colour swatches
+            const swatchCount = Math.max(0, STRIP_SLOTS - remaining.length);
+            for (let i = 0; i < swatchCount; i++) {
+                const sw = document.createElement('div');
+                sw.className = 'photo-thumb';
+                sw.style.backgroundColor = monthColor;
+                sw.style.opacity = i === 0 && remaining.length === 0 ? '0.5' : (0.35 - i * 0.08).toFixed(2);
+                strip.appendChild(sw);
             }
 
             // Name
