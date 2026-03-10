@@ -1685,9 +1685,9 @@
             } else {
                 noResults.classList.add('hidden');
                 filtered.forEach(r => {
-                    const card = document.createElement('div');
-                    card.className = 'bg-white rounded-2xl border border-gray-100 card-shadow block cursor-pointer hover:shadow-md transition-shadow overflow-hidden';
-                    card.onclick = () => openRecipe(r.id);
+                    const card = document.createElement('a');
+                    card.className = 'bg-white rounded-2xl border border-gray-100 card-shadow block hover:shadow-md transition-shadow overflow-hidden';
+                    card.href = `recipe-detail.html?id=${r.id}`;
 
                     const typeBadgeColors = { Fresh: '#DDF0E4', Preserve: '#F8F8D0', Drink: '#D8EBF8' };
                     const typeBadgeText = { Fresh: '#3A5C3A', Preserve: '#6B6B00', Drink: '#1A4A6B' };

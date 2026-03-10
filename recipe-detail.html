@@ -138,6 +138,8 @@
         const typeBadgeText = { Fresh: '#3A5C3A', Preserve: '#6B6B00', Drink: '#1A4A6B' };
 
         const recipeMeta = {
+            'chanterelle-butter': { type: 'Preserve', peak: 'aug', dk: 'Kantarel' },
+            'oyster-mushroom-stew': { type: 'Fresh', peak: 'nov', dk: 'Østershat' },
             'wild-herb-pesto': { type: 'Preserve', peak: 'feb', dk: 'Ramsløg' },
             'vegan-herb-cream-cheese': { type: 'Preserve', peak: 'jan', dk: 'Døvnælde' },
             'wild-kraut': { type: 'Preserve', peak: 'mar', dk: 'Skvalderkål' },
@@ -189,6 +191,26 @@
         };
 
         const recipeData = {
+
+            'chanterelle-butter': {
+                name: 'Chanterelle Butter', plant: 'Chanterelle', plant_id: 'chanterelle',
+                season: [false, false, false, false, false, false, true, true, true, false, false, false],
+                time: '30 mins', serves: '1 butter log',
+                intro: 'A way to preserve the golden flavour of chanterelles through the year — melts into pasta, eggs, or toast with outstanding results.',
+                ingredients: ['300g fresh chanterelles, cleaned and roughly chopped','200g good quality unsalted butter, softened','1 small shallot, very finely minced','1 clove garlic, very finely minced','1 tsp fresh thyme leaves','Juice of half a lemon','Salt and white pepper'],
+                method: ['Heat a dry pan over high heat. Add chanterelles in a single layer and cook without stirring for 2 minutes until golden, then toss and cook another 2 minutes. Season lightly.','Reduce heat to medium. Add shallot, garlic, and thyme. Cook for 2 more minutes until deeply golden and reduced.','Cool completely before mixing with butter.','Finely chop the cooled mushrooms. Beat softened butter until smooth, then fold in mushrooms, lemon juice, salt, and white pepper.','Roll into a log in baking paper and refrigerate or freeze. Slice off rounds as needed.'],
+                tip: 'Clean chanterelles with a soft brush rather than washing — they absorb water and will steam rather than fry if wet.'
+            },
+
+            'oyster-mushroom-stew': {
+                name: 'Oyster Mushroom Stew', plant: 'Oyster Mushroom', plant_id: 'oyster-mushroom',
+                season: [false, false, false, false, false, false, false, false, true, true, true, true],
+                time: '35 mins', serves: '2–3',
+                intro: 'A warming autumn stew with deep umami flavour. Oyster mushrooms have a meaty texture that holds up beautifully in long cooking.',
+                ingredients: ['400g fresh oyster mushrooms, torn into large pieces','1 large onion, finely sliced','3 cloves garlic, sliced','200ml dry white wine or vegetable stock','200ml cream','1 tbsp butter, 1 tbsp olive oil','2 sprigs fresh thyme, 1 bay leaf','Salt, pepper, lemon, and fresh parsley to finish'],
+                method: ['Heat a wide pan over high heat with olive oil. Add mushrooms in a single layer, cook without stirring for 2–3 minutes until golden. Toss and cook another minute. Remove and set aside.','In the same pan, cook onion gently in butter for 10–12 minutes until golden. Add garlic, thyme, and bay leaf for 2 more minutes.','Pour in wine or stock and reduce by half, scraping up the brown bits.','Add cream and return mushrooms. Simmer gently for 5–8 minutes until sauce is thick. Remove bay leaf and thyme.','Season with salt, pepper, and lemon. Scatter with parsley. Serve with crusty bread or polenta.'],
+                tip: 'Fresh oyster mushrooms are best within a day or two of picking. Look for firm clusters with tight, unfurled edges.'
+            },
             'wild-herb-pesto': {
                 name: 'Wild Herb Pesto', plant: 'Wild Garlic', plant_id: 'wild-garlic',
                 season: [false, true, true, true, true, false, false, false, false, false, false, false],
