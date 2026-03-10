@@ -2910,7 +2910,6 @@
                 plant.recipes.forEach(rId => {
                     const r = recipeData[rId];
                     if (!r) return;
-                    const meta = recipeMetaMap && recipeMetaMap[rId];
                     const rColor = hexMap[firstMonth(plant.season)];
                     const link = document.createElement('a');
                     link.href = `recipe-detail.html?id=${rId}`;
