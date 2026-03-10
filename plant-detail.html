@@ -98,7 +98,7 @@
     </header>
 
     <!-- Hero -->
-    <div id="hero" class="w-full h-52 flex items-center justify-center relative overflow-hidden">
+    <div id="hero" class="w-full h-52 flex items-center justify-center relative overflow-hidden cursor-pointer" onclick="if(window._heroSrc)openLightbox(window._heroSrc)">
         <i data-lucide="leaf" class="w-14 h-14 text-white opacity-30"></i>
     </div>
 
@@ -225,7 +225,7 @@
             },
             'dandelion': {
                 name: 'Dandelion', danish: 'Mælkebøtte', peak: 'may',
-                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                season: [false, false, true, true, true, true, false, false, false, false, false, false],
                 photos: ['images/plants/dandelion-1.jpg', 'images/plants/dandelion-2.jpg', 'images/plants/dandelion-3.jpg'],
                 spot: [
                     'Jagged leaves arranged in a ground-level rosette',
@@ -363,7 +363,7 @@
             },
             'wood-sorrel': {
                 name: 'Wood Sorrel', danish: 'Skovsyre', peak: 'apr',
-                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                season: [false, false, true, true, true, true, true, false, false, false, false, false],
                 photos: ['images/plants/wood-sorrel-1.jpg', 'images/plants/wood-sorrel-2.jpg', 'images/plants/wood-sorrel-3.jpg', 'images/plants/wood-sorrel-4.jpg'],
                 spot: [
                     'Heart-shaped clover-like leaflets in groups of three',
@@ -386,7 +386,7 @@
             },
             'juniper': {
                 name: 'Juniper', danish: 'Ene', peak: 'oct',
-                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                season: [false, false, false, false, false, false, false, false, true, true, true, true],
                 photos: ['images/plants/juniper-1.jpg', 'images/plants/juniper-2.jpg', 'images/plants/juniper-3.jpg'],
                 spot: [
                     'Sculptural evergreen shrub with sharp needles',
@@ -432,7 +432,7 @@
             },
             'white-dead-nettle': {
                 name: 'White Dead-nettle', danish: 'Døvnælde', peak: 'apr',
-                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                season: [false, false, true, true, true, true, false, false, false, false, false, false],
                 photos: ['images/plants/white-dead-nettle-1.jpg', 'images/plants/white-dead-nettle-2.jpg', 'images/plants/white-dead-nettle-3.jpg'],
                 spot: [
                     'Heart-shaped leaves with serrated edges like a nettle',
@@ -455,7 +455,7 @@
             },
             'red-dead-nettle': {
                 name: 'Red Dead Nettle', danish: 'Rød tvetand', peak: 'apr',
-                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                season: [false, false, true, true, true, true, false, false, false, false, false, false],
                 photos: ['images/plants/red-dead-nettle-1.jpg', 'images/plants/red-dead-nettle-2.jpg', 'images/plants/red-dead-nettle-3.jpg'],
                 spot: [
                     'Upper leaves are often tinted deep purple or red',
@@ -501,7 +501,7 @@
             },
             'sweet-cicely': {
                 name: 'Cicely', danish: 'Sødskærm', peak: 'may',
-                season: [false, false, true, true, true, true, true, true, true, true, true, false],
+                season: [false, false, false, true, true, true, true, true, false, false, false, false],
                 photos: ['images/plants/sweet-cicely-1.jpg', 'images/plants/sweet-cicely-2.jpg'],
                 spot: [
                     'Delicate, fern-like leaves often with white patches',
@@ -547,7 +547,7 @@
             },
             'horseradish': {
                 name: 'Horseradish', danish: 'Peberrod', peak: 'oct',
-                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                season: [false, false, true, true, false, false, false, false, true, true, false, false],
                 photos: ['images/plants/horseradish-1.jpg'],
                 spot: [
                     'Large, wavy, glossy green leaves up to 1 meter tall',
@@ -748,7 +748,7 @@
                     'Use large caps as a meat substitute — they have a satisfying chew.',
                     'Make a simple cream sauce with shallots and thyme to serve on toast or pasta.'
                 ],
-                recipes: ['oyster-mushroom-stew']
+                recipes: ['oyster-mushroom-stew', 'mushroom-toast']
             },
             'yarrow': {
                 name: 'Yarrow', danish: 'Røllike', peak: 'jul',
@@ -1646,29 +1646,6 @@
                     'Glazed in sugar'
                 ],
                 recipes: ['roasted-chestnuts']
-            },
-            'velvet-shank': {
-                name: 'Velvet Shank', danish: 'Fløjlsfodsvampe', peak: 'nov',
-                season: [true, true, false, false, false, false, false, false, false, true, true, true],
-                photos: ['images/plants/velvet-shank-1.jpg', 'images/plants/velvet-shank-2.jpg'],
-                spot: [
-                    'Bright orange to yellowish cap',
-                    'Stem is velvety and dark brown/black at base',
-                    'White gills underneath the cap',
-                    'Grows in clusters on dead deciduous wood',
-                    'Caps are often slimy when wet'
-                ],
-                habitat: 'Found growing on dead or dying deciduous trees, especially willow, poplar, and ash, across Denmark during winter.',
-                warning: 'Use caution to avoid confusion with the deadly Galerina marginata, which grows in similar clusters but has brown gills and a ring on the stem.',
-                about: 'These are the wild version of the cultivated Enoki mushroom and are remarkably frost-tolerant, continuing to grow after thawing.',
-                uses: [
-                    'Mushroom stir-fry',
-                    'Added to ramen bowls',
-                    'Sauteed on toast',
-                    'Mushroom soup',
-                    'Pickled for storage'
-                ],
-                recipes: ['mushroom-toast']
             },
             'wild-strawberry': {
                 name: 'Wild Strawberry', danish: 'Markjordbær', peak: 'jun',
@@ -2727,7 +2704,7 @@
                 plant_alternatives: ['Yarrow (May-October)', 'Mugwort (April-October)', 'Dried nettle (year-round)']
             },
             'mushroom-toast': {
-                name: 'Mushroom Toast Two Ways', plant: 'Velvet Shank', plant_id: 'velvet-shank',
+                name: 'Mushroom Toast Two Ways', plant: 'Oyster Mushroom', plant_id: 'oyster-mushroom',
                 season: [true, true, false, false, false, false, false, false, false, true, true, true],
                 time: '20 mins', serves: '2',
                 intro: 'One pan, two toppings — a fast and honest way to eat whatever mushrooms you brought home.',
@@ -2804,6 +2781,7 @@
                 hero.style.backgroundImage = `url('${plant.photos[0]}')`;
                 hero.style.backgroundSize = 'cover';
                 hero.style.backgroundPosition = 'center';
+                window._heroSrc = plant.photos[0];
                 hero.querySelector('i').style.display = 'none';
                 // colour overlay strip at bottom for readability
                 const overlay = document.createElement('div');
