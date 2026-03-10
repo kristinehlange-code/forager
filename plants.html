@@ -91,469 +91,536 @@
         // season array: 12 booleans, true = active month
         const plants = [
             {
-                id: 'wild-garlic', name: 'Wild Garlic', dk: 'Ramsløg', peak: 'mar',
+                id: 'wild-garlic',
+                photo: 'images/plants/wild-garlic-1.jpg', name: 'Wild Garlic', dk: 'Ramsløg', peak: 'mar',
                 season: [false, true, true, true, true, false, false, false, false, false, false, false],
                 habitat: 'Found in moist deciduous forests',
                 tip: 'Broad, green, lance-shaped leaves',
                 warning: 'Can be confused with the highly toxic Lily of the Valley (Liljekonval) or Autumn Crocus (Høsttidløs). Ramsløg always smells like garlic while its toxic lookalikes do not.'
             },
             {
-                id: 'dandelion', name: 'Dandelion', dk: 'Mælkebøtte', peak: 'may',
+                id: 'dandelion',
+                photo: 'images/plants/dandelion-1.jpg', name: 'Dandelion', dk: 'Mælkebøtte', peak: 'may',
                 season: [true, true, true, true, true, true, true, true, true, true, true, true],
                 habitat: 'Extremely common',
                 tip: 'Jagged leaves arranged in a ground-level rosette',
                 warning: null
             },
             {
-                id: 'stinging-nettle', name: 'Stinging Nettle', dk: 'Brændenælde', peak: 'apr',
+                id: 'stinging-nettle',
+                photo: 'images/plants/stinging-nettle-1.jpg', name: 'Stinging Nettle', dk: 'Brændenælde', peak: 'apr',
                 season: [false, false, true, true, true, true, true, true, true, true, false, false],
                 habitat: 'Nitrogen-rich soil and gardens',
                 tip: 'Heart-shaped leaves with deeply serrated edges',
                 warning: null
             },
             {
-                id: 'elder', name: 'Elder', dk: 'Hyld', peak: 'jun',
+                id: 'elder',
+                photo: 'images/plants/elder-1.jpg', name: 'Elder', dk: 'Hyld', peak: 'jun',
                 season: [false, false, false, false, false, true, true, false, true, true, false, false],
                 habitat: 'Common in hedgerows',
                 tip: 'Large flat clusters of cream-colored, fragrant flowers',
                 warning: 'All parts except the flowers and ripe berries are toxic. Berries must be heat-treated (boiled) before consumption to destroy cyanogenic glycosides.'
             },
             {
-                id: 'sea-kale', name: 'Sea Kale', dk: 'Strandkål', peak: 'apr',
+                id: 'sea-kale',
+                photo: 'images/plants/sea-kale-1.jpg', name: 'Sea Kale', dk: 'Strandkål', peak: 'apr',
                 season: [false, false, true, true, true, true, true, true, true, true, false, false],
                 habitat: 'Gravelly and sandy beaches',
                 tip: 'Large, fleshy, blue-green curly leaves',
                 warning: null
             },
             {
-                id: 'ground-elder', name: 'Ground Elder', dk: 'Skvalderkål', peak: 'apr',
+                id: 'ground-elder',
+                photo: 'images/plants/ground-elder-1.jpg', name: 'Ground Elder', dk: 'Skvalderkål', peak: 'apr',
                 season: [false, false, true, true, true, true, true, true, true, true, false, false],
                 habitat: 'Extremely common in gardens',
                 tip: 'Shiny, light-green leaves with three-part symmetry',
                 warning: 'Can be confused with other umbellifers; always check for the specific three-part leaf shape and the scent.'
             },
             {
-                id: 'garlic-mustard', name: 'Garlic Mustard', dk: 'Løgkarse', peak: 'apr',
+                id: 'garlic-mustard',
+                photo: 'images/plants/garlic-mustard-1.jpg', name: 'Garlic Mustard', dk: 'Løgkarse', peak: 'apr',
                 season: [false, false, true, true, true, true, true, true, true, false, false, false],
                 habitat: 'Found in semi-shaded areas',
                 tip: 'Kidney-shaped basal leaves with heart-shaped serrated edges',
                 warning: 'Contains small amounts of cyanide; consume in moderation as a seasoning rather than a primary vegetable.'
             },
             {
-                id: 'wood-sorrel', name: 'Wood Sorrel', dk: 'Skovsyre', peak: 'apr',
+                id: 'wood-sorrel',
+                photo: 'images/plants/wood-sorrel-1.jpg', name: 'Wood Sorrel', dk: 'Skovsyre', peak: 'apr',
                 season: [true, true, true, true, true, true, true, true, true, true, true, true],
                 habitat: 'Moist woodland edges',
                 tip: 'Heart-shaped clover-like leaflets in groups of three',
                 warning: null
             },
             {
-                id: 'juniper', name: 'Juniper', dk: 'Ene', peak: 'oct',
+                id: 'juniper',
+                photo: 'images/plants/juniper-1.jpg', name: 'Juniper', dk: 'Ene', peak: 'oct',
                 season: [true, true, true, true, true, true, true, true, true, true, true, true],
                 habitat: 'Grows on open heaths',
                 tip: 'Sculptural evergreen shrub with sharp needles',
                 warning: 'Can be confused with the toxic garden juniper (Juniperus sabina), which has scaly leaves rather than sharp needles.'
             },
             {
-                id: 'sea-buckthorn', name: 'Sea Buckthorn', dk: 'Havtorn', peak: 'sep',
+                id: 'sea-buckthorn',
+                photo: 'images/plants/sea-buckthorn-1.jpg', name: 'Sea Buckthorn', dk: 'Havtorn', peak: 'sep',
                 season: [false, false, false, false, false, false, false, true, true, true, true, false],
                 habitat: 'Thrives on coastal dunes',
                 tip: 'Deciduous shrub with silver-gray lanceolate leaves',
                 warning: null
             },
             {
-                id: 'white-dead-nettle', name: 'White Dead-nettle', dk: 'Døvnælde', peak: 'apr',
+                id: 'white-dead-nettle',
+                photo: 'images/plants/white-dead-nettle-1.jpg', name: 'White Dead-nettle', dk: 'Døvnælde', peak: 'apr',
                 season: [true, true, true, true, true, true, true, true, true, true, true, true],
                 habitat: 'Common in nitrogen-rich soil',
                 tip: 'Heart-shaped leaves with serrated edges like a nettle',
                 warning: null
             },
             {
-                id: 'red-dead-nettle', name: 'Red Dead Nettle', dk: 'Rød tvetand', peak: 'apr',
+                id: 'red-dead-nettle',
+                photo: 'images/plants/red-dead-nettle-1.jpg', name: 'Red Dead Nettle', dk: 'Rød tvetand', peak: 'apr',
                 season: [true, true, true, true, true, true, true, true, true, true, true, true],
                 habitat: 'Cultivated fields and roadsides',
                 tip: 'Upper leaves are often tinted deep purple or red',
                 warning: 'Can be confused with other non-toxic tvetand species; always check the flower and leaf shape.'
             },
             {
-                id: 'pineapple-weed', name: 'Pineapple Weed', dk: 'Skive kamille', peak: 'jul',
+                id: 'pineapple-weed',
+                photo: 'images/plants/pineapple-weed-1.jpg', name: 'Pineapple Weed', dk: 'Skive kamille', peak: 'jul',
                 season: [false, false, false, false, false, true, true, true, true, false, false, false],
                 habitat: 'Common on walkways',
                 tip: 'Small greenish-yellow cone-shaped flower heads',
                 warning: null
             },
             {
-                id: 'sweet-cicely', name: 'Cicely', dk: 'Sødskærm', peak: 'may',
+                id: 'sweet-cicely',
+                photo: 'images/plants/sweet-cicely-1.jpg', name: 'Cicely', dk: 'Sødskærm', peak: 'may',
                 season: [false, false, true, true, true, true, true, true, true, true, true, false],
                 habitat: 'Moist forest edges and roadsides',
                 tip: 'Delicate, fern-like leaves often with white patches',
                 warning: 'Can be confused with highly toxic umbellifers like Hemlock (Skarntyde). Always rely on the distinct licorice scent.'
             },
             {
-                id: 'wild-carrot', name: 'Wild Carrot', dk: 'Vild gulerod', peak: 'aug',
+                id: 'wild-carrot',
+                photo: '', name: 'Wild Carrot', dk: 'Vild gulerod', peak: 'aug',
                 season: [false, false, false, false, true, true, true, true, true, true, false, false],
                 habitat: 'Dry meadows and sunny roadsides',
                 tip: 'Lacy, twice-pinnate leaves that smell like carrot',
                 warning: 'Extreme caution required: can be confused with deadly Hemlock (Skarntyde). Wild carrot has hairy stems, whereas Hemlock is smooth and purple-spotted.'
             },
             {
-                id: 'horseradish', name: 'Horseradish', dk: 'Peberrod', peak: 'oct',
+                id: 'horseradish',
+                photo: 'images/plants/horseradish-1.jpg', name: 'Horseradish', dk: 'Peberrod', peak: 'oct',
                 season: [true, true, true, true, true, true, true, true, true, true, true, true],
                 habitat: 'Common on open wasteland',
                 tip: 'Large, wavy, glossy green leaves up to 1 meter tall',
                 warning: 'The leaves can be confused with Dock (Skræppe), but horseradish leaves are much larger and smell spicy when crushed.'
             },
             {
-                id: 'sweet-woodruff', name: 'Sweet Woodruff', dk: 'Skovmærke', peak: 'apr',
+                id: 'sweet-woodruff',
+                photo: 'images/plants/sweet-woodruff-1.jpg', name: 'Sweet Woodruff', dk: 'Skovmærke', peak: 'apr',
                 season: [false, false, false, true, true, false, false, false, false, false, false, false],
                 habitat: 'Grows in shaded deciduous forests',
                 tip: 'Leaves grow in distinct whorls of 6-8 around the stem',
                 warning: null
             },
             {
-                id: 'beech', name: 'Beech', dk: 'Bøg', peak: 'apr',
+                id: 'beech',
+                photo: '', name: 'Beech', dk: 'Bøg', peak: 'apr',
                 season: [false, true, true, true, true, false, false, false, false, false, false, false],
                 habitat: 'Dominant in deciduous forests',
                 tip: 'Smooth, light-gray \'elephant-skin\' bark',
                 warning: null
             },
             {
-                id: 'sea-sandwort', name: 'Sea Sandwort', dk: 'Strandarve', peak: 'jul',
+                id: 'sea-sandwort',
+                photo: '', name: 'Sea Sandwort', dk: 'Strandarve', peak: 'jul',
                 season: [false, false, false, false, true, true, true, true, true, true, false, false],
                 habitat: 'Sandy beaches and coastal dunes',
                 tip: 'Fleshy, succulent leaves arranged in opposite pairs forming a cross',
                 warning: 'Can be confused with Sandkryb, which is darker, less succulent, and has purple flowers.'
             },
             {
-                id: 'black-trumpet', name: 'Black Trumpet', dk: 'Stor Trompetsvamp', peak: 'sep',
+                id: 'black-trumpet',
+                photo: '', name: 'Black Trumpet', dk: 'Stor Trompetsvamp', peak: 'sep',
                 season: [false, false, false, false, false, false, false, true, true, true, true, false],
                 habitat: 'Grows on the forest floor',
                 tip: 'Black to dark gray funnel-shaped fruit body',
                 warning: null
             },
             {
-                id: 'yellow-star-of-bethlehem', name: 'Yellow Star-of-Bethlehem', dk: 'Guldstjerne', peak: 'mar',
+                id: 'yellow-star-of-bethlehem',
+                photo: '', name: 'Yellow Star-of-Bethlehem', dk: 'Guldstjerne', peak: 'mar',
                 season: [false, false, true, true, false, false, false, false, false, false, false, false],
                 habitat: 'Found in parks',
                 tip: 'Small star-shaped flowers with 6 yellow petals',
                 warning: null
             },
             {
-                id: 'chanterelle', name: 'Chanterelle', dk: 'Kantarel', peak: 'aug',
+                id: 'chanterelle',
+                photo: '', name: 'Chanterelle', dk: 'Kantarel', peak: 'aug',
                 season: [false,false,false,false,false,false,true,true,true,false,false,false],
                 habitat: 'Found in mossy deciduous and mixed forest',
                 tip: 'Egg-yolk to golden yellow colour, sometimes with orange tones.',
                 warning: 'Can be confused with the False Chanterelle (Hygrophoropsis aurantiaca) which has true gills, a more orange colour, and a floppy cap. Always check the ridges — true chanterelles never have true gills.'
             },
             {
-                id: 'meadowsweet', name: 'Meadowsweet', dk: 'Mødurt', peak: 'jul',
+                id: 'meadowsweet',
+                photo: '', name: 'Meadowsweet', dk: 'Mødurt', peak: 'jul',
                 season: [false,false,false,false,false,true,true,false,false,false,false,false],
                 habitat: 'Found in damp meadows',
                 tip: 'Frothy, cream-white flower clusters with a powerful honey-almond-vanilla scent.',
                 warning: null
             },
             {
-                id: 'oyster-mushroom', name: 'Oyster Mushroom', dk: 'Østershat', peak: 'nov',
+                id: 'oyster-mushroom',
+                photo: '', name: 'Oyster Mushroom', dk: 'Østershat', peak: 'nov',
                 season: [false,false,false,false,false,false,false,false,true,true,true,true],
                 habitat: 'Found on dead and dying deciduous trees',
                 tip: 'Shelf-like clusters growing directly on dead or dying wood, usually beech.',
                 warning: 'No dangerous lookalikes in a Danish context when growing on deciduous wood. Always confirm the host tree is deciduous and the gills run down the stem.'
             },
             {
-                id: 'yarrow', name: 'Yarrow', dk: 'Røllike', peak: 'jul',
+                id: 'yarrow',
+                photo: '', name: 'Yarrow', dk: 'Røllike', peak: 'jul',
                 season: [false,false,false,false,false,true,true,true,false,false,false,false],
                 habitat: 'Found on dry grassland',
                 tip: 'Finely divided, feathery leaves that are soft and slightly aromatic.',
                 warning: null
             },
             {
-                id: 'shepherds-purse', name: 'Shepherd\'s Purse', dk: 'Hyrdetaske', peak: 'mar',
+                id: 'shepherds-purse',
+                photo: '', name: 'Shepherd\'s Purse', dk: 'Hyrdetaske', peak: 'mar',
                 season: [true,true,true,true,false,false,false,false,false,false,true,true],
                 habitat: 'Found on disturbed ground',
                 tip: 'Small heart-shaped seed pods that look like old-fashioned purses — the key identifying feature.',
                 warning: 'No dangerous lookalikes — the distinctive heart-shaped seed pods make it unmistakable. Avoid picking from sprayed agricultural land.'
             },
             {
-                id: 'vandkarse', name: 'Water Cress', dk: 'Vandkarse', peak: 'apr',
+                id: 'vandkarse',
+                photo: '', name: 'Water Cress', dk: 'Vandkarse', peak: 'apr',
                 season: [false,false,true,true,true,true,true,false,false,false,false,false],
                 habitat: 'Found in very wet soil or directly in freshwater — streams',
                 tip: 'Grows as a rosette from the centre, with stems radiating outward symmetrically',
                 warning: null
             },
             {
-                id: 'brondkarse', name: 'Watercress', dk: 'Brøndkarse', peak: 'apr',
+                id: 'brondkarse',
+                photo: '', name: 'Watercress', dk: 'Brøndkarse', peak: 'apr',
                 season: [false,true,true,true,true,true,true,false,false,false,false,false],
                 habitat: 'Found only in running freshwater — streams',
                 tip: 'Thick upright stem with many lateral branches, each ending in one leaf with paired leaves down the sides',
                 warning: null
             },
             {
-                id: 'rosetspringklap', name: 'Hairy Bittercress', dk: 'Rosetspringklap', peak: 'mar',
+                id: 'rosetspringklap',
+                photo: '', name: 'Hairy Bittercress', dk: 'Rosetspringklap', peak: 'mar',
                 season: [false,true,true,true,false,false,false,false,false,false,false,false],
                 habitat: 'Found in disturbed soil — pavements',
                 tip: 'Classic cress form — one leaf at the tip of each stem with symmetrical paired leaves down the sides',
                 warning: null
             },
             {
-                id: 'mirabelle-blossom', name: 'Mirabelle Blossom', dk: 'Mirabelle blomst', peak: 'mar',
+                id: 'mirabelle-blossom',
+                photo: '', name: 'Mirabelle Blossom', dk: 'Mirabelle blomst', peak: 'mar',
                 season: [false,false,true,true,false,false,false,false,false,false,false,false],
                 habitat: 'Parks and gardens',
                 tip: 'The first shrub to come into full white blossom in spring — often weeks before anything else',
                 warning: null
             },
             {
-                id: 'porse', name: 'Bog Myrtle', dk: 'Porse', peak: 'mar',
+                id: 'porse',
+                photo: '', name: 'Bog Myrtle', dk: 'Porse', peak: 'mar',
                 season: [false,false,true,true,false,false,false,false,false,false,false,false],
                 habitat: 'Boggy areas with moist peaty soil',
                 tip: 'Low-growing brownish-red shrub with catkins at the tips of branches',
                 warning: null
             },
             {
-                id: 'martsvioler', name: 'Sweet Violet', dk: 'Martsvioler', peak: 'mar',
+                id: 'martsvioler',
+                photo: '', name: 'Sweet Violet', dk: 'Martsvioler', peak: 'mar',
                 season: [false,false,true,true,false,false,false,false,false,false,false,false],
                 habitat: 'Found at the base of trees in parks',
                 tip: 'Purple five-petaled flowers with yellow-orange centres at the stamens',
                 warning: null
             },
             {
-                id: 'judasore', name: 'Jelly Ear', dk: 'Judasøre', peak: 'mar',
+                id: 'judasore',
+                photo: '', name: 'Jelly Ear', dk: 'Judasøre', peak: 'mar',
                 season: [true,true,true,true,true,true,true,true,true,true,true,true],
                 habitat: 'Grows on trees as a wood-decomposing fungus',
                 tip: 'Brown to dark reddish-brown ear-shaped fruiting body',
                 warning: null
             },
             {
-                id: 'tandfri-varsalat', name: 'Lamb\'s Lettuce', dk: 'Tandfri vårsalat', peak: 'apr',
+                id: 'tandfri-varsalat',
+                photo: '', name: 'Lamb\'s Lettuce', dk: 'Tandfri vårsalat', peak: 'apr',
                 season: [false,false,true,true,true,true,false,false,false,false,false,false],
                 habitat: 'Sandy beaches and coastal dunes',
                 tip: 'Grows as a rosette from a single central point',
                 warning: null
             },
             {
-                id: 'daisy', name: 'Daisy', dk: 'Bellis', peak: 'may',
+                id: 'daisy',
+                photo: '', name: 'Daisy', dk: 'Bellis', peak: 'may',
                 season: [false, false, true, true, true, true, true, true, true, false, false, false],
                 habitat: 'Found commonly in lawns',
                 tip: 'White outer petals with a yellow center',
                 warning: null
             },
             {
-                id: 'birch', name: 'Birch', dk: 'Birk', peak: 'mar',
+                id: 'birch',
+                photo: '', name: 'Birch', dk: 'Birk', peak: 'mar',
                 season: [true, true, true, true, true, false, false, false, false, false, false, false],
                 habitat: 'Forests, parks and gardens',
                 tip: 'Distinctive white and black papery bark',
                 warning: null
             },
             {
-                id: 'bilberry', name: 'Bilberry', dk: 'Blåbær', peak: 'aug',
+                id: 'bilberry',
+                photo: '', name: 'Bilberry', dk: 'Blåbær', peak: 'aug',
                 season: [false, false, false, false, false, false, true, true, false, false, false, false],
                 habitat: 'Grows in nutrient-poor soils',
                 tip: 'Low-growing shrub with angular green stems',
                 warning: null
             },
             {
-                id: 'blackberry', name: 'Blackberry', dk: 'Brombær', peak: 'sep',
+                id: 'blackberry',
+                photo: '', name: 'Blackberry', dk: 'Brombær', peak: 'sep',
                 season: [false, false, false, false, false, false, false, true, true, true, false, false],
                 habitat: 'Very common in forest edges',
                 tip: 'Arching, thorny canes forming thickets',
                 warning: null
             },
             {
-                id: 'boxthorn', name: 'Boxthorn', dk: 'Bukketorn', peak: 'sep',
+                id: 'boxthorn',
+                photo: '', name: 'Boxthorn', dk: 'Bukketorn', peak: 'sep',
                 season: [false, false, false, false, false, false, true, true, true, true, true, false],
                 habitat: 'Planted for coastal protection and now naturalized',
                 tip: 'Long, arching branches resembling a fountain',
                 warning: null
             },
             {
-                id: 'chicory', name: 'Chicory', dk: 'Cikorie', peak: 'jul',
+                id: 'chicory',
+                photo: '', name: 'Chicory', dk: 'Cikorie', peak: 'jul',
                 season: [false, false, false, true, true, true, true, true, true, true, true, false],
                 habitat: 'Dry roadsides and meadows',
                 tip: 'Vibrant sky-blue composite flowers',
                 warning: 'Young leaves can be confused with dandelions, but both are safe to eat.'
             },
             {
-                id: 'elm', name: 'Elm', dk: 'Elm', peak: 'apr',
+                id: 'elm',
+                photo: '', name: 'Elm', dk: 'Elm', peak: 'apr',
                 season: [false, false, true, true, false, false, false, false, false, false, false, false],
                 habitat: 'Forests, hedgerows and parks',
                 tip: 'Oval leaves with an asymmetric base',
                 warning: null
             },
             {
-                id: 'bird-cherry', name: 'Bird Cherry', dk: 'Fuglekirsebær', peak: 'may',
+                id: 'bird-cherry',
+                photo: '', name: 'Bird Cherry', dk: 'Fuglekirsebær', peak: 'may',
                 season: [false, false, false, true, true, false, false, true, true, false, false, false],
                 habitat: 'Deciduous forests and railway edges',
                 tip: 'Tall tree with horizontal bands on bark',
                 warning: 'Blossoms should be consumed in moderation as they contain small amounts of cyanide-like compounds.'
             },
             {
-                id: 'fireweed', name: 'Fireweed', dk: 'Gederams', peak: 'jun',
+                id: 'fireweed',
+                photo: '', name: 'Fireweed', dk: 'Gederams', peak: 'jun',
                 season: [false, false, false, true, true, true, true, true, false, false, false, false],
                 habitat: 'Thrives in forest clearings',
                 tip: 'Spikes of bright pink to purple flowers',
                 warning: null
             },
             {
-                id: 'mugwort', name: 'Mugwort', dk: 'Gråbynke', peak: 'jul',
+                id: 'mugwort',
+                photo: '', name: 'Mugwort', dk: 'Gråbynke', peak: 'jul',
                 season: [false, false, false, true, true, true, true, true, true, false, false, false],
                 habitat: 'Very common on nitrogen-rich waste ground',
                 tip: 'Leaves are dark green with silver undersides',
                 warning: null
             },
             {
-                id: 'heather', name: 'Heather', dk: 'Hedelyng', peak: 'aug',
+                id: 'heather',
+                photo: '', name: 'Heather', dk: 'Hedelyng', peak: 'aug',
                 season: [false, false, false, false, false, false, false, true, true, false, false, false],
                 habitat: 'Grows in large carpets on open heaths',
                 tip: 'Low evergreen shrub with scale-like leaves',
                 warning: null
             },
             {
-                id: 'raspberry', name: 'Raspberry', dk: 'Hindbær', peak: 'jul',
+                id: 'raspberry',
+                photo: '', name: 'Raspberry', dk: 'Hindbær', peak: 'jul',
                 season: [false, false, false, false, true, true, true, true, false, false, false, false],
                 habitat: 'Common in forest clearings',
                 tip: 'Canes covered in fine, soft prickles',
                 warning: null
             },
             {
-                id: 'hawthorn', name: 'Hawthorn', dk: 'Hvidtjørn', peak: 'may',
+                id: 'hawthorn',
+                photo: '', name: 'Hawthorn', dk: 'Hvidtjørn', peak: 'may',
                 season: [false, false, false, true, true, false, false, false, true, true, true, false],
                 habitat: 'Frequent in old hedgerows',
                 tip: 'Spiny shrub or small tree',
                 warning: null
             },
             {
-                id: 'wild-rose', name: 'Wild Rose and Rose Hip', dk: 'Hunderose/Hyben', peak: 'sep',
+                id: 'wild-rose',
+                photo: '', name: 'Wild Rose and Rose Hip', dk: 'Hunderose/Hyben', peak: 'sep',
                 season: [false, false, false, false, false, true, true, true, true, true, true, false],
                 habitat: 'Hedges and coastal dunes',
                 tip: 'Thorny arching canes with hooked prickles',
                 warning: null
             },
             {
-                id: 'ground-ivy', name: 'Ground Ivy', dk: 'Korsknap', peak: 'jun',
+                id: 'ground-ivy',
+                photo: '', name: 'Ground Ivy', dk: 'Korsknap', peak: 'jun',
                 season: [false, false, false, true, true, true, true, true, true, true, true, false],
                 habitat: 'Common in moist soils',
                 tip: 'Kidney-shaped leaves with scalloped edges',
                 warning: null
             },
             {
-                id: 'linden', name: 'Linden', dk: 'Lind', peak: 'jun',
+                id: 'linden',
+                photo: '', name: 'Linden', dk: 'Lind', peak: 'jun',
                 season: [false, false, false, false, false, true, true, false, false, false, false, false],
                 habitat: 'Parks, avenues and mixed forests',
                 tip: 'Heart-shaped leaves with a pointed tip',
                 warning: null
             },
             {
-                id: 'glasswort', name: 'Glasswort', dk: 'Salturt', peak: 'jul',
+                id: 'glasswort',
+                photo: '', name: 'Glasswort', dk: 'Salturt', peak: 'jul',
                 season: [false, false, false, false, true, true, true, true, true, true, false, false],
                 habitat: 'Exclusively coastal',
                 tip: 'Fleshy, jointed, succulent green stems',
                 warning: null
             },
             {
-                id: 'three-cornered-leek', name: 'Three-cornered Leek', dk: 'Skovløg', peak: 'apr',
+                id: 'three-cornered-leek',
+                photo: '', name: 'Three-cornered Leek', dk: 'Skovløg', peak: 'apr',
                 season: [false, false, true, true, true, false, false, false, false, false, false, false],
                 habitat: 'Moist coastal forests and meadows',
                 tip: 'Stem is distinctly triangular in cross-section',
                 warning: 'Be careful not to confuse with toxic bulbs like Lily of the Valley when leaves are young.'
             },
             {
-                id: 'sloe', name: 'Sloe', dk: 'Slåen', peak: 'oct',
+                id: 'sloe',
+                photo: '', name: 'Sloe', dk: 'Slåen', peak: 'oct',
                 season: [false, false, false, false, false, false, false, false, true, true, true, false],
                 habitat: 'Common in hedges',
                 tip: 'Extremely thorny branches with black bark',
                 warning: null
             },
             {
-                id: 'crow-garlic', name: 'Crow Garlic', dk: 'Spøjsløg', peak: 'mar',
+                id: 'crow-garlic',
+                photo: '', name: 'Crow Garlic', dk: 'Spøjsløg', peak: 'mar',
                 season: [false, true, true, true, false, false, false, false, false, false, false, false],
                 habitat: 'Grows in lawns',
                 tip: 'Hollow, cylindrical chive-like leaves',
                 warning: null
             },
             {
-                id: 'water-mint', name: 'Water Mint', dk: 'Vandmynte', peak: 'jul',
+                id: 'water-mint',
+                photo: '', name: 'Water Mint', dk: 'Vandmynte', peak: 'jul',
                 season: [false, false, false, false, false, true, true, true, true, false, false, false],
                 habitat: 'Thrives in wet areas like stream banks',
                 tip: 'Strong, characteristic peppermint scent',
                 warning: null
             },
             {
-                id: 'plantain', name: 'Plantain', dk: 'Vejbred', peak: 'jun',
+                id: 'plantain',
+                photo: '', name: 'Plantain', dk: 'Vejbred', peak: 'jun',
                 season: [false, false, false, true, true, true, true, true, true, true, false, false],
                 habitat: 'Grows everywhere humans walk on paths',
                 tip: 'Leaves with parallel veins (strenge)',
                 warning: null
             },
             {
-                id: 'wild-onion', name: 'Wild Onion', dk: 'Vilde løg', peak: 'may',
+                id: 'wild-onion',
+                photo: 'images/plants/wild-onion-1.jpg', name: 'Wild Onion', dk: 'Vilde løg', peak: 'may',
                 season: [false, false, true, true, true, true, true, true, false, false, false, false],
                 habitat: 'Open coastal slopes and meadows',
                 tip: 'Produces clusters of tiny bulbs (top bulbs) on top',
                 warning: 'Always confirm the onion/garlic scent to avoid confusing with toxic meadow bulbs.'
             },
             {
-                id: 'burdock-root', name: 'Burdock Root', dk: 'Burrerod', peak: 'oct',
+                id: 'burdock-root',
+                photo: '', name: 'Burdock Root', dk: 'Burrerod', peak: 'oct',
                 season: [true, true, false, false, false, false, false, false, true, true, true, true],
                 habitat: 'Found in nitrogen-rich soil',
                 tip: 'Large, broad, heart-shaped leaves',
                 warning: null
             },
             {
-                id: 'cleavers', name: 'Cleavers', dk: 'Burre-snerre', peak: 'apr',
+                id: 'cleavers',
+                photo: '', name: 'Cleavers', dk: 'Burre-snerre', peak: 'apr',
                 season: [false, true, true, true, true, false, false, false, false, false, false, false],
                 habitat: 'Extremely common in gardens',
                 tip: 'Whorls of narrow, lance-shaped leaves',
                 warning: null
             },
             {
-                id: 'crab-apple', name: 'Crab Apple', dk: 'Vildæble', peak: 'sep',
+                id: 'crab-apple',
+                photo: '', name: 'Crab Apple', dk: 'Vildæble', peak: 'sep',
                 season: [false, false, false, false, false, false, false, true, true, true, false, false],
                 habitat: 'Found in forest edges',
                 tip: 'Small, round fruit, often yellowish-green',
                 warning: 'Always ensure fruits are firm and not infested; the seeds contain small amounts of cyanide and should not be consumed in large quantities.'
             },
             {
-                id: 'hen-of-the-woods', name: 'Hen of the Woods', dk: 'Mosaikporesvamp', peak: 'sep',
+                id: 'hen-of-the-woods',
+                photo: '', name: 'Hen of the Woods', dk: 'Mosaikporesvamp', peak: 'sep',
                 season: [false, false, false, false, false, false, false, true, true, true, false, false],
                 habitat: 'Base of old oak trees',
                 tip: 'Large cluster of overlapping brownish-gray caps',
                 warning: 'Ensure identification is certain to avoid confusion with inedible tough poly-pores; always cook this mushroom thoroughly.'
             },
             {
-                id: 'porcini', name: 'Porcini', dk: 'Karljohan', peak: 'aug',
+                id: 'porcini',
+                photo: 'images/plants/porcini-1.jpg', name: 'Porcini', dk: 'Karljohan', peak: 'aug',
                 season: [false, false, false, false, false, false, true, true, true, true, false, false],
                 habitat: 'Deciduous and coniferous forests',
                 tip: 'Brown, bun-shaped cap (often sticky when wet)',
                 warning: null
             },
             {
-                id: 'sweet-chestnut', name: 'Sweet Chestnut', dk: 'Ægte Kastanje', peak: 'oct',
+                id: 'sweet-chestnut',
+                photo: '', name: 'Sweet Chestnut', dk: 'Ægte Kastanje', peak: 'oct',
                 season: [false, false, false, false, false, false, false, false, false, true, true, false],
                 habitat: 'Primarily found in parks',
                 tip: 'Long, lance-shaped leaves with sharp teeth',
                 warning: 'Do not confuse with the Horse Chestnut (Hestekastanje), which is toxic and has a much less spiky, thicker husk with rounder nuts.'
             },
             {
-                id: 'velvet-shank', name: 'Velvet Shank', dk: 'Fløjlsfodsvampe', peak: 'nov',
+                id: 'velvet-shank',
+                photo: 'images/plants/velvet-shank-1.jpg', name: 'Velvet Shank', dk: 'Fløjlsfodsvampe', peak: 'nov',
                 season: [true, true, false, false, false, false, false, false, false, true, true, true],
                 habitat: 'Found growing on dead or dying deciduous trees',
                 tip: 'Bright orange to yellowish cap',
                 warning: 'Use caution to avoid confusion with the deadly Galerina marginata, which grows in similar clusters but has brown gills and a ring on the stem.'
             },
             {
-                id: 'wild-strawberry', name: 'Wild Strawberry', dk: 'Markjordbær', peak: 'jun',
+                id: 'wild-strawberry',
+                photo: 'images/plants/wild-strawberry-1.jpg', name: 'Wild Strawberry', dk: 'Markjordbær', peak: 'jun',
                 season: [false, false, false, false, true, true, true, true, false, false, false, false],
                 habitat: 'Common in forest edges',
                 tip: 'Small, red aggregate fruit with seeds on surface',
                 warning: null
             },
             {
-                id: 'norway-spruce', name: 'Norway Spruce', dk: 'Rødgran', peak: 'apr',
+                id: 'norway-spruce',
+                photo: '', name: 'Norway Spruce', dk: 'Rødgran', peak: 'apr',
                 season: [false,false,false,true,true,false,false,false,false,false,false,false],
                 habitat: 'Timber plantations and mixed forests',
                 tip: 'Needles grow in a spiral pattern all around the branch',
                 warning: 'Avoid confusion with the deadly Yew (Taks), which has flatter needles and green stems.'
             },
             {
-                id: 'sea-rocket', name: 'Sea Rocket', dk: 'Strandsennep', peak: 'jul',
+                id: 'sea-rocket',
+                photo: '', name: 'Sea Rocket', dk: 'Strandsennep', peak: 'jul',
                 season: [false,false,false,false,false,true,true,true,true,true,false,false],
                 habitat: 'Sandy coastal beaches along Danish islands and Jutland coastline',
                 tip: 'Fleshy succulent leaves with a sharp mustard and horseradish aroma when crushed',
@@ -606,13 +673,28 @@
             } else {
                 noResults.classList.add('hidden');
                 filtered.forEach(p => {
+                    const monthColor = hexMap[firstMonth(p.season)];
                     const card = document.createElement('a');
                     card.href = `plant-detail.html?id=${p.id}`;
                     card.className = 'bg-white rounded-2xl border border-gray-100 card-shadow block hover:shadow-md transition-shadow overflow-hidden';
+
+                    // Image header: photo if available, else month colour block
+                    let headerHtml;
+                    if (p.photo) {
+                        headerHtml = `
+                            <div class="relative h-36 overflow-hidden rounded-t-2xl">
+                                <img src="${p.photo}" alt="${p.name}" class="w-full h-full object-cover" onerror="this.parentElement.style.backgroundColor='${monthColor}';this.style.display='none'">
+                                <div style="position:absolute;bottom:0;left:0;right:0;height:5px;background-color:${monthColor};opacity:0.85;"></div>
+                            </div>`;
+                    } else {
+                        headerHtml = `
+                            <div class="h-36 flex items-center justify-center rounded-t-2xl" style="background-color:${monthColor}">
+                                <i data-lucide="leaf" class="w-8 h-8 text-white opacity-80"></i>
+                            </div>`;
+                    }
+
                     card.innerHTML = `
-                        <div class="h-36 flex items-center justify-center rounded-t-2xl" style="background-color:${hexMap[firstMonth(p.season)]}">
-                            <i data-lucide="leaf" class="w-8 h-8 text-white opacity-80"></i>
-                        </div>
+                        ${headerHtml}
                         <div class="p-4">
                             <h3 class="font-bold text-lg leading-tight">${p.name} <span class="text-gray-400 font-normal text-base">(${p.dk})</span></h3>
                             <div class="flex gap-1 py-2">${makeDots(p.season)}</div>

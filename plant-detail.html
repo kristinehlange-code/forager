@@ -2823,6 +2823,14 @@
                     img.alt = `${plant.name} photo ${i + 2}`;
                     img.className = 'photo-thumb';
                     img.onclick = () => openLightbox(src);
+                    img.onerror = function() {
+                        // Replace broken image with colour swatch
+                        const sw = document.createElement('div');
+                        sw.className = 'photo-thumb';
+                        sw.style.backgroundColor = monthColor;
+                        sw.style.opacity = '0.4';
+                        strip.replaceChild(sw, this);
+                    };
                     strip.appendChild(img);
                 });
                 // Keep colour swatch as last thumb
@@ -2877,19 +2885,17 @@
                 plant.recipes.forEach(rId => {
                     const r = recipeData[rId];
                     if (!r) return;
+                    const meta = recipeMetaMap && recipeMetaMap[rId];
+                    const rColor = hexMap[firstMonth(plant.season)];
                     const link = document.createElement('a');
                     link.href = `recipe-detail.html?id=${rId}`;
-                    link.className = 'flex items-center justify-between bg-white border border-gray-100 card-shadow rounded-xl p-4 hover:shadow-md transition-shadow';
+                    link.className = 'bg-white rounded-2xl shadow-sm border border-gray-50 flex hover:shadow-md transition-shadow overflow-hidden';
                     link.innerHTML = `
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background-color:${hexMap[firstMonth(plant.season)]}">
-                                <i data-lucide="flame" class="w-4 h-4 text-white opacity-80"></i>
-                            </div>
-                            <span class="font-semibold text-sm">${r.name}</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full" style="background-color:${typeBadgeColors[r.type]};color:${typeBadgeText[r.type]}">${r.type}</span>
-                            <i data-lucide="chevron-right" class="w-4 h-4 text-gray-300"></i>
+                        <div class="w-1.5 flex-shrink-0 rounded-l-2xl" style="background-color:${rColor}"></div>
+                        <div class="p-4 flex-1">
+                            <h3 class="font-bold text-base">${r.name}</h3>
+                            <p class="text-[11px] font-bold tracking-widest mt-0.5 mb-2 text-gray-400 uppercase">${r.plant} (${plant.danish})</p>
+                            <p class="text-sm text-gray-500 leading-snug">${r.intro}</p>
                         </div>
                     `;
                     document.getElementById('recipe-links').appendChild(link);
