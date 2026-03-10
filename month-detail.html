@@ -360,12 +360,62 @@
             document.getElementById('next-label').style.color = nextData.color;
             document.getElementById('next-link').href = `month-detail.html?m=${nextKey}`;
 
+            // ID maps for plants and recipes that don't follow simple name->id conversion
+            const plantIdMap = {
+                'beech leaves': 'beech',
+                'beech leaf': 'beech',
+                'elderflower': 'elder',
+                'elderberry': 'elder',
+                'linden flower': 'linden',
+                'hawthorn berry': 'hawthorn',
+                'hawthorn blossom': 'hawthorn',
+                'hawthorn bud': 'hawthorn',
+                'rosehip': 'wild-rose',
+                'rose hip': 'wild-rose',
+                'wild rose': 'wild-rose',
+                'sea purslane': 'glasswort',
+                'burdock root': 'burdock-root',
+                'cleavers': 'cleavers',
+                'crab apple': 'crab-apple',
+                'hen of the woods': 'hen-of-the-woods',
+                'porcini': 'porcini',
+                'sweet chestnut': 'sweet-chestnut',
+                'velvet shank': 'velvet-shank',
+                'wild strawberry': 'wild-strawberry',
+            };
+            const recipeIdMap = {
+                'elderflower cordial': 'elderflower-cordial',
+                'chanterelle butter': 'chanterelle-butter',
+                'nettle soup': 'nettle-soup',
+                'wild garlic pesto': 'wild-garlic-pesto',
+            };
+
+            function plantLink(name) {
+                const key = name.toLowerCase().replace(/'/g,'');
+                if (key in plantIdMap) {
+                    return plantIdMap[key]
+                        ? `plant-detail.html?id=${plantIdMap[key]}`
+                        : 'plants.html';
+                }
+                return `plant-detail.html?id=${name.toLowerCase().replace(/'/g,'').replace(/\s+/g,'-')}`;
+            }
+            function recipeLink(name) {
+                const key = name.toLowerCase().replace(/'/g,'');
+                if (key in recipeIdMap) return `recipe-detail.html?id=${recipeIdMap[key]}`;
+                const id = name.toLowerCase().replace(/'/g,'').replace(/\s+/g,'-');
+                // Only link to recipe-detail if it's a known recipe, otherwise go to recipes.html
+                const knownRecipes = ['elderflower-cordial','chanterelle-butter','nettle-soup','nettle-tea',
+                    'wild-garlic-pesto','dandelion-honey','sea-buckthorn-sorbet','meadowsweet-tea',
+                    'juniper-salt','oyster-mushroom-stew','pickled-garlic-mustard'];
+                return knownRecipes.includes(id) ? `recipe-detail.html?id=${id}` : 'recipes.html';
+            }
+
             // Plants
             const plantList = document.getElementById('plant-list');
             plantList.innerHTML = '';
             data.plants.forEach(p => {
                 const card = document.createElement('a');
-                card.href = `plant-detail.html?id=${p.name.toLowerCase().replace(/'/g, '').replace(/\s+/g,'-')}`;
+                card.href = plantLink(p.name);
                 card.className = 'bg-white p-5 rounded-2xl shadow-sm border border-gray-50 block hover:shadow-md transition-shadow';
                 card.innerHTML = `
                     <h3 class="text-lg font-bold">${p.name}</h3>
@@ -391,7 +441,7 @@
             recipeList.innerHTML = '';
             data.recipes.forEach(r => {
                 const card = document.createElement('a');
-                card.href = `recipe-detail.html?id=${r.name.toLowerCase().replace(/'/g,'').replace(/\s+/g,'-')}`;
+                card.href = recipeLink(r.name);
                 card.className = 'bg-white rounded-2xl shadow-sm border border-gray-50 block hover:shadow-md transition-shadow overflow-hidden flex';
                 card.innerHTML = `
                     <div class="w-1.5 flex-shrink-0 rounded-l-2xl" style="background-color:${data.color}"></div>

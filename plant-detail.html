@@ -201,70 +201,487 @@
 
         const plantData = {
             'wild-garlic': {
-                name: 'Wild Garlic', danish: 'Ramsløg', peak: 'mar',
-                season: [false,false,true,true,true,false,false,false,false,false,false,false],
+                name: 'Ramsons', danish: 'Ramsløg', peak: 'mar',
+                season: [false, true, true, true, true, false, false, false, false, false, false, false],
                 photos: [],
                 spot: [
-                    'Broad, bright green lance-shaped leaves 15–25cm long, emerging directly from the ground.',
-                    'Crush a leaf between your fingers — the smell of garlic is unmistakable and immediate.',
-                    'Clusters of small white star-shaped flowers appear from April onward.',
-                    'Leaves are smooth and shiny on top with a single prominent midrib underneath.'
+                    'Broad, green, lance-shaped leaves',
+                    'Strong scent of garlic when crushed',
+                    'Grows in large, dense colonies on the forest floor',
+                    'White star-shaped flowers appear in late spring',
+                    'Leaves grow directly from the base of the plant'
                 ],
-                habitat: 'Found in moist, shaded deciduous woodland, particularly under beech and ash trees. Often grows in dense carpets near streams and in damp valley floors. Common throughout Denmark from March to May.',
-                warning: 'Can be confused with Lily of the Valley (Convallaria majalis), which is highly toxic, and with Autumn Crocus (Colchicum autumnale). Always crush a leaf and confirm the garlic smell before picking. If there is no garlic smell, do not eat it.',
-                about: 'Wild Garlic, known in Denmark as Ramsløg, is one of the most eagerly anticipated spring plants. It carpets woodland floors in a vivid green haze from March, signalling the true arrival of spring. Used in Nordic kitchens for centuries, it has a milder, fresher flavour than cultivated garlic and every part of the plant is edible — leaves, flowers, and buds.',
+                habitat: 'Found in moist deciduous forests, groves, ravines, and shaded garden corners, preferring nutrient-rich and damp soil.',
+                warning: 'Can be confused with the highly toxic Lily of the Valley (Liljekonval) or Autumn Crocus (Høsttidløs). Ramsløg always smells like garlic while its toxic lookalikes do not.',
+                about: 'Ramsons are one of the most popular foraged herbs in Denmark, used as a potent alternative to garlic and green onions in early spring.',
                 uses: [
-                    'Use fresh leaves anywhere you would use basil or spinach — in pasta, on pizza, or wilted into risotto.',
-                    'Blend into a vibrant green oil that lasts months in the fridge and works on everything.',
-                    'Pickle the unopened flower buds in a light brine to make wild garlic capers.',
-                    'Dry leaves at low temperature and crumble into a green powder for seasoning through winter.',
-                    'Fold into soft butter with lemon zest for an instant compound butter for fish or bread.'
+                    'Homemade ramsons salt',
+                    'Fresh wild garlic pesto',
+                    'Salt-fermented capers from flower buds',
+                    'Infused herb oil',
+                    'Fresh garnish for omelets and salads'
                 ],
                 recipes: ['wild-garlic-pesto']
             },
-            'stinging-nettle': {
-                name: 'Stinging Nettle', danish: 'Brændenælde', peak: 'apr',
-                season: [false,false,true,true,true,true,true,true,true,true,false,false],
+            'dandelion': {
+                name: 'Dandelion', danish: 'Mælkebøtte', peak: 'may',
+                season: [true, true, true, true, true, true, true, true, true, true, true, true],
                 photos: [],
                 spot: [
-                    'Opposite serrated leaves with a heart-shaped base, covered in fine hollow stinging hairs.',
-                    'Square green stem, also covered in stinging hairs.',
-                    'Distinctive drooping catkin-like flower clusters in summer.',
-                    'Young spring shoots are the most tender and flavourful — harvest only the top four leaves.'
+                    'Jagged leaves arranged in a ground-level rosette',
+                    'Bright yellow composite flower heads',
+                    'Hollow, leafless stem containing white milky sap',
+                    'Long, sturdy brown taproot',
+                    'Pappus seeds forming a `blowball` after flowering'
                 ],
-                habitat: 'Thrives in nitrogen-rich disturbed soil, particularly near old farm buildings, along hedgerows, on forest edges, and in gardens. Found everywhere in Denmark. The presence of nettles often indicates historically fertile or manured ground.',
-                warning: 'The sting is painful but harmless and disappears completely when the plant is cooked, dried, or blended. Always wear gloves when harvesting. Do not confuse with White Dead-nettle, which looks similar but has no sting and white flowers — it is also edible but has a much milder flavour.',
-                about: 'One of the most nutritious wild plants available, Stinging Nettle is rich in iron, calcium, magnesium, and vitamins A and C. It has been eaten across Scandinavia for thousands of years and was historically used as a spring tonic after the lean winter months. The flavour is deep, green and mineral, similar to spinach but more complex.',
+                habitat: 'Extremely common throughout Denmark, found in lawns, meadows, fields, and along roadsides in almost any soil type.',
+                warning: 'Ensure you harvest from areas free of car exhaust, pesticides, or industrial pollution.',
+                about: 'A true survival plant, dandelions provide edible greens year-round in mild winters, though leaves are mildest in spring before the May flowering peak.',
                 uses: [
-                    'Blanch briefly in boiling water for 30 seconds to remove the sting, then use exactly like spinach.',
-                    'Dry young leaves completely and crumble into a mineral-rich tea for winter.',
-                    'Blend blanched nettles into soup with potato, onion and cream for a classic Nordic spring dish.',
-                    'Use as a natural rennet substitute for making cheese — a traditional Scandinavian technique.',
-                    'Juice fresh nettles for a vivid green addition to smoothies or cocktails.'
+                    'Dandelion flower syrup (vegan honey)',
+                    'Roasted root coffee substitute',
+                    'Young leaves in fresh salads',
+                    'Fermented dandelion wine',
+                    'Sauteed greens with garlic'
+                ],
+                recipes: ['dandelion-honey']
+            },
+            'stinging-nettle': {
+                name: 'Stinging Nettle', danish: 'Brændenælde', peak: 'apr',
+                season: [false, false, true, true, true, true, true, true, true, true, false, false],
+                photos: [],
+                spot: [
+                    'Heart-shaped leaves with deeply serrated edges',
+                    'Leaves and stems covered in fine stinging hairs',
+                    'Square-shaped upright stems',
+                    'Small greenish flowers hanging in clusters',
+                    'Roots form a dense yellow underground network'
+                ],
+                habitat: 'Ubiquitous in nitrogen-rich soil, often found in gardens, forest edges, and abandoned agricultural areas.',
+                warning: 'Covered in stinging hairs containing formic acid; use gloves during harvest. Once blanched, dried, or crushed, the stinging effect is neutralized.',
+                about: 'Stinging nettles are highly valued for their high mineral and vitamin content, making them a staple for spring tonics and hearty soups.',
+                uses: [
+                    'Classic nettle soup with cream',
+                    'Mineral-rich herbal tea',
+                    'Blanched and used in green pancakes',
+                    'Dried seeds as a crunchy food topping',
+                    'Nettle root tea for winter wellness'
                 ],
                 recipes: ['nettle-soup', 'nettle-tea']
             },
             'elder': {
                 name: 'Elder', danish: 'Hyld', peak: 'jun',
-                season: [false,false,false,false,true,true,false,true,true,true,false,false],
+                season: [false, false, false, false, false, true, true, false, true, true, false, false],
                 photos: [],
                 spot: [
-                    'Large flat-topped clusters of tiny cream-white flowers 10–20cm across.',
-                    'Unmistakable muscat and lychee scent, strongest on dry warm mornings.',
-                    'Pinnate leaves with 5–7 leaflets, slightly unpleasant smell when crushed.',
-                    'Flowers appear on elder shrubs or small trees in hedgerows and woodland edges.'
+                    'Large flat clusters of cream-colored, fragrant flowers',
+                    'Opposite, pinnate leaves with 5-7 leaflets',
+                    'Woody shrub or small tree with corky bark',
+                    'Dark purple to black berries in drooping clusters',
+                    'Elderberries stay golden-green before ripening to black'
                 ],
-                habitat: 'Extremely common throughout Denmark in hedgerows, woodland edges, roadsides, and gardens. The flowering season is short, typically two to three weeks in late May and June.',
-                warning: 'Never eat raw elderberries — they contain sambunigrin which causes nausea and vomiting. The flowers are safe raw. Do not confuse elder with Dwarf Elder (Sambucus ebulus) which is toxic — it grows from a herbaceous stem rather than woody branches.',
-                about: 'Elder is deeply embedded in Danish and Nordic culture, used for centuries in cooking, medicine, and folk tradition. The flowers have a fleeting, intoxicating scent that defines early summer. Hyldeblomst cordial is perhaps the most iconic Danish summer drink.',
+                habitat: 'Common in hedgerows, forest edges, and gardens across Denmark, preferring nutrient-rich soil.',
+                warning: 'All parts except the flowers and ripe berries are toxic. Berries must be heat-treated (boiled) before consumption to destroy cyanogenic glycosides.',
+                about: 'The elder is a culturally significant plant in Denmark, marking the high summer with its flowers and providing winter medicine with its berries.',
                 uses: [
-                    'Make cordial by steeping flower heads in sugar syrup with lemon and citric acid.',
-                    'Dip whole flower heads in a light batter and fry for elderflower fritters.',
-                    'Infuse into cream or milk for panna cotta, ice cream, or custard.',
-                    'Freeze whole flower heads in bags to use for fritters and cordial through winter.',
-                    'Dry flower heads quickly at low temperature to use as a flavouring for teas and desserts.'
+                    'Elderflower `champagne` or cordial',
+                    'Deep-fried elderflower heads',
+                    'Hot elderberry soup (hyldebærsuppe)',
+                    'Berries reduced for venison sauces',
+                    'Immune-boosting berry syrup'
                 ],
                 recipes: ['elderflower-cordial']
+            },
+            'sea-kale': {
+                name: 'Sea Kale', danish: 'Strandkål', peak: 'apr',
+                season: [false, false, true, true, true, true, true, true, true, true, false, false],
+                photos: [],
+                spot: [
+                    'Large, fleshy, blue-green curly leaves',
+                    'Wavy leaf edges that look like kale',
+                    'Grows in large mounds on gravelly beaches',
+                    'Strong scent of honey from white flower clusters',
+                    'Leaves have a waxy, water-repellent coating'
+                ],
+                habitat: 'Found exclusively on gravelly or sandy beaches along the Danish coastline, often near the high-tide mark.',
+                warning: 'Protected in some areas; harvest sustainably by taking only 1-2 leaves per plant. It contains substances that can affect the thyroid if eaten in extreme quantities.',
+                about: 'Sea kale is a coastal delicacy; its young shoots and flower stems are often compared to high-end asparagus when lightly prepared.',
+                uses: [
+                    'Steamed stems with butter and salt',
+                    'Raw leaves with a creamy dip',
+                    'Flowers used as a honey-scented garnish',
+                    'Lightly sauteed beach greens',
+                    'Pickled young seed pods'
+                ],
+                recipes: []
+            },
+            'ground-elder': {
+                name: 'Ground Elder', danish: 'Skvalderkål', peak: 'apr',
+                season: [false, false, true, true, true, true, true, true, true, true, false, false],
+                photos: [],
+                spot: [
+                    'Shiny, light-green leaves with three-part symmetry',
+                    'Unique hollow stem that is triangular in cross-section',
+                    'Leaves are often folded when young and glossy',
+                    'Umbel-shaped clusters of tiny white flowers in summer',
+                    'Lacks the purple spots often found on toxic relatives'
+                ],
+                habitat: 'Extremely common in gardens, parks, forest edges, and shaded areas with moist, nutrient-rich soil.',
+                warning: 'Can be confused with other umbellifers; always check for the specific three-part leaf shape and the scent.',
+                about: 'Ground elder was likely introduced by monks as a medicinal and culinary herb; it is one of the first reliable spring greens in Denmark.',
+                uses: [
+                    'Fresh in spring salads',
+                    'Stewed with cream like spinach',
+                    'Ground elder and walnut pesto',
+                    'Added to green smoothies',
+                    'Blanched for `Hulk` pancakes'
+                ],
+                recipes: []
+            },
+            'garlic-mustard': {
+                name: 'Garlic Mustard', danish: 'Løgkarse', peak: 'apr',
+                season: [false, false, true, true, true, true, true, true, true, false, false, false],
+                photos: [],
+                spot: [
+                    'Kidney-shaped basal leaves with heart-shaped serrated edges',
+                    'Distinct scent of garlic when leaves are crushed',
+                    'Small white four-petaled flowers in early spring',
+                    'Second-year plants produce tall flowering stalks',
+                    'Taproot that smells and tastes like spicy radish'
+                ],
+                habitat: 'Found in semi-shaded areas, forest edges, hedgerows, and along pathways throughout Denmark.',
+                warning: 'Contains small amounts of cyanide; consume in moderation as a seasoning rather than a primary vegetable.',
+                about: 'Garlic mustard is prized for its early spring shoots and its spicy root, which is often called `Nordic wasabi`.',
+                uses: [
+                    'Garlic mustard and nut pesto',
+                    'Finely chopped in salad dressings',
+                    'Roots grated like horseradish',
+                    'Flowers used as a spicy garnish',
+                    'Blanched leaves in pasta dishes'
+                ],
+                recipes: ['pickled-garlic-mustard']
+            },
+            'wood-sorrel': {
+                name: 'Wood Sorrel', danish: 'Skovsyre', peak: 'apr',
+                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                photos: [],
+                spot: [
+                    'Heart-shaped clover-like leaflets in groups of three',
+                    'Leaves fold downward at night or during rain',
+                    'Delicate five-petaled white flowers with purple veins',
+                    'Grows low to the ground in mossy forest floors',
+                    'Fresh, acidic lemon-like taste when bitten'
+                ],
+                habitat: 'Prefers moist, dark deciduous or coniferous forests, often growing among moss and ferns.',
+                warning: 'High in oxalic acid; should be eaten in moderation and avoided by those with kidney stones.',
+                about: 'Wood sorrel is a favorite forest snack in Denmark, offering a surprising burst of citrus flavor in the middle of a woodland trek.',
+                uses: [
+                    'Lemony garnish for fatty fish',
+                    'Wood sorrel and apple granita',
+                    'Fresh topping for rugbrødsmadder',
+                    'Mixed into light spring salads',
+                    'Kandiserede (candied) flowers for cakes'
+                ],
+                recipes: []
+            },
+            'juniper': {
+                name: 'Juniper', danish: 'Ene', peak: 'oct',
+                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                photos: [],
+                spot: [
+                    'Sculptural evergreen shrub with sharp needles',
+                    'Needles grow in whorls of three',
+                    'Produces hard, green umodne (unripe) berries',
+                    'Modne (ripe) berries are dark blue and waxy',
+                    'Berries take two years to fully ripen'
+                ],
+                habitat: 'Grows on open heaths, nutrient-poor meadows, rocky areas, and in open forests.',
+                warning: 'Can be confused with the toxic garden juniper (Juniperus sabina), which has scaly leaves rather than sharp needles.',
+                about: 'Juniper is a resilient Danish native, providing flavor for everything from game marinades to homemade schnapps year-round.',
+                uses: [
+                    'Crushed berries in game marinades',
+                    'Infused into `winter chai` tea',
+                    'Homemade juniper schnapps',
+                    'Kombucha with unripe berries',
+                    'Seasoning for sauerkraut'
+                ],
+                recipes: ['juniper-salt']
+            },
+            'sea-buckthorn': {
+                name: 'Sea Buckthorn', danish: 'Havtorn', peak: 'sep',
+                season: [false, false, false, false, false, false, false, true, true, true, true, false],
+                photos: [],
+                spot: [
+                    'Deciduous shrub with silver-gray lanceolate leaves',
+                    'Stems are densely packed with long, sharp thorns',
+                    'Bright orange, fleshy berries clustered on branches',
+                    'Berries are soft and juicy when ripe',
+                    'Shrub has a distinct silver shimmer from a distance'
+                ],
+                habitat: 'Thrives on coastal dunes, gravelly beaches, and in coastal thickets, especially along the Kattegat.',
+                warning: 'The thorns are extremely sharp; traditional harvesting involves freezing the branches or using specialized tools.',
+                about: 'Sea buckthorn is one of the most nutritious berries in Denmark, packed with Vitamin C and unique oils.',
+                uses: [
+                    'Fresh sea buckthorn juice',
+                    'Aromatic sea buckthorn syrup',
+                    'Frozen `lemon` ice cubes for drinks',
+                    'Fruit leather or jams',
+                    'Infused vinegar for fish dishes'
+                ],
+                recipes: ['sea-buckthorn-sorbet']
+            },
+            'white-dead-nettle': {
+                name: 'White Dead-nettle', danish: 'Døvnælde', peak: 'apr',
+                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                photos: [],
+                spot: [
+                    'Heart-shaped leaves with serrated edges like a nettle',
+                    'Square-shaped upright stems',
+                    'Does not sting when touched (lacks stinging hairs)',
+                    'Clusters of white hooded flowers in the leaf axils',
+                    'Leaves have a slightly fuzzy, soft texture'
+                ],
+                habitat: 'Common in nitrogen-rich soil, urban wasteland, forest edges, and along nitrogen-enriched fields.',
+                warning: null,
+                about: 'White dead-nettle is often one of the few edible plants available during mild Danish winters, remaining green under the snow.',
+                uses: [
+                    'Sauteed as a nutty side dish',
+                    'Fresh winter herbal tea',
+                    'Dried for `green power powder`',
+                    'Blended into winter pesto',
+                    'Garnish for hearty stews'
+                ],
+                recipes: []
+            },
+            'red-dead-nettle': {
+                name: 'Red Dead Nettle', danish: 'Rød tvetand', peak: 'apr',
+                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                photos: [],
+                spot: [
+                    'Upper leaves are often tinted deep purple or red',
+                    'Small pink to purple hooded flowers',
+                    'Square stems characteristic of the mint family',
+                    'Leaves are heart-shaped and slightly fuzzy',
+                    'Low-growing habit, often in dense clusters'
+                ],
+                habitat: 'Ubiquitous in cultivated fields, gardens, and along roadsides throughout Denmark.',
+                warning: 'Can be confused with other non-toxic tvetand species; always check the flower and leaf shape.',
+                about: 'Red dead nettle is prized by foragers for its mushroom-like umami flavor when cooked, making it an excellent vegetable in early spring.',
+                uses: [
+                    'Fried in butter like mushrooms',
+                    'Fresh garnish for omelets',
+                    'Mixed into wild herb pesto',
+                    'Blanched for use in ravioli filling',
+                    'Added to spring vegetable soups'
+                ],
+                recipes: []
+            },
+            'pineapple-weed': {
+                name: 'Pineapple Weed', danish: 'Skive kamille', peak: 'jul',
+                season: [false, false, false, false, false, true, true, true, true, false, false, false],
+                photos: [],
+                spot: [
+                    'Small greenish-yellow cone-shaped flower heads',
+                    'Lacks the white outer petals of true chamomile',
+                    'Feathery, finely divided green leaves',
+                    'Distinct scent of pineapple when flower is crushed',
+                    'Grows low to the ground, often on compacted soil'
+                ],
+                habitat: 'Common on walkways, road edges, gravel paths, and urban wasteland across Denmark.',
+                warning: null,
+                about: 'Pineapple weed is a close relative of chamomile but with a much fruitier, tropical scent that makes it perfect for desserts.',
+                uses: [
+                    'Pineapple-scented herbal tea',
+                    'Infused syrup for fruit salads',
+                    'Garnish for summer desserts',
+                    'Flavoring for wild soda',
+                    'Infused into ice cream or cream'
+                ],
+                recipes: []
+            },
+            'sweet-cicely': {
+                name: 'Cicely', danish: 'Sødskærm', peak: 'may',
+                season: [false, false, true, true, true, true, true, true, true, true, true, false],
+                photos: [],
+                spot: [
+                    'Delicate, fern-like leaves often with white patches',
+                    'Strong scent of anise or licorice when crushed',
+                    'Hollow, slightly hairy stems',
+                    'Large, shiny black seeds that are ridged when ripe',
+                    'Umbels of small white flowers in early summer'
+                ],
+                habitat: 'Found in moist, nutrient-rich soil, near old settlements, forest edges, and along pathways.',
+                warning: 'Can be confused with highly toxic umbellifers like Hemlock (Skarntyde). Always rely on the distinct licorice scent.',
+                about: 'Sweet cicely is known as `Spanish chervil` and is highly valued for its ability to reduce the amount of sugar needed in fruit compotes.',
+                uses: [
+                    'Green seeds eaten fresh as `wild candy`',
+                    'Leaves in stewed rhubarb or berries',
+                    'Sweet cicely kombucha',
+                    'Anise-flavored herbal sugar',
+                    'Stems used like sweet celery'
+                ],
+                recipes: []
+            },
+            'wild-carrot': {
+                name: 'Wild Carrot', danish: 'Vild gulerod', peak: 'aug',
+                season: [false, false, false, false, true, true, true, true, true, true, false, false],
+                photos: [],
+                spot: [
+                    'Lacy, twice-pinnate leaves that smell like carrot',
+                    'Umbels of white flowers with one red center flower',
+                    'Flowering heads curl into a `birds-nest` shape when seeding',
+                    'Stems are hairy and slightly ridged',
+                    'Thin, white taproot with a strong carrot scent'
+                ],
+                habitat: 'Grows in dry, open meadows, along roadsides, and in dry coastal areas across Denmark.',
+                warning: 'Extreme caution required: can be confused with deadly Hemlock (Skarntyde). Wild carrot has hairy stems, whereas Hemlock is smooth and purple-spotted.',
+                about: 'While the wild carrot root is edible when young, foragers primarily value the seeds for their intense, aromatic spice.',
+                uses: [
+                    'Dried seeds as a bread spice',
+                    'Seeds used in `Nordic Dahl` mix',
+                    'Aromatic wild carrot syrup',
+                    'Flowers as a garnish for summer salads',
+                    'Young roots in hearty stews'
+                ],
+                recipes: []
+            },
+            'horseradish': {
+                name: 'Horseradish', danish: 'Peberrod', peak: 'oct',
+                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                photos: [],
+                spot: [
+                    'Large, wavy, glossy green leaves up to 1 meter tall',
+                    'Leaves smell like mustard when crushed',
+                    'Thick, white, woody taproot',
+                    'Tall stalks of tiny white flowers in summer',
+                    'Grows in large, persistent clumps'
+                ],
+                habitat: 'Common on open wasteland, road verges, and near abandoned gardens or agricultural areas.',
+                warning: 'The leaves can be confused with Dock (Skræppe), but horseradish leaves are much larger and smell spicy when crushed.',
+                about: 'Horseradish is a `escapee` from old gardens that has naturalized in the Danish landscape; its roots are best harvested in autumn.',
+                uses: [
+                    'Freshly grated root on roast beef',
+                    'Horseradish-infused vinegar',
+                    'Creamy horseradish sauce for fish',
+                    'Young leaves in fresh salads',
+                    'Grated into beet salads'
+                ],
+                recipes: []
+            },
+            'sweet-woodruff': {
+                name: 'Sweet Woodruff', danish: 'Skovmærke', peak: 'apr',
+                season: [false, false, false, true, true, false, false, false, false, false, false, false],
+                photos: [],
+                spot: [
+                    'Leaves grow in distinct whorls of 6-8 around the stem',
+                    'Small, four-petaled white flowers in late spring',
+                    'Low-growing, creeping forest herb',
+                    'Scent intensifies as the plant dries',
+                    'Square, hairless stems'
+                ],
+                habitat: 'Grows in shaded deciduous forests, particularly beech forests with nutrient-rich soil.',
+                warning: 'Contains coumarin; consume in small quantities as a flavoring and avoid excessive intake.',
+                about: 'Skovmærke is the traditional flavoring for `May Wine` and is prized for its ability to infuse cream and alcohol with a vanilla-like aroma.',
+                uses: [
+                    'Infused into cream for panna cotta',
+                    'Traditional May Wine flavoring',
+                    'Dried leaves in scented sachets',
+                    'Flavoring for wild syrups',
+                    'Garnish for spring desserts'
+                ],
+                recipes: []
+            },
+            'beech': {
+                name: 'Beech', danish: 'Bøg', peak: 'apr',
+                season: [false, true, true, true, true, false, false, false, false, false, false, false],
+                photos: [],
+                spot: [
+                    'Smooth, light-gray `elephant-skin` bark',
+                    'Pointy, cigar-shaped brown winter buds',
+                    'Emerging leaves are translucent and bright green',
+                    'Leaves have fine, silky hairs on the edges when young',
+                    'Alternate branching with oval, wavy-edged leaves'
+                ],
+                habitat: 'The dominant tree in many Danish forests; forms vast `cathedral` forests with little undergrowth.',
+                warning: null,
+                about: 'Harvesting young beech leaves (bøgeblade) is a traditional Danish spring activity; they must be picked before they become tough and papery.',
+                uses: [
+                    'Fresh young leaves in salads',
+                    'Bright green beech leaf syrup',
+                    'Beech leaf infused gin',
+                    'Toasted buds in alcohol (smoked flavor)',
+                    'Leaves used to wrap fish for steaming'
+                ],
+                recipes: []
+            },
+            'sea-sandwort': {
+                name: 'Sea Sandwort', danish: 'Strandarve', peak: 'jul',
+                season: [false, false, false, false, true, true, true, true, true, true, false, false],
+                photos: [],
+                spot: [
+                    'Fleshy, succulent leaves arranged in opposite pairs forming a cross',
+                    'Grows in low, dense mats on sandy beaches',
+                    'Small, five-petaled white flowers',
+                    'Distinct cucumber-like crunch and flavor',
+                    'Leaves are oval to lance-shaped and bright green'
+                ],
+                habitat: 'Found on sandy beaches and dunes along the entire Danish coastline.',
+                warning: 'Can be confused with Sandkryb, which is darker, less succulent, and has purple flowers.',
+                about: 'Strandarve is a perfect beach snack and a versatile ingredient that retains its crunch even when lightly blanched.',
+                uses: [
+                    'Fresh beach snack while walking',
+                    'Crunchy addition to Tzatziki',
+                    'Pickled as `wild cucumbers`',
+                    'Lightly blanched side dish',
+                    'Tossed in cold noodle salads'
+                ],
+                recipes: []
+            },
+            'black-trumpet': {
+                name: 'Black Trumpet', danish: 'Stor Trompetsvamp', peak: 'sep',
+                season: [false, false, false, false, false, false, false, true, true, true, true, false],
+                photos: [],
+                spot: [
+                    'Black to dark gray funnel-shaped fruit body',
+                    'Hollow all the way down to the base',
+                    'Outer surface is smooth or slightly wrinkled (no gills)',
+                    'Cap edges are wavy and often turned outward',
+                    'Flesh is thin and brittle'
+                ],
+                habitat: 'Grows on the forest floor, often hidden under leaf litter in deciduous forests, particularly near beech and oak.',
+                warning: 'Extremely well-camouflaged against dark earth and dead leaves; move slowly when searching.',
+                about: 'Black trumpets are highly prized because they dry exceptionally well, with their flavor intensifying during the drying process.',
+                uses: [
+                    'Dried and pulverized as a `forest spice`',
+                    'Sauteed in butter on toast',
+                    'In rich cream sauces for pasta',
+                    'Added to mushroom risottos',
+                    'Infused into savory oils'
+                ],
+                recipes: []
+            },
+            'yellow-star-of-bethlehem': {
+                name: 'Yellow Star-of-Bethlehem', danish: 'Guldstjerne', peak: 'mar',
+                season: [false, false, true, true, false, false, false, false, false, false, false, false],
+                photos: [],
+                spot: [
+                    'Small star-shaped flowers with 6 yellow petals',
+                    'Petals are green on the underside',
+                    'Long, thin, grass-like green leaves',
+                    'Multiple flowers often grow from a single stalk',
+                    'Grows from a small underground bulb'
+                ],
+                habitat: 'Found in parks, gardens, and meadows, often near forest edges or in light clearings.',
+                warning: 'Ensure you are not picking other yellow-flowered bulbs; the green underside of the petal is a key identifier.',
+                about: 'Guldstjerne is one of the most fleeting treasures of the Danish spring, often appearing for only a few weeks in March and April.',
+                uses: [
+                    'Fresh edible garnish for fish',
+                    'Topping for omelets',
+                    'Raw snack for its pea-like flavor',
+                    'Decoration for spring salads',
+                    'Topping for bagekartoffel (baked potato)'
+                ],
+                recipes: []
             },
             'chanterelle': {
                 name: 'Chanterelle', danish: 'Kantarel', peak: 'aug',
@@ -289,117 +706,6 @@
                 ],
                 recipes: ['chanterelle-butter']
             },
-            'dandelion': {
-                name: 'Dandelion', danish: 'Mælkebøtte', peak: 'apr',
-                season: [false,false,true,true,true,true,true,false,false,false,false,false],
-                photos: [],
-                spot: [
-                    'Deeply toothed leaves in a basal rosette, pointing back toward the centre.',
-                    'Hollow stem with a single bright yellow flower head.',
-                    'Milky white sap when stem is broken.',
-                    'Leaves are hairless and slightly glossy.'
-                ],
-                habitat: 'Found absolutely everywhere — meadows, lawns, roadsides, gardens, and disturbed ground throughout Denmark. One of the most abundant and reliable wild plants available.',
-                warning: 'No dangerous lookalikes. Avoid picking from roadsides or anywhere that may have been sprayed with herbicides or pesticides.',
-                about: 'The humble dandelion is one of the most nutritious and versatile wild plants available. Every part is edible — roots, leaves, flowers, and stems. Young spring leaves are far less bitter than mature ones.',
-                uses: [
-                    'Use young spring leaves in salads — nutty and only mildly bitter before the plant flowers.',
-                    'Infuse flowers in honey or sugar syrup for a floral, nectar-like sweetener.',
-                    'Roast dried roots at 200°C until dark, then grind for a coffee-like drink.',
-                    'Pickle flower buds in a light brine for a caper-like condiment.',
-                    'Batter and fry whole flowers for a simple fritter.'
-                ],
-                recipes: ['dandelion-honey']
-            },
-            'wild-carrot': {
-                name: 'Wild Carrot', danish: 'Vild Gulerod', peak: 'jul',
-                season: [false,false,false,false,false,true,true,true,false,false,false,false],
-                photos: [],
-                spot: [
-                    'Flat-topped white flower head (umbel) with a single small dark purple flower at the centre.',
-                    'Feathery, carrot-like leaves that smell distinctly of carrot when crushed.',
-                    'Hairy stems and leaves, unlike the smooth stems of toxic lookalikes.',
-                    'Root smells unmistakably of carrot — always check this before eating any part.'
-                ],
-                habitat: 'Found on dry, sunny grassland, chalk downs, coastal cliffs, and roadsides throughout Denmark. Prefers well-drained, poor soil. Flowers from June to August.',
-                warning: 'Wild Carrot belongs to the Apiaceae family which contains several highly toxic species including Hemlock (Conium maculatum) and Hemlock Water Dropwort (Oenanthe crocata). Always confirm the carrot smell of the root before eating. Never eat any white-flowered umbellifer without positive identification.',
-                about: 'Wild Carrot is the ancestor of the cultivated carrot. The roots are edible but tough and woody compared to cultivated varieties. The flowers and seeds are the most useful parts for foraging, with a distinctive warm, slightly spicy carrot flavour.',
-                uses: [
-                    'Use seeds as a spice with a warm, earthy carrot flavour excellent in bread and biscuits.',
-                    'Steep flower heads in cream or milk to infuse a subtle carrot-floral flavour for desserts.',
-                    'Young roots can be roasted whole as a small, flavourful vegetable.',
-                    'Add flower heads to salads for a delicate, feathery garnish.'
-                ],
-                recipes: []
-            },
-            'ground-ivy': {
-                name: 'Ground Ivy', danish: 'Korsknap', peak: 'may',
-                season: [false,false,true,true,true,true,false,false,false,false,false,false],
-                photos: [],
-                spot: [
-                    'Small, kidney-shaped to round scalloped leaves on long stalks.',
-                    'Square stem — a key identifier for the mint family.',
-                    'Small violet-blue tubular flowers in leaf axils from March to June.',
-                    'Strong, distinctive minty-herbal scent when leaves are crushed.',
-                    'Creeping stems that root at nodes, forming dense mats.'
-                ],
-                habitat: 'Found in shaded hedgerows, woodland edges, gardens, and disturbed ground. Very common throughout Denmark. Often grows in the same shaded spots as nettles and garlic mustard.',
-                warning: 'No dangerous lookalikes. The square stem and distinctive scent make it easy to identify. Not to be confused with Common Ivy (Hedera helix) which has a completely different leaf shape and is toxic.',
-                about: 'Ground Ivy was one of the most important herbs in medieval Europe, used to clarify and flavour ale before hops became standard. It has a complex flavour — slightly minty, slightly bitter, with herbal and resinous notes.',
-                uses: [
-                    'Use as a herb in small quantities — it is strong, so treat it like oregano rather than parsley.',
-                    'Add a few leaves to salads for a bitter, aromatic kick.',
-                    'Infuse in honey for a complex herbal sweetener.',
-                    'Use in brewing — it was historically used to clarify and flavour ale.',
-                    'Make a simple tea from fresh or dried leaves for a warming, slightly medicinal drink.'
-                ],
-                recipes: []
-            },
-            'ground-elder': {
-                name: 'Ground Elder', danish: 'Skvalderkål', peak: 'apr',
-                season: [false,false,true,true,true,true,false,false,false,false,false,false],
-                photos: [],
-                spot: [
-                    'Triple-divided leaves with toothed leaflets, glossy and bright green when young.',
-                    'Smells distinctly of parsley or carrot when leaves are crushed — a key identifier.',
-                    'Flat-topped white flower clusters (umbels) appear from May to July.',
-                    'Hollow, furrowed stems, typically 40–100cm tall when flowering.',
-                    'Spreads aggressively by underground rhizomes, often forming dense stands.'
-                ],
-                habitat: 'Found in shaded gardens, hedgerows, woodland edges, and disturbed ground throughout Denmark. One of the most persistent garden weeds.',
-                warning: 'Belongs to the Apiaceae family which includes toxic species like Hemlock. Always confirm the parsley-like smell before eating. Young leaves before flowering are safest.',
-                about: 'Ground Elder, known in Danish as Skvalderkål, is one of the most abundant edible plants in Danish gardens. Introduced by medieval monks as a vegetable, it escaped and colonised northern Europe. Young spring leaves have a fresh parsley-like flavour.',
-                uses: [
-                    'Use young leaves like parsley or spinach — in soups, stews, pasta, and salads.',
-                    'Blanch briefly and dress with butter and lemon for a simple spring side dish.',
-                    'Blend into green sauces, herb oils, or pesto as a parsley substitute.',
-                    'Add to frittata or quiche as you would spinach.',
-                    'Dry young leaves for a herbal seasoning — keeps the parsley-like flavour well.'
-                ],
-                recipes: []
-            },
-            'sea-buckthorn': {
-                name: 'Sea Buckthorn', danish: 'Havtorn', peak: 'sep',
-                season: [false,false,false,false,false,false,false,true,true,true,false,false],
-                photos: [],
-                spot: [
-                    'Dense, thorny shrub with narrow silvery-green leaves.',
-                    'Intensely orange berries growing in dense clusters directly on the branches.',
-                    'Very sharp thorns — wear thick gloves when harvesting.',
-                    'Berries are juicy and extremely tart when raw.'
-                ],
-                habitat: 'Found on coastal dunes, sandy shores, and sea cliffs throughout the Danish coastline. Particularly abundant on Jutland\'s west coast. Also planted in urban parks and gardens.',
-                warning: 'No toxic lookalikes. The thorns are the main hazard — wear heavy gloves and long sleeves. Berries are extremely sour raw and best used sweetened.',
-                about: 'Sea Buckthorn is one of Denmark\'s most distinctive coastal plants and an increasingly fashionable ingredient in Nordic cuisine. The berries are extraordinarily rich in vitamin C. René Redzepi and Noma brought them to global attention.',
-                uses: [
-                    'Make a vivid orange juice by pressing berries through a sieve — dilute and sweeten to taste.',
-                    'Reduce into a sauce for game, duck, or fatty fish.',
-                    'Freeze whole berries and add directly to smoothies from frozen.',
-                    'Make a simple jelly or curd with sugar and butter.',
-                    'Infuse berries in vodka for a few weeks for a tart, intensely flavoured spirit.'
-                ],
-                recipes: ['sea-buckthorn-sorbet']
-            },
             'meadowsweet': {
                 name: 'Meadowsweet', danish: 'Mødurt', peak: 'jul',
                 season: [false,false,false,false,false,true,true,false,false,false,false,false],
@@ -421,28 +727,6 @@
                     'Add to homemade wine or mead for a traditional Nordic flavour.'
                 ],
                 recipes: ['meadowsweet-tea']
-            },
-            'juniper': {
-                name: 'Juniper', danish: 'Ene', peak: 'dec',
-                season: [true,true,false,false,false,false,false,false,false,false,true,true],
-                photos: [],
-                spot: [
-                    'Evergreen shrub with very sharp, prickly needle-like leaves in whorls of three.',
-                    'Ripe berries are blue-black with a waxy bloom, taking two to three years to ripen.',
-                    'Unripe berries are green — only harvest the dark blue-black ones.',
-                    'Distinctive resinous, pine-like scent from both leaves and berries.'
-                ],
-                habitat: 'Found on heathland, open woodland, coastal scrub, and chalk downland. Less common than it once was in Denmark due to habitat loss. Protected in some areas.',
-                warning: 'Garden Juniper (Juniperus sabina) is toxic and must not be eaten. Only harvest from Common Juniper (Juniperus communis), which has a single white stripe along the upper surface of each needle.',
-                about: 'Juniper berries are the defining flavour of gin and a cornerstone of Nordic cuisine, used to season game, cured fish, and fermented foods for centuries. In Denmark, juniper has long been associated with the winter landscape and Christmas traditions.',
-                uses: [
-                    'Use berries to season game meats — crush lightly and rub into venison, duck, or pork.',
-                    'Add to curing mixes for salmon or gravlax alongside dill and salt.',
-                    'Make a flavoured salt by grinding dried berries with sea salt.',
-                    'Infuse in aquavit or vodka for a simple home-made gin-style spirit.',
-                    'Add to sauerkraut or fermented vegetables for a traditional Nordic flavour.'
-                ],
-                recipes: ['juniper-salt']
             },
             'oyster-mushroom': {
                 name: 'Oyster Mushroom', danish: 'Østershat', peak: 'nov',
@@ -466,28 +750,6 @@
                 ],
                 recipes: ['oyster-mushroom-stew']
             },
-            'garlic-mustard': {
-                name: 'Garlic Mustard', danish: 'Løgkarse', peak: 'apr',
-                season: [false,false,true,true,true,true,false,false,false,false,false,false],
-                photos: [],
-                spot: [
-                    'Heart-shaped to triangular leaves with toothed edges on the lower plant.',
-                    'Small white four-petalled flowers in clusters at the top of the stem.',
-                    'Distinctive smell of garlic and mustard when leaves are crushed.',
-                    'Long, thin seed pods appear after flowering.'
-                ],
-                habitat: 'Found in hedgerows, shaded woodland edges, and disturbed ground. Very common in Denmark, particularly in shaded urban environments.',
-                warning: 'No serious lookalikes when the smell is confirmed. The garlic-mustard smell is highly distinctive throughout the plant.',
-                about: 'Garlic Mustard has been eaten across Europe since the Mesolithic period. It has a complex flavour combining garlic, mustard, and a slightly bitter green note. All parts are edible — leaves, flowers, seeds, and roots.',
-                uses: [
-                    'Use young leaves in salads or as a sandwich green for a peppery, garlicky flavour.',
-                    'Blend into pesto with nuts and oil as an alternative to basil.',
-                    'Pickle leaves in a light brine for a zesty condiment that keeps for months.',
-                    'Grind seeds as a mustard substitute with a sharp, wasabi-like heat.',
-                    'Use flowers as a garnish on spring salads.'
-                ],
-                recipes: ['pickled-garlic-mustard']
-            },
             'yarrow': {
                 name: 'Yarrow', danish: 'Røllike', peak: 'jul',
                 season: [false,false,false,false,false,true,true,true,false,false,false,false],
@@ -510,28 +772,6 @@
                 ],
                 recipes: []
             },
-            'white-dead-nettle': {
-                name: 'White Dead-nettle', danish: 'Hvid Døvnælde', peak: 'jan',
-                season: [true,true,true,false,false,false,false,false,false,false,false,true],
-                photos: [],
-                spot: [
-                    'Leaves look very similar to stinging nettle but with absolutely no sting.',
-                    'Distinctive white hooded flowers in whorls around the stem.',
-                    'Square stem, typical of the mint family.',
-                    'Leaves are softly hairy with a mild, slightly unpleasant smell when crushed.'
-                ],
-                habitat: 'Found on roadsides, hedgerows, urban edges, and disturbed ground throughout Denmark. Flowers almost year-round in mild weather, making it one of the few plants available in winter.',
-                warning: 'No dangerous lookalikes. Touch the leaves to confirm there is no sting — this immediately distinguishes it from stinging nettle.',
-                about: 'White Dead-nettle is a reliable winter green, one of the few wild plants available in January and February. The flowers are sweet and can be sucked for nectar. It has been used as a pot herb across northern Europe for centuries.',
-                uses: [
-                    'Use leaves as a pot herb — cook like spinach in soups, stews, and stir-fries.',
-                    'Add flowers to salads as a sweet, mild garnish.',
-                    'Dry leaves for a mild, grassy tea.',
-                    'Use young shoots in spring rolls or fritters.',
-                    'Blend into green smoothies for a nutritional boost in winter.'
-                ],
-                recipes: []
-            },
             'shepherds-purse': {
                 name: "Shepherd's Purse", danish: 'Hyrdetaske', peak: 'mar',
                 season: [true,true,true,true,false,false,false,false,false,false,true,true],
@@ -551,6 +791,905 @@
                     'Use green seed pods as a peppery condiment tasting of mustard and capers.',
                     'Dry seeds and grind as a mustard-like spice.',
                     'Blend into green sauces and pestos for a watercress-like flavour.'
+                ],
+                recipes: []
+            }
+        ,
+            'vandkarse': {
+                name: 'Water Cress', danish: 'Vandkarse', peak: 'apr',
+                season: [false,false,true,true,true,true,true,false,false,false,false,false],
+                photos: [],
+                spot: [
+                    'Grows as a rosette from the centre, with stems radiating outward symmetrically',
+                    'Each stem has one leaf at the tip and paired leaves running down both sides',
+                    'Round, fleshy, bright green leaves arranged very symmetrically',
+                    'Strong peppery cress scent when picked',
+                    'Found growing directly in or at the edge of standing or slow water'
+                ],
+                habitat: 'Found in very wet soil or directly in freshwater — streams, bogs, lakes, and ditches. Grows submerged or at the waterline throughout Denmark from March to July.',
+                warning: 'Always be cautious harvesting from standing water, which may harbour larvae, insects, and bacteria. Pick above the waterline where possible, or heat-treat before eating.',
+                about: 'One of several wild cress types found in Denmark, vandkarse has the bold, peppery heat of wasabi and horseradish. A spring garnish with serious punch, it has been eaten along Danish waterways for centuries.',
+                uses: [
+                    'Fresh garnish on fish dishes and tartar',
+                    'Added raw to salads for a wasabi-like heat',
+                    'Scattered over smørrebrød',
+                    'Blended into green sauces and dressings',
+                    'Stirred into vegetable dishes at the last minute'
+                ],
+                recipes: []
+            },
+            'brondkarse': {
+                name: 'Watercress', danish: 'Brøndkarse', peak: 'apr',
+                season: [false,true,true,true,true,true,true,false,false,false,false,false],
+                photos: [],
+                spot: [
+                    'Thick upright stem with many lateral branches, each ending in one leaf with paired leaves down the sides',
+                    'Does not grow as a rosette — stems grow upright from the water',
+                    'Strong smell of cress and mustard when picked',
+                    'Small white flowers appear around May',
+                    'Leaves are rounded and succulent with a slightly waxy surface'
+                ],
+                habitat: 'Found only in running freshwater — streams, brooks, and ditches with clear moving water. Never found in standing water. Common throughout Denmark from February to July.',
+                warning: 'Always be cautious harvesting from water that may harbour larvae, insects, and bacteria. Pick above the waterline or heat-treat the plant before eating.',
+                about: 'The well-known cultivated watercress also grows wild in Danish waterways. With the heat of horseradish and mustard plus a slight sweetness and acidity, it is one of the boldest wild flavours of early spring.',
+                uses: [
+                    'Anywhere you would use mustard, cress, or horseradish',
+                    'Classic garnish for fish, steak, and grøntsagsretter',
+                    'Blended into a vivid green purée for soups',
+                    'Chopped into dressings and vinaigrettes',
+                    'Paired with eggs on smørrebrød'
+                ],
+                recipes: []
+            },
+            'rosetspringklap': {
+                name: 'Hairy Bittercress', danish: 'Rosetspringklap', peak: 'mar',
+                season: [false,true,true,true,false,false,false,false,false,false,false,false],
+                photos: [],
+                spot: [
+                    'Classic cress form — one leaf at the tip of each stem with symmetrical paired leaves down the sides',
+                    'Grows from a central rosette point with reddish stems and green leaves',
+                    'As soon as sun appears, a tall flowering stem shoots up with small white flowers',
+                    'Often grows in disturbed, sandy, or gravelly soil in urban settings',
+                    'Mild cress scent, noticeably lighter than other wild cresses'
+                ],
+                habitat: 'Found in disturbed soil — pavements, parks, building sites, garden edges, and sandy beaches. One of the best coastal harvest spots due to lower pollution risk. Common February to April.',
+                warning: null,
+                about: 'One of the most overlooked wild cresses, rosetspringklap grows in unglamorous spots but delivers a genuinely pleasant mild cress flavour. The taste starts sweet and soft, then the cress heat builds slowly — more restrained than brøndkarse or vandkarse.',
+                uses: [
+                    'Fresh garnish on eggs, tartar, and smørrebrød',
+                    'Scattered over salads in place of cultivated cress',
+                    'Added to fish dishes for a gentle spicy note',
+                    'Mixed into soft butter for a mild cress compound butter',
+                    'Used wherever a restrained, polite cress flavour is needed'
+                ],
+                recipes: []
+            },
+            'mirabelle-blossom': {
+                name: 'Mirabelle Blossom', danish: 'Mirabelle blomst', peak: 'mar',
+                season: [false,false,true,true,false,false,false,false,false,false,false,false],
+                photos: [],
+                spot: [
+                    'The first shrub to come into full white blossom in spring — often weeks before anything else',
+                    'Entire bush covered in white flowers before leaves appear',
+                    'Small five-petaled white flowers with visible stamens',
+                    'Found in parks, hedgerows, and coastal areas',
+                    'No dangerous lookalikes — all stone fruit blossoms are edible'
+                ],
+                habitat: 'Parks, forest edges, hedgerows, gardens, and coastal areas throughout Denmark. Flowers March to April, earlier than most other shrubs.',
+                warning: 'Contains small amounts of cyanogenic glycosides in the flowers — do not eat large quantities (hundreds of grams). Used sparingly as a flavouring it is completely safe.',
+                about: 'Best known for its yellow-to-red summer plums, the mirabelle is the very first shrub to flower in Denmark, lighting up grey March hedgerows with clouds of white blossom. Chewing a whole flower reveals an initial bitterness that gives way to a deep marzipan flavour.',
+                uses: [
+                    'Infused in alcohol for a clean almond schnapps or liqueur',
+                    'Steeped in sugar syrup to capture the floral-marzipan scent',
+                    'Chewed fresh from the branch as a fleeting spring snack',
+                    'Scattered sparingly over desserts as a bitter-sweet garnish',
+                    'Infused into cream for panna cotta or ice cream'
+                ],
+                recipes: []
+            },
+            'porse': {
+                name: 'Bog Myrtle', danish: 'Porse', peak: 'mar',
+                season: [false,false,true,true,false,false,false,false,false,false,false,false],
+                photos: [],
+                spot: [
+                    'Low-growing brownish-red shrub with catkins at the tips of branches',
+                    'Catkins are reddish-brown, dense, and highly aromatic to the touch',
+                    'Narrow, slightly toothed grey-green leaves appear after the catkins',
+                    'Strong spiced clove-like scent released when catkins are rubbed',
+                    'Found in boggy, wet moorland areas'
+                ],
+                habitat: 'Boggy areas with moist peaty soil, sometimes in wet coastal heathland. Not common everywhere — found in specific wetland habitats across Denmark, flowering March to April.',
+                warning: 'Bitter compounds mean porse should be used as a spice in small quantities, not eaten as a vegetable. Use sparingly.',
+                about: 'Porse is most famous in Denmark as the traditional flavouring for snaps, used long before hops became the dominant beer bittering agent. The catkins have an extraordinary deep spiced aroma — like cloves but sweeter, darker, and more complex. Raw it is too bitter to enjoy, but dried or as an infusion it is magnificent.',
+                uses: [
+                    'Toasted and crushed as a spice used like cloves or allspice',
+                    'Infused in alcohol for traditional Danish snaps',
+                    'Steeped in vinegar for aromatic vinaigrettes',
+                    'Dried and added to game marinades',
+                    'Infused in cream for deeply spiced desserts'
+                ],
+                recipes: []
+            },
+            'martsvioler': {
+                name: 'Sweet Violet', danish: 'Martsvioler', peak: 'mar',
+                season: [false,false,true,true,false,false,false,false,false,false,false,false],
+                photos: [],
+                spot: [
+                    'Purple five-petaled flowers with yellow-orange centres at the stamens',
+                    'Green leaves rolled inward when young, unfolding into a spoon shape with a pointed tip',
+                    'Found at the base of trees, particularly in sunny spots early in spring',
+                    'Intense raw-onion and leek scent when a leaf is broken',
+                    'Related to pansies and horned violets but the only one with a real culinary flavour'
+                ],
+                habitat: 'Found at the base of trees in parks, forest edges, and gardens — particularly in sunny spots early in the season. Common throughout Denmark in March and April.',
+                warning: null,
+                about: 'Despite looking delicate, martsvioler has a surprisingly aggressive onion and leek flavour — nothing like the sweet floral taste you might expect. The cooked leaves are excellent as a vegetable; the flowers are beautiful raw. One of the most characterful spring plants in the Danish foraging calendar.',
+                uses: [
+                    'Thick stems roasted in the oven with oil and salt, served on hummus or grain salads',
+                    'Leaves blended raw as a substitute for onion in guacamole or salsa',
+                    'Used in soups and stocks for a leek-like depth',
+                    'Flowers scattered raw over salads and open sandwiches',
+                    'Sautéed quickly as a pungent spring green side dish'
+                ],
+                recipes: []
+            },
+            'judasore': {
+                name: 'Jelly Ear', danish: 'Judasøre', peak: 'mar',
+                season: [true,true,true,true,true,true,true,true,true,true,true,true],
+                photos: [],
+                spot: [
+                    'Brown to dark reddish-brown ear-shaped fruiting body',
+                    'Soft, gelatinous, and rubbery when fresh — firms up when dry',
+                    'Cup or umbrella-shaped with visible veining on both inner and outer surfaces',
+                    'Hollow and flexible — bounces back when pressed',
+                    'Found growing directly on wood, most commonly elder and pine'
+                ],
+                habitat: 'Grows on trees as a wood-decomposing fungus, most commonly on elder (hyld) and pine. Found year-round whenever it rains — dries out in dry periods and rehydrates when wet again. Common throughout Denmark.',
+                warning: null,
+                about: 'Judasøre is named after the elder tree Judas Iscariot allegedly hanged himself from. It grows year-round on dead or living wood and is particularly prized in Asian cooking, where it is known as wood ear. Its mild umami flavour comes out fully during cooking — raw it tastes of almost nothing.',
+                uses: [
+                    'Marinated in soy, vinegar, or stock for at least an hour before cooking',
+                    'Sliced finely and added to wok dishes and stir-fries',
+                    'Used in ramen and Asian-style broths',
+                    'Chopped into spring rolls and dumplings',
+                    'Sautéed in butter as a mild umami side dish'
+                ],
+                recipes: []
+            },
+            'tandfri-varsalat': {
+                name: 'Smooth Lamb\'s Lettuce', danish: 'Tandfri vårsalat', peak: 'apr',
+                season: [false,false,true,true,true,true,false,false,false,false,false,false],
+                photos: [],
+                spot: [
+                    'Grows as a rosette from a single central point',
+                    'Elongated oval leaves with visible veining and rounded tips',
+                    'Small sky-blue flowers in clusters when in bloom',
+                    'Found on sandy beaches — rarely on stone beaches',
+                    'Leaves give a rich, slightly fatty mouthfeel when eaten'
+                ],
+                habitat: 'Found exclusively on sandy beaches along the Danish coastline. Grows in sand from March to June. Related to the cultivated feldsalat (corn salad) sold in supermarkets.',
+                warning: null,
+                about: 'The wild coastal relative of the familiar feldsalat, tandfri vårsalat grows on Danish sandy beaches and has the same mild, sweet flavour — but with more bite and a distinctive rich, almost fatty mouthfeel, as if you have eaten a little mayonnaise. The sky-blue flowers are beautiful.',
+                uses: [
+                    'Fresh in salads, especially alongside fish and seafood',
+                    'Garnish on smørrebrød with fish or shrimp',
+                    'Mixed into coastal-themed salad bowls',
+                    'Eaten straight from the beach as a fresh snack',
+                    'Paired with a light lemon dressing to complement its richness'
+                ],
+                recipes: []
+            }
+,
+            'daisy': {
+                name: 'Daisy', danish: 'Bellis', peak: 'may',
+                season: [false, false, true, true, true, true, true, true, true, false, false, false],
+                photos: [],
+                spot: [
+                    'White outer petals with a yellow center',
+                    'Petals sometimes have pink-tinged tips',
+                    'Leaves grow in a flat rosette at ground level',
+                    'Flower stems are leafless and slightly hairy',
+                    'Small, spoon-shaped leaves with a notched edge'
+                ],
+                habitat: 'Found commonly in lawns, meadows, and along roadsides throughout Denmark, preferring sun but tolerating light shade.',
+                warning: null,
+                about: 'Known in Denmark as Tusindfryd, it is a childhood favorite found in almost every lawn, representing the resilience and simple beauty of the Danish landscape.',
+                uses: [
+                    'Fresh salad decoration',
+                    'Decorative floral ice cubes',
+                    'Pickled flower buds',
+                    'Garnish for morning porridge',
+                    'Kandiserede (candied) flowers'
+                ],
+                recipes: []
+            },
+            'birch': {
+                name: 'Birch', danish: 'Birk', peak: 'mar',
+                season: [true, true, true, true, true, false, false, false, false, false, false, false],
+                photos: [],
+                spot: [
+                    'Distinctive white and black papery bark',
+                    'Triangular or diamond-shaped serrated leaves',
+                    'Produces long, drooping catkins (rakler)',
+                    'Sticky shoots on downy birch varieties',
+                    'Mouse-ear young leaves in early spring'
+                ],
+                habitat: 'Ubiquitous across Denmark in forests, parks, and gardens, thriving in both wet and dry soils.',
+                warning: 'Avoid long-term use of older leaves in tea due to high saponin and tannin levels which can strain kidneys and liver.',
+                about: 'The birch is a symbol of spring in Denmark, valued for its sap, which was traditionally used as a refreshing tonic before the trees leaf out.',
+                uses: [
+                    'Fresh spring birch sap',
+                    'Reduced birch syrup',
+                    'Kidney-supportive leaf tea',
+                    'Dried leaves for power powder',
+                    'Rakler added to stews'
+                ],
+                recipes: []
+            },
+            'bilberry': {
+                name: 'Bilberry', danish: 'Blåbær', peak: 'aug',
+                season: [false, false, false, false, false, false, true, true, false, false, false, false],
+                photos: [],
+                spot: [
+                    'Low-growing shrub with angular green stems',
+                    'Berries are blue through the entire flesh',
+                    'Small, oval, finely serrated green leaves',
+                    'Waxy, dark blue aggregate fruit',
+                    'Berries grow singly rather than in clusters'
+                ],
+                habitat: 'Grows in nutrient-poor soils, common in Danish heaths, moors, and coniferous forest floors.',
+                warning: 'Bilberries can affect blood coagulation; be cautious if taking blood-thinning medications.',
+                about: 'The wild European bilberry is distinct from store-bought blueberries, prized for its intense color and superior nutritional profile in Nordic cooking.',
+                uses: [
+                    'Wild blueberry pie',
+                    'Traditional berry marmalade',
+                    'Fresh dessert garnish',
+                    'Home-pressed berry juice',
+                    'Dried berries for muesli'
+                ],
+                recipes: []
+            },
+            'blackberry': {
+                name: 'Blackberry', danish: 'Brombær', peak: 'sep',
+                season: [false, false, false, false, false, false, false, true, true, true, false, false],
+                photos: [],
+                spot: [
+                    'Arching, thorny canes forming thickets',
+                    'Aggregate fruit turning from green to black',
+                    'Leaves with 3-5 leaflets, white underneath',
+                    'White or pink five-petaled flowers',
+                    'Thorny stems that root at the tips'
+                ],
+                habitat: 'Very common in forest edges, hedgerows, and coastal areas across Denmark.',
+                warning: null,
+                about: 'With over 50 species in Denmark, blackberries are a foundational foraged fruit, providing a reliable harvest for jam and desserts every summer.',
+                uses: [
+                    'Rich blackberry jam',
+                    'Leaf tea for digestion',
+                    'Berry-infused schnapps',
+                    'Syrup for wild sodas',
+                    'Early spring shoot snacks'
+                ],
+                recipes: []
+            },
+            'boxthorn': {
+                name: 'Boxthorn', danish: 'Bukketorn', peak: 'sep',
+                season: [false, false, false, false, false, false, true, true, true, true, true, false],
+                photos: [],
+                spot: [
+                    'Long, arching branches resembling a fountain',
+                    'Small purple funnel-shaped flowers',
+                    'Bright orange-red oblong berries',
+                    'Grey-green lance-shaped leaves',
+                    'Berries and flowers often present together'
+                ],
+                habitat: 'Planted for coastal protection and now naturalized, common along the Danish coastlines, especially South Funen.',
+                warning: 'The shrub belongs to the nightshade family; ensure identification is certain before consuming berries.',
+                about: 'Also known as Gojiberry, this plant has become a permanent part of the Danish coast, offering a late-season harvest of antioxidant-rich fruit.',
+                uses: [
+                    'Dried goji berries',
+                    'Coastal berry marmalade',
+                    'Salt-fermented wild olives',
+                    'Infused berry vinegar',
+                    'Fruit leather component'
+                ],
+                recipes: []
+            },
+            'chicory': {
+                name: 'Chicory', danish: 'Cikorie', peak: 'jul',
+                season: [false, false, false, true, true, true, true, true, true, true, true, false],
+                photos: [],
+                spot: [
+                    'Vibrant sky-blue composite flowers',
+                    'Jagged leaves resembling dandelions',
+                    'Tall, rigid, branched flowering stems',
+                    'Thick, woody brown taproot',
+                    'Flowers only open in full sun'
+                ],
+                habitat: 'Commonly found on dry, sun-exposed roadsides and meadows throughout Denmark.',
+                warning: 'Young leaves can be confused with dandelions, but both are safe to eat.',
+                about: 'Chicory root was a famous coffee substitute in Denmark during the war and remains a staple bitter herb for modern foragers.',
+                uses: [
+                    'Roasted root coffee',
+                    'Bitter salad leaves',
+                    'Flower garnish for cakes',
+                    'Root salt fermentation',
+                    'Digestive bitter tea'
+                ],
+                recipes: []
+            },
+            'elm': {
+                name: 'Elm', danish: 'Elm', peak: 'apr',
+                season: [false, false, true, true, false, false, false, false, false, false, false, false],
+                photos: [],
+                spot: [
+                    'Oval leaves with an asymmetric base',
+                    'Paper-thin, winged seeds (manna)',
+                    'Rough, double-serrated leaf edges',
+                    'Twigs often have corky ridges',
+                    'Seeds appear before the leaves in spring'
+                ],
+                habitat: 'Found in Danish forests, hedgerows, and parks, though many large trees have been affected by Dutch Elm disease.',
+                warning: null,
+                about: 'In Danish folklore, the green seeds of the elm are called manna and were a traditional early spring treat for children.',
+                uses: [
+                    'Elm seed (manna) sandwich',
+                    'Bark flour additive',
+                    'Seeds in green salads',
+                    'Crunchy garnish for soup',
+                    'Inner bark survival bread'
+                ],
+                recipes: []
+            },
+            'bird-cherry': {
+                name: 'Bird Cherry', danish: 'Fuglekirsebær', peak: 'may',
+                season: [false, false, false, true, true, false, false, true, true, false, false, false],
+                photos: [],
+                spot: [
+                    'Tall tree with horizontal bands on bark',
+                    'Small, dark red to black shiny cherries',
+                    'White flowers in clusters (racemes)',
+                    'Glands at the base of the leaf stalk',
+                    'Oval leaves with finely serrated edges'
+                ],
+                habitat: 'Widespread in Danish deciduous forests, forest edges, and along railway lines.',
+                warning: 'Blossoms should be consumed in moderation as they contain small amounts of cyanide-like compounds.',
+                about: 'The vilde kirsebær is a staple of Danish forests, often used for its deep flavor in liqueurs and traditional preserves.',
+                uses: [
+                    'Cherry-infused schnapps',
+                    'Wild cherry puree',
+                    'Traditional fruit jam',
+                    'Melatonin-rich juice',
+                    'Decorative spring blossoms'
+                ],
+                recipes: []
+            },
+            'fireweed': {
+                name: 'Fireweed', danish: 'Gederams', peak: 'jun',
+                season: [false, false, false, true, true, true, true, true, false, false, false, false],
+                photos: [],
+                spot: [
+                    'Spikes of bright pink to purple flowers',
+                    'Long, narrow, alternate leaves',
+                    'Leaves have a unique circular vein pattern',
+                    'Seeds attached to white fluffy down',
+                    'Tall, unbranched reddish stems'
+                ],
+                habitat: 'Thrives in forest clearings, nutrient-rich soil, and areas recently disturbed by fire or logging.',
+                warning: null,
+                about: 'Often called skovbundens asparges (forest asparagus), fireweed is prized for its versatility and mineral-rich young shoots.',
+                uses: [
+                    'Butter-sauteed young shoots',
+                    'Fermented leaf tea (Ivan Chai)',
+                    'Flower garnish for desserts',
+                    'Aromatic flower syrup',
+                    'Dried leaves for soup spice'
+                ],
+                recipes: []
+            },
+            'mugwort': {
+                name: 'Mugwort', danish: 'Gråbynke', peak: 'jul',
+                season: [false, false, false, true, true, true, true, true, true, false, false, false],
+                photos: [],
+                spot: [
+                    'Leaves are dark green with silver undersides',
+                    'Strong, aromatic, slightly bitter scent',
+                    'Tall, reddish, grooved stems',
+                    'Small, inconspicuous brownish flower heads',
+                    'Deeply lobed, feathery leaves'
+                ],
+                habitat: 'Very common on nitrogen-rich waste ground, roadsides, and near coastal areas.',
+                warning: 'Bynkeallergi is common; avoid during pregnancy as it can be a uterine stimulant.',
+                about: 'Mugwort is a traditional Danish bitter herb, historically used to season heavy meats like goose or duck to aid digestion.',
+                uses: [
+                    'Savory game stuffing',
+                    'Dried bouillon substitute',
+                    'Aromatic field tea',
+                    'Digestive bitters',
+                    'Seasoning for hearty stews'
+                ],
+                recipes: []
+            },
+            'heather': {
+                name: 'Heather', danish: 'Hedelyng', peak: 'aug',
+                season: [false, false, false, false, false, false, false, true, true, false, false, false],
+                photos: [],
+                spot: [
+                    'Low evergreen shrub with scale-like leaves',
+                    'Small, bell-shaped purple flowers',
+                    'Flowers grow in long, dense spikes',
+                    'Woody, multi-branched stems',
+                    'Leaves are arranged in opposite pairs'
+                ],
+                habitat: 'Grows in large carpets on open heaths, moors, and sandy soils throughout Denmark.',
+                warning: null,
+                about: 'Heather is the iconic plant of the Jutlandic heaths, famous for the spicy honey produced by bees that forage on its blooms.',
+                uses: [
+                    'Wild heather mead',
+                    'Snaps infused with blooms',
+                    'Dried flower tea',
+                    'Scented honey base',
+                    'Spice for roasting meats'
+                ],
+                recipes: []
+            },
+            'raspberry': {
+                name: 'Raspberry', danish: 'Hindbær', peak: 'jul',
+                season: [false, false, false, false, true, true, true, true, false, false, false, false],
+                photos: [],
+                spot: [
+                    'Canes covered in fine, soft prickles',
+                    'Red aggregate fruit that detaches from the core',
+                    'Leaves are bright green with silver undersides',
+                    'Small, white, drooping flowers',
+                    'Leaves have 3 or 5 serrated leaflets'
+                ],
+                habitat: 'Common in forest clearings, edges, and hedgerows across the country.',
+                warning: null,
+                about: 'Wild raspberries are smaller and more flavorful than garden varieties, a quintessential taste of the Danish summer.',
+                uses: [
+                    'Fresh berry garnish',
+                    'Astringent leaf tea',
+                    'Wild raspberry jam',
+                    'Berry-infused vinegar',
+                    'Kombucha flavoring'
+                ],
+                recipes: []
+            },
+            'hawthorn': {
+                name: 'Hawthorn', danish: 'Hvidtjørn', peak: 'may',
+                season: [false, false, false, true, true, false, false, false, true, true, true, false],
+                photos: [],
+                spot: [
+                    'Spiny shrub or small tree',
+                    'Deeply lobed, glossy green leaves',
+                    'Clusters of five-petaled white flowers',
+                    'Hard red berries (hvidtjørnebær)',
+                    'Sharp thorns up to 2cm long'
+                ],
+                habitat: 'Frequent in old hedgerows, forest edges, and open meadows throughout Denmark.',
+                warning: null,
+                about: 'In Danish tradition, hawthorn is known as a heart herb, and its springtime blossoms are used to signal the height of the foraging year.',
+                uses: [
+                    'Heart-supportive flower tea',
+                    'Hawthorn berry jam',
+                    'Infused flower syrup',
+                    'Young leaf salads',
+                    'Berry fruit leather'
+                ],
+                recipes: []
+            },
+            'wild-rose': {
+                name: 'Wild Rose and Rose Hip', danish: 'Hunderose/Hyben', peak: 'sep',
+                season: [false, false, false, false, false, true, true, true, true, true, true, false],
+                photos: [],
+                spot: [
+                    'Thorny arching canes with hooked prickles',
+                    'Fragrant pink or white five-petaled flowers',
+                    'Red or orange fleshy fruit (hips)',
+                    'Pinnate leaves with 5-7 leaflets',
+                    'Hips contain irritating hairy seeds'
+                ],
+                habitat: 'Ubiquitous in Danish hedges, forest edges, and coastal dunes (especially the invasive Rosa rugosa).',
+                warning: 'The hairs inside the rose hips can irritate the throat; remove them carefully if eating raw.',
+                about: 'Wild roses are beloved for their scent, while the hyben is a nutritional powerhouse used in classic Danish soups and jams.',
+                uses: [
+                    'Rose hip marmalade',
+                    'Traditional hybensuppe',
+                    'Fragrant flower sugar',
+                    'Dried fruit tea',
+                    'Pickled rose petals'
+                ],
+                recipes: []
+            },
+            'ground-ivy': {
+                name: 'Ground Ivy', danish: 'Korsknap', peak: 'jun',
+                season: [false, false, false, true, true, true, true, true, true, true, true, false],
+                photos: [],
+                spot: [
+                    'Kidney-shaped leaves with scalloped edges',
+                    'Square stems that creep along the ground',
+                    'Small, bluish-purple hooded flowers',
+                    'Strong, aromatic minty-balsamic scent',
+                    'Leaves often turn reddish in sun'
+                ],
+                habitat: 'Common in moist soils, gardens, shaded forests, and lawns throughout Denmark.',
+                warning: 'More bitter than commercial herbs; use sparingly to complement other flavors.',
+                about: 'Korsknap was historically used in beer brewing before hops became dominant, providing both bitterness and preservative qualities.',
+                uses: [
+                    'Garnish for Asian dishes',
+                    'Aromatic herb salt',
+                    'Infused wild herb oil',
+                    'Apple and ivy muffins',
+                    'Bitter syrup for mocktails'
+                ],
+                recipes: []
+            },
+            'linden': {
+                name: 'Linden', danish: 'Lind', peak: 'jun',
+                season: [false, false, false, false, false, true, true, false, false, false, false, false],
+                photos: [],
+                spot: [
+                    'Heart-shaped leaves with a pointed tip',
+                    'Fragrant yellowish-white flowers',
+                    'Flowers attached to a pale green bract',
+                    'Seeds are small, round, and woody',
+                    'Alternate leaf arrangement on twigs'
+                ],
+                habitat: 'Planted widely in Danish parks, avenues, and found in mixed deciduous forests.',
+                warning: null,
+                about: 'The Linden tree is celebrated in Denmark for its scent during mid-summer, often associated with village centers and peaceful avenues.',
+                uses: [
+                    'Calming flower tea',
+                    'Fresh young leaf salad',
+                    'Linden flower syrup',
+                    'Unripe seed chocolate substitute',
+                    'Infused honey base'
+                ],
+                recipes: []
+            },
+            'glasswort': {
+                name: 'Glasswort', danish: 'Salturt', peak: 'jul',
+                season: [false, false, false, false, true, true, true, true, true, true, false, false],
+                photos: [],
+                spot: [
+                    'Fleshy, jointed, succulent green stems',
+                    'Alien-looking appearance with no true leaves',
+                    'Grows in salt marshes and tidal flats',
+                    'Stems turn red in the late autumn',
+                    'Extremely salty, crunchy taste'
+                ],
+                habitat: 'Exclusively coastal, found on tidal mudflats and salt marshes across Denmark.',
+                warning: null,
+                about: 'Salturt is a gourmet favorite in the New Nordic kitchen, functioning as a living salt cellar of the sea.',
+                uses: [
+                    'Sauteed sea asparagus',
+                    'Fresh salad topping',
+                    'Pickled tapas snack',
+                    'Dried green salt powder',
+                    'Noodle dish garnish'
+                ],
+                recipes: []
+            },
+            'three-cornered-leek': {
+                name: 'Three-cornered Leek', danish: 'Skovløg', peak: 'apr',
+                season: [false, false, true, true, true, false, false, false, false, false, false, false],
+                photos: [],
+                spot: [
+                    'Stem is distinctly triangular in cross-section',
+                    'Strong scent of onion or garlic',
+                    'White bell-shaped flowers with a green line',
+                    'Leaves are keeled and grass-like',
+                    'Produces top bulbs (yngleknopper) in summer'
+                ],
+                habitat: 'Found in moist, often coastal deciduous forests and shaded meadows in Denmark.',
+                warning: 'Be careful not to confuse with toxic bulbs like Lily of the Valley when leaves are young.',
+                about: 'While less famous than Ramslog, Skovlog is a prized find for its concentrated onion flavor and crunchy top bulbs.',
+                uses: [
+                    'Wild garlic pesto',
+                    'Pickled top bulbs',
+                    'Herb butter component',
+                    'Fresh onion substitute',
+                    'Omelet garnish'
+                ],
+                recipes: []
+            },
+            'sloe': {
+                name: 'Sloe', danish: 'Slåen', peak: 'oct',
+                season: [false, false, false, false, false, false, false, false, true, true, true, false],
+                photos: [],
+                spot: [
+                    'Extremely thorny branches with black bark',
+                    'Small, round, waxy dark blue berries',
+                    'Blossoms appear before leaves in spring',
+                    'Berries have a large stone and green flesh',
+                    'White five-petaled flowers with almond scent'
+                ],
+                habitat: 'Common in hedges, forest edges, and coastal thickets across Denmark.',
+                warning: 'Blossoms and seeds contain cyanogenic glycosides; use in moderation and avoid eating stones.',
+                about: 'Sloen berries are famously astringent until after the first frost, which breaks down the tannins and releases their sweetness.',
+                uses: [
+                    'Traditional sloe schnapps',
+                    'Bitter almond-scented tea',
+                    'Sloe berry jam',
+                    'Kandiserede blossoms',
+                    'Wild fruit juice'
+                ],
+                recipes: []
+            },
+            'crow-garlic': {
+                name: 'Crow Garlic', danish: 'Spøjsløg', peak: 'mar',
+                season: [false, true, true, true, false, false, false, false, false, false, false, false],
+                photos: [],
+                spot: [
+                    'Hollow, cylindrical chive-like leaves',
+                    'Strong garlic or onion aroma',
+                    'Small pinkish flowers in a round head',
+                    'Produces numerous tiny bulbs at the base',
+                    'Leaves emerge early in the year'
+                ],
+                habitat: 'Grows in lawns, meadows, and along paths where the ground is disturbed.',
+                warning: null,
+                about: 'Spojslog is often one of the first edible greens to emerge in the Danish spring, making it a vital plant for early-season foraging.',
+                uses: [
+                    'Chopped chive substitute',
+                    'Wild herb salt',
+                    'Green onion omelet',
+                    'Spiced herb butter',
+                    'Pesto base'
+                ],
+                recipes: []
+            },
+            'water-mint': {
+                name: 'Water Mint', danish: 'Vandmynte', peak: 'jul',
+                season: [false, false, false, false, false, true, true, true, true, false, false, false],
+                photos: [],
+                spot: [
+                    'Strong, characteristic peppermint scent',
+                    'Square stems, often reddish or purple',
+                    'Hairy, oval leaves with serrated edges',
+                    'Dense, lilac-colored flower clusters',
+                    'Grows directly in or near water'
+                ],
+                habitat: 'Thrives in wet areas like stream banks, ditches, and marshy meadows across Denmark.',
+                warning: null,
+                about: 'Vandmynte is the wild ancestor of many garden mints, offering a potent, refreshing flavor perfectly suited for drinks.',
+                uses: [
+                    'Wild mint mojito',
+                    'Refreshing herbal tea',
+                    'Mint-infused syrup',
+                    'Dessert garnish',
+                    'Cooling foot bath'
+                ],
+                recipes: []
+            },
+            'plantain': {
+                name: 'Plantain', danish: 'Vejbred', peak: 'jun',
+                season: [false, false, false, true, true, true, true, true, true, true, false, false],
+                photos: [],
+                spot: [
+                    'Leaves with parallel veins (strenge)',
+                    'Ribbed, long flower/seed spikes',
+                    'Broad or lance-shaped leaves',
+                    'Tough, fibrous leaf stalks',
+                    'Leaves grow in a ground-level rosette'
+                ],
+                habitat: 'Grows everywhere humans walk on paths, lawns, and in meadows throughout Denmark.',
+                warning: null,
+                about: 'Vejbreds seeds are a Danish wild version of psyllium husk, used for centuries as both food and medicine.',
+                uses: [
+                    'Toasted seed topping',
+                    'Nutritious leaf soup',
+                    'Seed additive for bread',
+                    'Green smoothie boost',
+                    'Healing leaf poultice'
+                ],
+                recipes: []
+            },
+            'wild-onion': {
+                name: 'Wild Onion', danish: 'Vilde løg', peak: 'may',
+                season: [false, false, true, true, true, true, true, true, false, false, false, false],
+                photos: [],
+                spot: [
+                    'Produces clusters of tiny bulbs (top bulbs) on top',
+                    'Strong scent of garlic and onion',
+                    'Tall, round stalks rising from the base',
+                    'Small purple or white flowers',
+                    'Hollow or grooved grass-like leaves'
+                ],
+                habitat: 'Found on open, dry coastal slopes and in nutrient-rich meadows across the Danish islands.',
+                warning: 'Always confirm the onion/garlic scent to avoid confusing with toxic meadow bulbs.',
+                about: 'Vilde log are high-reward plants that offer both leaves and concentrated bulbs, making them a favorite for coastal foragers.',
+                uses: [
+                    'Pickled top bulbs',
+                    'Salt-fermented wild garlic',
+                    'Grilled whole onions',
+                    'Infused wild herb oil',
+                    'Chopped in herb butter'
+                ],
+                recipes: []
+            },
+            'burdock-root': {
+                name: 'Burdock Root', danish: 'Burrerod', peak: 'oct',
+                season: [true, true, false, false, false, false, false, false, true, true, true, true],
+                photos: [],
+                spot: [
+                    'Large, broad, heart-shaped leaves',
+                    'Hooked purple flower heads (burrs) in summer',
+                    'Long, sturdy brownish taproot',
+                    'Hollow flowering stems in the second year',
+                    'Leaves are fuzzy and greyish on the underside'
+                ],
+                habitat: 'Found in nitrogen-rich soil, near old settlements, and along paths where humans and animals move throughout Denmark.',
+                warning: 'Ensure you are digging first-year roots before the plant flowers; second-year roots become woody and unpalatable for culinary use.',
+                about: 'Historically a significant food and medicine, burrerod is now prized in Denmark for its prebiotic properties and mineral richness in the modern wild kitchen.',
+                uses: [
+                    'Earthy winter chai tea',
+                    'Sauteed root vegetable',
+                    'Pickled root slices',
+                    'Roasted root coffee substitute',
+                    'Hearty vegetable stews'
+                ],
+                recipes: []
+            },
+            'cleavers': {
+                name: 'Cleavers', danish: 'Burre-snerre', peak: 'apr',
+                season: [false, true, true, true, true, false, false, false, false, false, false, false],
+                photos: [],
+                spot: [
+                    'Whorls of narrow, lance-shaped leaves',
+                    'Small hooked hairs that cling to clothing',
+                    'Square, creeping or climbing stems',
+                    'Tiny white four-petaled flowers',
+                    'Round, sticky twin seeds'
+                ],
+                habitat: 'Extremely common across Denmark in gardens, hedgerows, and forest edges with nutrient-rich soil.',
+                warning: 'Some people may experience mild skin irritation when handling the plant in large quantities due to the hooked hairs.',
+                about: 'Known to every Danish child for its ability to stick to sweaters, cleavers have a long history of use as a spring tonic to support the body.',
+                uses: [
+                    'Cold-infused spring water',
+                    'Winter pesto component',
+                    'Juice for green smoothies',
+                    'Dried for lymphatic tea',
+                    'Roasted seeds as coffee'
+                ],
+                recipes: []
+            },
+            'crab-apple': {
+                name: 'Crab Apple', danish: 'Vildæble', peak: 'sep',
+                season: [false, false, false, false, false, false, false, true, true, true, false, false],
+                photos: [],
+                spot: [
+                    'Small, round fruit, often yellowish-green',
+                    'Harder and more sour than garden apples',
+                    'Thorny branches on wild varieties',
+                    'Oval, serrated green leaves',
+                    'Beautiful white or pink spring blossoms'
+                ],
+                habitat: 'Found in forest edges, old hedgerows, and meadows across the Danish landscape.',
+                warning: 'Always ensure fruits are firm and not infested; the seeds contain small amounts of cyanide and should not be consumed in large quantities.',
+                about: 'The wild ancestor of the modern apple, the vildaeblet is a hardy survivor and a vital autumn food source for Danish wildlife and foragers alike.',
+                uses: [
+                    'Clear apple jelly',
+                    'Salted and dried fruit',
+                    'Aromatic apple must',
+                    'Traditional fruit compote',
+                    'Wild fruit cake ingredient'
+                ],
+                recipes: []
+            },
+            'hen-of-the-woods': {
+                name: 'Hen of the Woods', danish: 'Mosaikporesvamp', peak: 'sep',
+                season: [false, false, false, false, false, false, false, true, true, true, false, false],
+                photos: [],
+                spot: [
+                    'Large cluster of overlapping brownish-gray caps',
+                    'Pore surface on the underside is white',
+                    'Found at the base of old oak trees',
+                    'Distinctive mosaik or hen-like appearance',
+                    'Meaty, firm white flesh'
+                ],
+                habitat: 'Grows almost exclusively at the base of old oak trees or stumps in Danish deciduous forests during the autumn.',
+                warning: 'Ensure identification is certain to avoid confusion with inedible tough poly-pores; always cook this mushroom thoroughly.',
+                about: 'Known as one of the finest edible fungi in Denmark, it is highly sought after for its ability to hold its texture when fried or roasted.',
+                uses: [
+                    'Crispy fried clusters',
+                    'Rich mushroom risotto',
+                    'Dried and pulverized seasoning',
+                    'Meaty mushroom steaks',
+                    'Creamy mushroom soup'
+                ],
+                recipes: []
+            },
+            'porcini': {
+                name: 'Porcini', danish: 'Karljohan', peak: 'aug',
+                season: [false, false, false, false, false, false, true, true, true, true, false, false],
+                photos: [],
+                spot: [
+                    'Brown, bun-shaped cap (often sticky when wet)',
+                    'Thick, bulbous stem with a white network',
+                    'Pores on the underside (white, turning yellow-green)',
+                    'Flesh stays white when cut',
+                    'Pleasant nutty scent and taste'
+                ],
+                habitat: 'Common in both deciduous and coniferous forests in Denmark, often found under beech, oak, or spruce.',
+                warning: 'Watch out for the Bitter Bolete (Gallerørhat), which looks similar but tastes extremely bitter and has a dark-brown network on the stem.',
+                about: 'Named in Denmark after King Karl XIV Johan, who helped popularize rorhat mushrooms as a food source during the 19th century.',
+                uses: [
+                    'Butter-fried slices',
+                    'Creamy mushroom sauce',
+                    'Dried for intense flavor',
+                    'Mushroom toast',
+                    'Savory risotto'
+                ],
+                recipes: []
+            },
+            'sweet-chestnut': {
+                name: 'Sweet Chestnut', danish: 'Ægte Kastanje', peak: 'oct',
+                season: [false, false, false, false, false, false, false, false, false, true, true, false],
+                photos: [],
+                spot: [
+                    'Long, lance-shaped leaves with sharp teeth',
+                    'Husks are extremely spiky (like hedgehogs)',
+                    'Nuts are flattened on one side with a point',
+                    'Nuts are brown and shiny when ripe',
+                    'Large trees with deeply fissured bark'
+                ],
+                habitat: 'Primarily found in parks, large estates, and sheltered forests in southern Denmark where the climate is milder.',
+                warning: 'Do not confuse with the Horse Chestnut (Hestekastanje), which is toxic and has a much less spiky, thicker husk with rounder nuts.',
+                about: 'While not as common as native beech or oak, the sweet chestnut is a cherished find that marks the heart of the Danish autumn.',
+                uses: [
+                    'Roasted chestnuts with butter',
+                    'Chestnut puree',
+                    'Added to game stuffings',
+                    'Boiled for snacks',
+                    'Glazed in sugar'
+                ],
+                recipes: []
+            },
+            'velvet-shank': {
+                name: 'Velvet Shank', danish: 'Fløjlsfodsvampe', peak: 'nov',
+                season: [true, true, false, false, false, false, false, false, false, true, true, true],
+                photos: [],
+                spot: [
+                    'Bright orange to yellowish cap',
+                    'Stem is velvety and dark brown/black at base',
+                    'White gills underneath the cap',
+                    'Grows in clusters on dead deciduous wood',
+                    'Caps are often slimy when wet'
+                ],
+                habitat: 'Found growing on dead or dying deciduous trees, especially willow, poplar, and ash, across Denmark during winter.',
+                warning: 'Use caution to avoid confusion with the deadly Galerina marginata, which grows in similar clusters but has brown gills and a ring on the stem.',
+                about: 'These are the wild version of the cultivated Enoki mushroom and are remarkably frost-tolerant, continuing to grow after thawing.',
+                uses: [
+                    'Mushroom stir-fry',
+                    'Added to ramen bowls',
+                    'Sauteed on toast',
+                    'Mushroom soup',
+                    'Pickled for storage'
+                ],
+                recipes: []
+            },
+            'wild-strawberry': {
+                name: 'Wild Strawberry', danish: 'Markjordbær', peak: 'jun',
+                season: [false, false, false, false, true, true, true, true, false, false, false, false],
+                photos: [],
+                spot: [
+                    'Small, red aggregate fruit with seeds on surface',
+                    'Triple-parted serrated leaves',
+                    'Small white flowers with five petals',
+                    'Low-growing with long red runners',
+                    'Fragrant scent even before tasting'
+                ],
+                habitat: 'Common in forest edges, clearings, and sunny slopes throughout the Danish countryside.',
+                warning: null,
+                about: 'A classic Danish summer treat, skovjordbaer is legendary for its intense aroma, which is far superior to domestic varieties.',
+                uses: [
+                    'Fresh forest snack',
+                    'Infused into wine',
+                    'Cake decoration',
+                    'Wild fruit marmalade',
+                    'Summer salad topping'
                 ],
                 recipes: []
             }
