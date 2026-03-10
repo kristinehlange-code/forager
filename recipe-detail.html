@@ -12,32 +12,24 @@
         body { font-family: 'Inter', sans-serif; background-color: #FDFCFB; color: #1A1C19; }
         h1, h2, h3 { font-family: 'Outfit', sans-serif; }
         .dot {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            border: 1px solid #D1D5DB;
-            display: inline-block;
-            flex-shrink: 0;
+            width: 16px; height: 16px; border-radius: 50%;
+            border: 1px solid #D1D5DB; display: inline-block; flex-shrink: 0;
         }
         .nav-shadow { box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
         .card-shadow { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
         .step-number {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Outfit', sans-serif;
-            font-weight: 700;
-            font-size: 0.75rem;
-            flex-shrink: 0;
+            width: 28px; height: 28px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Outfit', sans-serif; font-weight: 700;
+            font-size: 0.75rem; flex-shrink: 0;
         }
         .tip-band {
-            background-color: #F0FAF2;
-            border: 1px solid #BBE5C4;
-            border-radius: 0.75rem;
-            padding: 0.875rem 1rem;
+            background-color: #FFFBEB; border: 1px solid #FDE68A;
+            border-radius: 0.75rem; padding: 0.875rem 1rem;
+        }
+        .alt-band {
+            background-color: #F0FAF2; border: 1px solid #BBE5C4;
+            border-radius: 0.75rem; padding: 0.875rem 1rem;
         }
     </style>
 </head>
@@ -70,8 +62,28 @@
             <div id="season-dots" class="flex gap-1 flex-wrap justify-end max-w-[120px]"></div>
         </div>
 
-        <!-- Description -->
-        <p id="recipe-desc" class="text-sm text-gray-600 leading-relaxed mb-7"></p>
+        <!-- Intro -->
+        <p id="recipe-intro" class="text-sm text-gray-600 leading-relaxed mb-7"></p>
+
+        <!-- Time + serves -->
+        <div class="flex gap-3 mb-7">
+            <div class="flex-1 bg-gray-50 rounded-xl p-3 text-center">
+                <p class="text-[10px] uppercase tracking-wider text-gray-400 mb-0.5">Time</p>
+                <p id="recipe-time" class="text-sm font-semibold"></p>
+            </div>
+            <div class="flex-1 bg-gray-50 rounded-xl p-3 text-center">
+                <p class="text-[10px] uppercase tracking-wider text-gray-400 mb-0.5">Serves</p>
+                <p id="recipe-serves" class="text-sm font-semibold"></p>
+            </div>
+        </div>
+
+        <!-- Also works with -->
+        <div id="alts-section" class="mb-7 hidden">
+            <div class="alt-band">
+                <p class="text-[10px] font-bold uppercase tracking-widest mb-1" style="color:#2D6A4F">Also works with</p>
+                <p id="alts-text" class="text-sm" style="color:#2D6A4F"></p>
+            </div>
+        </div>
 
         <!-- Ingredients -->
         <section class="mb-7">
@@ -85,31 +97,11 @@
             <div id="method-steps" class="space-y-5"></div>
         </section>
 
-        <!-- Makes / stores -->
-        <section id="makes-section" class="mb-7 hidden">
-            <div class="bg-gray-50 rounded-xl p-4 flex gap-6">
-                <div id="makes-block" class="hidden">
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Makes</p>
-                    <p id="makes-text" class="text-sm font-semibold"></p>
-                </div>
-                <div id="stores-block" class="hidden">
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Stores</p>
-                    <p id="stores-text" class="text-sm font-semibold"></p>
-                </div>
-            </div>
-        </section>
-
-        <!-- See also -->
-        <section id="seealso-section" class="mb-7 hidden">
-            <h2 class="text-lg font-bold mb-3">See also</h2>
-            <div id="seealso-links" class="space-y-2"></div>
-        </section>
-
-        <!-- Foraging tip -->
+        <!-- Tip -->
         <section id="tip-section" class="mb-7 hidden">
-            <h2 class="text-lg font-bold mb-2">Foraging tip</h2>
+            <h2 class="text-lg font-bold mb-2">Tip</h2>
             <div class="tip-band">
-                <p id="tip-text" class="text-sm text-green-900 leading-relaxed"></p>
+                <p id="tip-text" class="text-sm leading-relaxed" style="color:#78350F"></p>
             </div>
         </section>
 
@@ -142,444 +134,1071 @@
             sep: '#7A4A6E', oct: '#8A4A28', nov: '#425A72', dec: '#2C5A3A'
         };
         const darkMonths = ['may','jul','sep','oct','nov','dec'];
-
         const typeBadgeColors = { Fresh: '#DDF0E4', Preserve: '#F8F8D0', Drink: '#D8EBF8' };
         const typeBadgeText = { Fresh: '#3A5C3A', Preserve: '#6B6B00', Drink: '#1A4A6B' };
 
-        // ── Recipe data ───────────────────────────────────────────
-        // To add a new recipe, copy an existing entry and fill in the fields.
-        // plantId must match the key used in plant-detail.html
-        // season is a 12-boolean array: Jan through Dec
-
-        const recipeData = {
-            'wild-garlic-pesto': {
-                name: 'Wild Garlic Pesto',
-                type: 'Preserve',
-                peak: 'mar',
-                plantId: 'wild-garlic',
-                plantName: 'Wild Garlic',
-                plantDanish: 'Ramsløg',
-                season: [false,false,true,true,true,false,false,false,false,false,false,false],
-                desc: 'A vivid green pesto that captures spring at its most intense. Better than basil pesto and made in minutes. Keeps in the fridge for weeks under a layer of oil and freezes beautifully.',
-                ingredients: [
-                    '100g fresh wild garlic leaves, washed and dried',
-                    '50g pine nuts or walnuts, lightly toasted',
-                    '50g Parmesan or Pecorino, finely grated',
-                    '100ml good olive oil',
-                    'Juice of half a lemon',
-                    'Salt and black pepper to taste'
-                ],
-                method: [
-                    { title: 'Toast the nuts', text: 'Toast the nuts in a dry frying pan over medium heat for 2–3 minutes until golden and fragrant. Watch them carefully — they burn fast. Set aside to cool.' },
-                    { title: 'Blend', text: 'Add the wild garlic leaves, cooled nuts, and lemon juice to a food processor. Pulse until roughly chopped.' },
-                    { title: 'Add oil', text: 'With the processor running, slowly pour in the olive oil until you have a loose, textured paste. Do not over-blend — some texture is good.' },
-                    { title: 'Add cheese and season', text: 'Stir in the grated cheese by hand rather than blending it, which keeps the texture better. Season generously with salt and pepper. Taste and adjust lemon if needed.' },
-                    { title: 'Jar and store', text: 'Transfer to a clean jar and pour a thin layer of olive oil over the surface to prevent browning. Keeps in the fridge for up to 3 weeks. Freeze in ice cube trays for longer storage.' }
-                ],
-                tip: 'Harvest wild garlic leaves before the flowers open for the best flavour and deepest green colour. Once flowers appear the leaves become slightly more bitter and lose their brightness.',
-                makes: 'Around 250ml',
-                stores: 'Up to 3 weeks in the fridge, 6 months frozen',
-                seeAlso: ['nettle-soup']
-            },
-            'nettle-soup': {
-                name: 'Nettle Soup',
-                type: 'Fresh',
-                peak: 'apr',
-                plantId: 'stinging-nettle',
-                plantName: 'Stinging Nettle',
-                plantDanish: 'Brændenælde',
-                season: [false,false,true,true,true,false,false,false,false,false,false,false],
-                desc: 'A classic Nordic spring soup, deep green and mineral-tasting with a silky texture. Rich in iron, vitamins, and the taste of early spring. Use only the young top shoots for the best flavour.',
-                ingredients: [
-                    '200g young nettle tops (top 4 leaves only), washed',
-                    '1 medium onion, roughly chopped',
-                    '2 cloves garlic, sliced',
-                    '2 medium potatoes, peeled and diced',
-                    '800ml vegetable stock',
-                    '100ml cream or crème fraîche',
-                    '1 tbsp butter',
-                    'Salt, pepper, and nutmeg to taste',
-                    'Soft-boiled egg and rye bread to serve'
-                ],
-                method: [
-                    { title: 'Prepare the nettles', text: 'Wear gloves when handling raw nettles. Pick only the top four leaves from young spring shoots. Wash thoroughly in cold water.' },
-                    { title: 'Soften the base', text: 'Melt butter in a large pan over medium heat. Add onion and cook gently for 8–10 minutes until soft and translucent. Add garlic and cook for another 2 minutes.' },
-                    { title: 'Add potato and stock', text: 'Add the diced potato and vegetable stock. Bring to a gentle boil and cook for 12–15 minutes until the potato is completely tender.' },
-                    { title: 'Add nettles', text: 'Add the nettles to the pan and stir them down into the liquid. The sting disappears within 30 seconds of heat. Simmer for 3 minutes only — longer cooking loses the colour.' },
-                    { title: 'Blend and finish', text: 'Blend until completely smooth. Stir in the cream, season generously with salt, pepper, and a little grated nutmeg. Reheat gently without boiling.' },
-                    { title: 'Serve', text: 'Ladle into bowls and top with a halved soft-boiled egg, a swirl of cream, and fresh chives if available. Serve with rye bread.' }
-                ],
-                tip: 'Harvest nettles in March and April before they flower, when the shoots are young and tender. Older nettles become coarse and develop a less pleasant flavour. Wear thick gloves — the sting is persistent on skin even if harmless.',
-                makes: '4 servings',
-                stores: '3 days in the fridge, freezes well without the cream',
-                seeAlso: ['nettle-tea', 'wild-garlic-pesto']
-            },
-            'nettle-tea': {
-                name: 'Nettle Tea',
-                type: 'Drink',
-                peak: 'may',
-                plantId: 'stinging-nettle',
-                plantName: 'Stinging Nettle',
-                plantDanish: 'Brændenælde',
-                season: [false,false,true,true,true,true,true,true,false,false,false,false],
-                desc: 'A mineral-rich infusion that tastes clean and grassy, nothing like the stinging plant it comes from. One of the best sources of iron, calcium and magnesium available from a wild plant. Drink fresh or make a big batch to keep in the fridge.',
-                ingredients: [
-                    'A large handful of fresh young nettle tops, or 2 tbsp dried nettle leaf',
-                    '500ml just-boiled water',
-                    'Honey to taste (optional)',
-                    'Slice of lemon (optional)'
-                ],
-                method: [
-                    { title: 'Prepare the nettles', text: 'If using fresh nettles, wear gloves and pick the young top leaves. Rinse well. If using dried nettles, measure out 2 tablespoons.' },
-                    { title: 'Steep', text: 'Place the nettles in a teapot or heatproof jug. Pour over just-boiled water — not a full rolling boil, which damages the delicate compounds. Steep for 5–10 minutes depending on how strong you like it.' },
-                    { title: 'Strain and serve', text: 'Strain through a fine sieve into a cup. The sting is completely neutralised by the hot water. Add honey or lemon to taste. Drink hot or allow to cool and serve over ice.' },
-                    { title: 'Drying for winter', text: 'To dry nettles: spread young leaves on a clean rack in a warm, airy spot out of direct sunlight. They are ready when completely crisp and crumble easily, usually 2–3 days. Store in a sealed glass jar away from light.' }
-                ],
-                tip: 'The best nettle tea comes from leaves harvested in early spring when the plants are young and the mineral content is highest. You can harvest through summer too, but always pick fresh new growth from the top rather than older leaves.',
-                makes: '2 cups',
-                stores: '48 hours in the fridge as cold brew. Dried leaves keep for 12 months in a sealed jar.',
-                seeAlso: ['nettle-soup']
-            },
-            'elderflower-cordial': {
-                name: 'Elderflower Cordial',
-                type: 'Drink',
-                peak: 'jun',
-                plantId: 'elder',
-                plantName: 'Elder',
-                plantDanish: 'Hyld',
-                season: [false,false,false,false,true,true,false,false,false,false,false,false],
-                desc: 'The most iconic Danish summer drink. Every family has a version. This one is clean, bright, and intensely floral — dilute with sparkling water, use in cocktails, or freeze into ice lollies. Make as much as you can because the season is short.',
-                ingredients: [
-                    '20 large elderflower heads, fully open and freshly picked',
-                    '1.5 litres water',
-                    '1.2 kg white sugar',
-                    '2 unwaxed lemons, sliced',
-                    '50g citric acid (from a pharmacy or baking shop)'
-                ],
-                method: [
-                    { title: 'Pick and check', text: 'Harvest flower heads on a dry, sunny morning when the scent is strongest. Shake gently to remove any insects — do not wash, as you will rinse away the pollen and much of the flavour.' },
-                    { title: 'Make the syrup', text: 'Bring the water and sugar to a boil, stirring until the sugar is completely dissolved. Remove from heat and allow to cool for 10 minutes.' },
-                    { title: 'Steep', text: 'Place the flower heads, lemon slices, and citric acid in a large bowl or pot. Pour the warm (not hot) syrup over them. Stir gently, cover with a clean cloth, and leave to steep at room temperature for 24–48 hours.' },
-                    { title: 'Strain and bottle', text: 'Strain through a muslin cloth or fine sieve lined with a clean tea towel into a large jug. Pour into sterilised bottles. The cordial is shelf-stable for up to 6 months unopened.' },
-                    { title: 'Serve', text: 'Dilute 1 part cordial to 5–8 parts sparkling or still water. Serve over ice with a slice of lemon. Also excellent with prosecco or as a base for cocktails.' }
-                ],
-                tip: 'Pick flower heads when they are fully open and at peak scent — this is usually a window of just a few days per tree. Flowers that have started to fade or brown will make a bitter cordial. The best time to pick is mid-morning on a warm dry day after the dew has lifted.',
-                makes: 'Around 2 litres of cordial',
-                stores: '6 months sealed, 4 weeks in the fridge once opened. Freezes well.',
-                seeAlso: []
-            },
-            'chanterelle-butter': {
-                name: 'Chanterelle Butter',
-                type: 'Preserve',
-                peak: 'aug',
-                plantId: 'chanterelle',
-                plantName: 'Chanterelle',
-                plantDanish: 'Kantarel',
-                season: [false,false,false,false,false,false,true,true,true,false,false,false],
-                desc: 'A way to preserve the flavour of chanterelles through the year. Intensely golden and fragrant, it melts into pasta, eggs, fish, or toast with outstanding results. Make a large batch when chanterelles are plentiful.',
-                ingredients: [
-                    '300g fresh chanterelles, cleaned and roughly chopped',
-                    '200g good quality unsalted butter, softened',
-                    '1 small shallot, very finely minced',
-                    '1 clove garlic, very finely minced',
-                    '1 tsp fresh thyme leaves',
-                    'Juice of half a lemon',
-                    'Salt and white pepper'
-                ],
-                method: [
-                    { title: 'Cook the mushrooms', text: 'Heat a dry frying pan over high heat until very hot. Add the chanterelles in a single layer — do not overcrowd or they will steam rather than colour. Cook without stirring for 2 minutes until golden on the base, then toss and cook for another 2 minutes. Season lightly.' },
-                    { title: 'Add aromatics', text: 'Reduce heat to medium. Add the shallot, garlic, and thyme and cook for 2 more minutes, stirring. The mushrooms should be deeply golden and reduced in volume.' },
-                    { title: 'Cool completely', text: 'Transfer to a plate and spread out to cool completely. The mushrooms must be completely cold before mixing with butter or the butter will melt rather than combine.' },
-                    { title: 'Combine', text: 'Finely chop the cooled mushrooms. Beat the softened butter until smooth, then fold in the chopped mushrooms, lemon juice, salt, and white pepper. Mix thoroughly.' },
-                    { title: 'Roll and store', text: 'Spoon the butter onto a sheet of baking paper. Roll into a log, twist the ends tightly, and refrigerate or freeze. Slice off rounds as needed.' }
-                ],
-                tip: 'Clean chanterelles with a soft brush rather than washing them — they absorb water easily and will steam rather than fry if wet. If you must wash them, dry thoroughly before cooking.',
-                makes: 'One large butter log, about 20 slices',
-                stores: '2 weeks in the fridge, 6 months frozen',
-                seeAlso: []
-            },
-            'dandelion-honey': {
-                name: 'Dandelion Honey',
-                type: 'Preserve',
-                peak: 'apr',
-                plantId: 'dandelion',
-                plantName: 'Dandelion',
-                plantDanish: 'Mælkebøtte',
-                season: [false,false,true,true,true,false,false,false,false,false,false,false],
-                desc: 'Not actually honey, but a golden syrup made from dandelion flowers that looks and pours exactly like it. Floral, sweet, and slightly vegetal. Beautiful on yoghurt, porridge, cheese, or drizzled over ice cream.',
-                ingredients: [
-                    '200 dandelion flower heads, freshly picked',
-                    '1 litre water',
-                    '800g white sugar',
-                    '1 unwaxed lemon, sliced',
-                    '1 orange, sliced (optional)'
-                ],
-                method: [
-                    { title: 'Prepare the flowers', text: 'Pick flowers on a sunny morning when fully open. Remove as much of the green base (calyx) as possible — it adds bitterness. You can do this by pinching and pulling, or snipping with scissors. Only the yellow petals are needed.' },
-                    { title: 'First simmer', text: 'Place flowers, lemon, and orange slices in a large pan. Pour over 1 litre of water. Bring to a gentle boil and simmer for 20 minutes. The water will turn bright golden.' },
-                    { title: 'Strain', text: 'Strain the liquid through a fine sieve or muslin cloth, pressing to extract as much liquid as possible. Discard the flowers and citrus. You should have around 800ml of golden liquid.' },
-                    { title: 'Make the syrup', text: 'Return the liquid to the pan. Add the sugar and stir over medium heat until completely dissolved. Bring to a low boil and simmer uncovered for 30–60 minutes, stirring occasionally, until the syrup thickens and coats the back of a spoon. It will thicken further as it cools.' },
-                    { title: 'Bottle', text: 'Pour into sterilised jars while hot. It keeps beautifully and improves with age.' }
-                ],
-                tip: 'Pick flowers in dry weather and use them the same day — they close up quickly once picked. The more green base you remove, the milder and less bitter the finished syrup will be.',
-                makes: 'Around 600ml',
-                stores: '12 months sealed in a sterilised jar',
-                seeAlso: []
-            },
-            'sea-buckthorn-sorbet': {
-                name: 'Sea Buckthorn Sorbet',
-                type: 'Fresh',
-                peak: 'sep',
-                plantId: 'sea-buckthorn',
-                plantName: 'Sea Buckthorn',
-                plantDanish: 'Havtorn',
-                season: [false,false,false,false,false,false,false,true,true,true,false,false],
-                desc: 'Electric orange, searingly tart, and extraordinary. One of the most vivid and distinctive flavours in the Nordic kitchen. No ice cream machine needed — this method produces a smooth, scoopable sorbet with nothing but berries, sugar, and a freezer.',
-                ingredients: [
-                    '500g sea buckthorn berries, fresh or frozen',
-                    '200g white sugar',
-                    '200ml water',
-                    'Juice of half a lemon',
-                    '1 egg white (optional — improves texture)'
-                ],
-                method: [
-                    { title: 'Extract the juice', text: 'If using fresh berries, press them through a fine sieve to extract the juice — wear gloves, the juice stains deeply. If using frozen, defrost first then sieve. You should get around 300–350ml of intensely orange juice.' },
-                    { title: 'Make a syrup', text: 'Combine the sugar and water in a small pan. Bring to a boil, stirring until dissolved. Simmer for 2 minutes then remove from heat and cool completely.' },
-                    { title: 'Combine', text: 'Mix the sea buckthorn juice with the cooled syrup and lemon juice. Taste — it should be sweet but still very tart. Adjust sugar if needed.' },
-                    { title: 'First freeze', text: 'Pour into a shallow freezer-proof container. Freeze for 2 hours until the edges are frozen but the centre is still slushy.' },
-                    { title: 'Beat and freeze again', text: 'If using the egg white, whisk it to soft peaks. Scrape the semi-frozen sorbet into a food processor or blender, add the egg white if using, and blend until smooth. Return to the container and freeze for at least 4 more hours or overnight.' },
-                    { title: 'Serve', text: 'Remove from the freezer 5–10 minutes before serving to soften slightly. Serve in small portions — the flavour is intense.' }
-                ],
-                tip: 'Sea buckthorn berries are extremely difficult to pick by hand because of the dense thorns. The traditional method is to freeze entire branches and then shake the berries off over a sheet. Wear thick gloves and old clothes — the juice stains permanently.',
-                makes: '6 servings',
-                stores: '3 months in the freezer',
-                seeAlso: []
-            },
-            'meadowsweet-tea': {
-                name: 'Meadowsweet Tea',
-                type: 'Drink',
-                peak: 'jul',
-                plantId: 'meadowsweet',
-                plantName: 'Meadowsweet',
-                plantDanish: 'Mødurt',
-                season: [false,false,false,false,false,true,true,false,false,false,false,false],
-                desc: 'One of the most beautiful wild teas you can make. The scent of meadowsweet is almost impossibly complex — honey, almond, and vanilla all at once. The dried version keeps perfectly through winter and is a reminder of summer meadows in the dark months.',
-                ingredients: [
-                    'A large handful of fresh meadowsweet flower heads, or 2 tbsp dried',
-                    '500ml just-boiled water',
-                    'Honey to taste'
-                ],
-                method: [
-                    { title: 'Harvest at peak', text: 'Pick flower heads when freshly open and at their most fragrant — usually July. Pick in the morning on a dry day. Use immediately or dry.' },
-                    { title: 'To dry for winter', text: 'Spread flower heads loosely on a drying rack or hang in small bunches in a warm, airy place out of direct sunlight. They should be completely crisp and dry within 3–5 days. The scent concentrates beautifully as they dry. Store in a sealed glass jar.' },
-                    { title: 'Brew the tea', text: 'Place fresh or dried flower heads in a teapot or jug. Pour over just-boiled water. Steep for 5–7 minutes — longer steeping brings out more of the almond bitterness, shorter keeps it delicate and floral.' },
-                    { title: 'Strain and serve', text: 'Strain through a fine sieve. Add honey if desired. The flavour is complex enough that it rarely needs sweetening. Serve hot or over ice.' }
-                ],
-                tip: 'Meadowsweet contains salicylates, the same compounds as aspirin. The tea should not be drunk in large quantities by anyone sensitive to aspirin or taking blood-thinning medication. For most people a cup or two is a gentle, pleasant drink with no concerns.',
-                makes: '2 cups',
-                stores: 'Dried flowers keep for 12 months in a sealed jar away from light',
-                seeAlso: []
-            },
-            'juniper-salt': {
-                name: 'Juniper Salt',
-                type: 'Preserve',
-                peak: 'dec',
-                plantId: 'juniper',
-                plantName: 'Juniper',
-                plantDanish: 'Ene',
-                season: [true,true,false,false,false,false,false,false,false,false,true,true],
-                desc: 'A simple, deeply Nordic seasoning that transforms roast vegetables, grilled fish, and cured meats. The resinous, piney flavour of juniper combined with good sea salt is one of the great flavour combinations of the Nordic kitchen. Takes five minutes to make.',
-                ingredients: [
-                    '3 tbsp ripe juniper berries (blue-black, not green)',
-                    '100g good flaky sea salt (Maldon or similar)',
-                    '1 tsp dried thyme (optional)',
-                    'Zest of half a lemon (optional)'
-                ],
-                method: [
-                    { title: 'Dry the berries', text: 'If your juniper berries are freshly picked, spread them on a baking tray and dry in the oven at 80°C for 30 minutes, or leave them to air dry for a few days. Completely dry berries grind much better.' },
-                    { title: 'Grind', text: 'Add the dried berries to a mortar and pestle or spice grinder. Grind until roughly broken down — you want some texture rather than a fine powder. Add the dried thyme if using.' },
-                    { title: 'Combine', text: 'Add the sea salt and lemon zest if using. Mix together and then give it a few more quick pulses in the grinder or a few turns of the pestle to bring it together without losing all texture.' },
-                    { title: 'Store', text: 'Transfer to a small sealed jar. The flavour improves after a few days as the juniper oils infuse into the salt.' },
-                    { title: 'Use', text: 'Use to season salmon before roasting, rub into duck legs, sprinkle over root vegetables before roasting, or use as a finishing salt on anything rich.' }
-                ],
-                tip: 'Only use fully ripe blue-black juniper berries — the green unripe ones are astringent and unpleasant. Berries take two to three years to ripen on the same branch, so you will find berries of different stages at the same time. Be selective.',
-                makes: 'Around 120g',
-                stores: '12 months in a sealed jar',
-                seeAlso: []
-            },
-            'oyster-mushroom-stew': {
-                name: 'Oyster Mushroom Stew',
-                type: 'Fresh',
-                peak: 'nov',
-                plantId: 'oyster-mushroom',
-                plantName: 'Oyster Mushroom',
-                plantDanish: 'Østershat',
-                season: [false,false,false,false,false,false,false,false,true,true,true,true],
-                desc: 'A warming autumn stew that is rich, deeply savoury, and satisfying enough to eat on its own or as a side to roasted meats. Oyster mushrooms have a wonderful meaty texture that holds up beautifully in long cooking.',
-                ingredients: [
-                    '400g fresh oyster mushrooms, torn into large pieces',
-                    '1 large onion, finely sliced',
-                    '3 cloves garlic, sliced',
-                    '200ml dry white wine or vegetable stock',
-                    '200ml cream',
-                    '1 tbsp butter',
-                    '1 tbsp olive oil',
-                    '2 sprigs fresh thyme',
-                    '1 bay leaf',
-                    'Salt, pepper, and a squeeze of lemon to finish',
-                    'Fresh parsley and crusty bread to serve'
-                ],
-                method: [
-                    { title: 'Colour the mushrooms', text: 'Heat a wide pan over high heat with the olive oil until very hot. Add the mushrooms in a single layer without stirring. Let them colour for 2–3 minutes until golden brown on one side, then toss and cook for another minute. Work in batches if needed — crowding the pan causes steaming. Remove and set aside.' },
-                    { title: 'Soften the onion', text: 'Reduce heat to medium. Add butter to the same pan. Add the onion and cook gently for 10–12 minutes until soft and golden. Add the garlic, thyme, and bay leaf and cook for 2 more minutes.' },
-                    { title: 'Deglaze', text: 'Pour in the wine or stock. Let it bubble and reduce by half, scraping up any brown bits from the base of the pan.' },
-                    { title: 'Add cream and mushrooms', text: 'Pour in the cream and return the mushrooms to the pan. Stir to combine. Simmer gently for 5–8 minutes until the sauce is thick and coats the mushrooms. Remove the bay leaf and thyme sprigs.' },
-                    { title: 'Season and serve', text: 'Season generously with salt and pepper. Add a squeeze of lemon to lift the richness. Scatter with fresh parsley and serve immediately with crusty bread or over soft polenta.' }
-                ],
-                tip: 'Fresh oyster mushrooms are at their best within a day or two of picking. Older mushrooms become soft and lose their flavour. Look for firm clusters with tight, unfurled edges.',
-                makes: '2–3 servings',
-                stores: '2 days in the fridge. Does not freeze well.',
-                seeAlso: []
-            },
-            'pickled-garlic-mustard': {
-                name: 'Pickled Garlic Mustard',
-                type: 'Preserve',
-                peak: 'apr',
-                plantId: 'garlic-mustard',
-                plantName: 'Garlic Mustard',
-                plantDanish: 'Løgkarse',
-                season: [false,false,true,true,true,false,false,false,false,false,false,false],
-                desc: 'A sharp, garlicky condiment that punches well above its weight. Use it anywhere you would use capers or a peppery relish — on smørrebrød, with smoked fish, alongside grilled vegetables, or stirred into dressings.',
-                ingredients: [
-                    'A large bowl of young garlic mustard leaves and stems',
-                    '200ml white wine vinegar or apple cider vinegar',
-                    '200ml water',
-                    '1 tbsp sugar',
-                    '1 tsp salt',
-                    '1 tsp mustard seeds',
-                    '1 tsp peppercorns',
-                    '1 small bay leaf'
-                ],
-                method: [
-                    { title: 'Prepare the leaves', text: 'Pick young leaves and stems before the plant flowers. Wash well and pat dry. Pack loosely into a sterilised jar.' },
-                    { title: 'Make the brine', text: 'Combine the vinegar, water, sugar, salt, mustard seeds, peppercorns, and bay leaf in a small pan. Bring to a boil, stirring until the sugar and salt dissolve. Simmer for 2 minutes.' },
-                    { title: 'Pour and seal', text: 'Pour the hot brine over the leaves, ensuring everything is submerged. Press down with a spoon if needed. Seal the jar immediately.' },
-                    { title: 'Wait', text: 'Leave for at least 48 hours before opening. The flavour mellows and develops over the first week. Best after 5–7 days.' }
-                ],
-                tip: 'Pick garlic mustard before it flowers for the mildest flavour. After flowering the leaves become more bitter and fibrous. The pickled leaves keep their garlic-mustard character beautifully and make an unusual and delicious condiment.',
-                makes: 'One medium jar',
-                stores: '3 months in the fridge',
-                seeAlso: []
-            },
-            'rosehip-syrup': {
-                name: 'Rosehip Syrup',
-                type: 'Drink',
-                peak: 'sep',
-                plantId: 'sea-buckthorn',
-                plantName: 'Rosehip',
-                plantDanish: 'Hyben',
-                season: [false,false,false,false,false,false,false,true,true,true,false,false],
-                desc: 'Rich, vitamin-packed and deeply autumnal. Rosehips contain more vitamin C than almost any other wild plant. Dilute with water, pour over porridge, or use as a cordial. Pick after the first frost for the sweetest hips.',
-                ingredients: [
-                    '500g ripe rosehips, stalks and blossom ends removed',
-                    '750ml water',
-                    '300g sugar',
-                    'Juice of half a lemon'
-                ],
-                method: [
-                    { title: 'Prepare the hips', text: 'Remove the stalks and the black blossom ends from each hip. Roughly chop or pulse in a food processor — this helps extract more colour and flavour.' },
-                    { title: 'First cook', text: 'Place the chopped hips in a pan with 500ml of the water. Bring to the boil then simmer for 20 minutes until soft. Strain through a jelly bag or double layer of muslin and set aside the liquid.' },
-                    { title: 'Second extraction', text: 'Return the pulp to the pan with the remaining 250ml of water. Boil again for 15 minutes, then strain again. Combine both strained liquids.' },
-                    { title: 'Make the syrup', text: 'Measure the combined liquid and add 300g of sugar per 600ml. Heat gently, stirring until the sugar dissolves completely. Add lemon juice. Do not boil hard — just a gentle simmer for 5 minutes.' },
-                    { title: 'Bottle', text: 'Pour into sterilised bottles while still hot. Seal immediately. The syrup will keep unopened for several months.' }
-                ],
-                tip: 'The small hairs inside rosehips are an irritant — never eat raw hips without straining very carefully through a fine cloth. The double-straining method here removes them safely. Hips from the dog rose (Rosa canina) give the best flavour.',
-                makes: 'Around 500ml',
-                stores: '3 months sealed, 4 weeks in the fridge once opened',
-                seeAlso: ['sea-buckthorn-sorbet']
-            },
-            'sorrel-salad': {
-                name: 'Sorrel Salad',
-                type: 'Fresh',
-                peak: 'may',
-                plantId: 'garlic-mustard',
-                plantName: 'Wood Sorrel',
-                plantDanish: 'Skovsyre',
-                season: [false,false,false,true,true,true,false,false,false,false,false,false],
-                desc: 'A sharp, lemony explosion of freshness. Wood sorrel has a clean citrus-like acidity that dresses itself — it barely needs anything added. The tiny heart-shaped leaves look as beautiful as they taste. Perfect as a garnish or a simple side.',
-                ingredients: [
-                    'A generous handful of fresh wood sorrel leaves and stems',
-                    '1 tbsp good olive oil',
-                    'Flaky sea salt',
-                    'Optional: thinly sliced radish, a few edible flowers, or a soft-boiled egg'
-                ],
-                method: [
-                    { title: 'Forage and wash', text: 'Pick wood sorrel from clean, shaded woodland edges, away from paths and roadsides. Rinse gently in cold water and spin dry or pat with a clean cloth.' },
-                    { title: 'Dress', text: 'Place the sorrel in a bowl and drizzle with olive oil. Toss very gently — the leaves are delicate. Season with a pinch of flaky salt. The sorrel provides all the acidity needed; no vinegar or lemon required.' },
-                    { title: 'Serve immediately', text: 'This salad wilts quickly once dressed. Serve straight away as a side, a garnish for fish or eggs, or as a fresh element in a larger plate.' }
-                ],
-                tip: 'Wood sorrel is not the same as common sorrel (Rumex acetosa) though both are edible. The wood sorrel has small three-lobed heart-shaped leaves and a finer, more delicate flavour. Do not eat in very large quantities as it contains oxalic acid.',
-                makes: '2 servings as a side',
-                stores: 'Best eaten immediately. Washed leaves keep unwilted in a damp cloth in the fridge for 1 day.',
-                seeAlso: ['wild-garlic-pesto']
-            },
-            'birch-sap-syrup': {
-                name: 'Birch Sap Syrup',
-                type: 'Drink',
-                peak: 'mar',
-                plantId: 'wild-garlic',
-                plantName: 'Birch',
-                plantDanish: 'Birk',
-                season: [false,false,true,false,false,false,false,false,false,false,false,false],
-                desc: 'The very first sweet taste of spring. Birch sap flows for only a brief window in late March, before the leaves open. Fresh it tastes like faintly sweet water. Reduced slowly it becomes a delicate, slightly caramel syrup unlike anything else.',
-                ingredients: [
-                    '2 litres fresh birch sap',
-                    'Sterilised glass jar or bottle for storage'
-                ],
-                method: [
-                    { title: 'Tap the tree', text: 'Choose a healthy birch at least 20cm diameter. Drill a small hole (8–10mm) at a slight upward angle, about 1 metre from the ground. Insert a clean food-grade tube and hang a collection vessel. The sap flows on warm days after cold nights. Never take more than 2–3 litres from one tree.' },
-                    { title: 'Collect', text: 'Collect the sap daily while it flows freely, usually for 2–3 weeks in late March to early April. Fresh sap is very perishable — refrigerate immediately and use within 3 days, or reduce it the same day.' },
-                    { title: 'Reduce', text: 'Pour the sap into a wide, heavy-bottomed pan. Simmer very gently over low heat — do not boil hard. It takes many hours to reduce significantly. For a light syrup, reduce to a quarter of the original volume. The longer you reduce, the darker and more complex the flavour.' },
-                    { title: 'Bottle', text: 'Pour the warm syrup into a sterilised bottle and seal. It will thicken slightly as it cools.' }
-                ],
-                tip: 'Always seal the tap hole after collection with a clean wooden peg or a plug of moss. The flow stops naturally when the leaves open, usually within 2–3 weeks. Never tap the same tree two years running — let it recover for at least a year.',
-                makes: 'Around 200ml syrup from 2 litres sap',
-                stores: '6 months sealed, 4 weeks in the fridge once opened',
-                seeAlso: ['nettle-tea']
-            },
-            'crab-apple-jelly': {
-                name: 'Crab Apple Jelly',
-                type: 'Preserve',
-                peak: 'oct',
-                plantId: 'wild-carrot',
-                plantName: 'Crab Apple',
-                plantDanish: 'Vildæble',
-                season: [false,false,false,false,false,false,false,false,true,true,false,false],
-                desc: 'Jewel-red and crystal clear, crab apple jelly is one of the most satisfying preserves you can make from a foraged ingredient. Naturally very high in pectin, it sets beautifully without anything added. Sharp, sweet and deeply autumnal.',
-                ingredients: [
-                    '1kg crab apples',
-                    '500ml water',
-                    'Sugar (measure after straining — see method)',
-                    'Juice of 1 lemon'
-                ],
-                method: [
-                    { title: 'Prepare the apples', text: 'Wash the crab apples and cut in half — no need to peel or core them. The pectin and colour come from the skins and cores. Place in a large pan with the water.' },
-                    { title: 'First cook', text: 'Bring to the boil, then simmer for 30–40 minutes until the apples are completely collapsed and pulpy. Mash them down with a potato masher to help extract all the juice.' },
-                    { title: 'Strain overnight', text: 'Pour the pulp into a jelly bag or fine muslin cloth suspended over a large bowl. Leave to drip overnight — do not squeeze the bag or the jelly will be cloudy.' },
-                    { title: 'Measure and cook', text: 'Measure the strained juice. Add 400g of sugar per 600ml of juice. Pour into a clean pan with the lemon juice. Bring to a rolling boil and cook hard for 10–15 minutes, testing for set on a cold plate — a small blob should wrinkle when pushed.' },
-                    { title: 'Jar', text: 'Pour into sterilised jars while hot. The jelly will set as it cools to a clear, firm preserve with a beautiful jewel-red colour.' }
-                ],
-                tip: 'The colour of the finished jelly depends on the variety of crab apple. Some give a pale gold, others a deep red. Either way the flavour is excellent. A sprig of rosemary or a few juniper berries added during cooking make an interesting variation.',
-                makes: 'Around 3–4 small jars',
-                stores: '12 months sealed in a cool dark place, 4 weeks in the fridge once opened',
-                seeAlso: ['rosehip-syrup', 'juniper-salt']
-            }
+        const recipeMeta = {
+            'wild-herb-pesto': { type: 'Preserve', peak: 'feb', dk: 'Ramsløg' },
+            'vegan-herb-cream-cheese': { type: 'Preserve', peak: 'jan', dk: 'Døvnælde' },
+            'wild-kraut': { type: 'Preserve', peak: 'mar', dk: 'Skvalderkål' },
+            'stinging-nettle-pasta': { type: 'Fresh', peak: 'mar', dk: 'Brændenælde' },
+            'elderberry-soup': { type: 'Drink', peak: 'sep', dk: 'Hyld' },
+            'ivan-chai-tea': { type: 'Drink', peak: 'may', dk: 'Gederams' },
+            'glasswort-pickles': { type: 'Preserve', peak: 'jun', dk: 'Salturt' },
+            'winter-chai-root-tea': { type: 'Drink', peak: 'jan', dk: 'Cikorie' },
+            'wild-kakaobidder': { type: 'Fresh', peak: 'apr', dk: 'Gråbynke' },
+            'beech-leaf-noyau': { type: 'Drink', peak: 'feb', dk: 'Bøg' },
+            'blackberry-vinegar': { type: 'Preserve', peak: 'aug', dk: 'Brombær' },
+            'cleavers-cold-infusion': { type: 'Drink', peak: 'feb', dk: 'Burre-snerre' },
+            'crab-apple-jelly': { type: 'Preserve', peak: 'aug', dk: 'Vildæble' },
+            'dandelion-flower-fritters': { type: 'Fresh', peak: 'apr', dk: 'Mælkebøtte' },
+            'dead-nettle-soup': { type: 'Fresh', peak: 'jan', dk: 'Døvnælde' },
+            'juniper-aquavit-cure': { type: 'Drink', peak: 'jan', dk: 'Ene' },
+            'juniper-tea': { type: 'Drink', peak: 'jan', dk: 'Ene' },
+            'linden-flower-tea': { type: 'Drink', peak: 'jun', dk: 'Lind' },
+            'meadowsweet-panna-cotta': { type: 'Fresh', peak: 'jun', dk: 'Mødurt' },
+            'miso-fungi-broth': { type: 'Fresh', peak: 'aug', dk: 'Mosaikporesvamp' },
+            'porcini-risotto': { type: 'Fresh', peak: 'jul', dk: 'Karljohan' },
+            'rose-petal-jam': { type: 'Preserve', peak: 'jun', dk: 'Hunderose/Hyben' },
+            'sloe-gin': { type: 'Drink', peak: 'sep', dk: 'Slåen' },
+            'roasted-chestnuts': { type: 'Preserve', peak: 'oct', dk: 'Ægte Kastanje' },
+            'elderflower-champagne': { type: 'Drink', peak: 'jun', dk: 'Hyld' },
+            'hawthorn-tea': { type: 'Drink', peak: 'may', dk: 'Hvidtjørn' },
+            'wild-garlic-salt': { type: 'Preserve', peak: 'feb', dk: 'Ramsløg' },
+            'pickled-ramslog-buds': { type: 'Preserve', peak: 'apr', dk: 'Ramsløg' },
+            'grilled-sea-kale': { type: 'Fresh', peak: 'mar', dk: 'Strandkål' },
+            'spruce-tip-syrup': { type: 'Drink', peak: 'apr', dk: 'Rødgran' },
+            'floral-panna-cotta': { type: 'Fresh', peak: 'apr', dk: 'Skovmærke' },
+            'foraged-green-soup': { type: 'Fresh', peak: 'mar', dk: 'Ramsløg' },
+            'autumn-tonic-shrub': { type: 'Drink', peak: 'aug', dk: 'Havtorn' },
+            'wild-garlic-butter': { type: 'Preserve', peak: 'mar', dk: 'Ramsløg' },
+            'hedgerow-cordial': { type: 'Drink', peak: 'jun', dk: 'Hyld' },
+            'foraged-flower-dressing': { type: 'Fresh', peak: 'may', dk: 'Hunderose/Hyben' },
+            'wild-strawberry-rose-hip-shrub': { type: 'Drink', peak: 'aug', dk: 'Hunderose/Hyben' },
+            'forest-floor-risotto': { type: 'Fresh', peak: 'jul', dk: 'Karljohan' },
+            'sloe-and-crab-apple-cheese': { type: 'Preserve', peak: 'aug', dk: 'Slåen' },
+            'sea-rocket-dip': { type: 'Fresh', peak: 'jun', dk: 'Strandsennep' },
+            'yarrow-herb-butter': { type: 'Preserve', peak: 'apr', dk: 'Røllike' },
+            'foragers-schnapps': { type: 'Drink', peak: 'jan', dk: 'Ene' },
+            'mugwort-meat-rub': { type: 'Preserve', peak: 'apr', dk: 'Gråbynke' },
+            'garlic-mustard-wasabi': { type: 'Fresh', peak: 'mar', dk: 'Løgkarse' },
+            'sea-buckthorn-curd': { type: 'Preserve', peak: 'aug', dk: 'Havtorn' },
+            'sea-rocket-mackerel-salad': { type: 'Fresh', peak: 'jun', dk: 'Strandsennep' },
+            'wild-herb-salt': { type: 'Preserve', peak: 'mar', dk: 'Ramsløg' },
+            'mushroom-toast': { type: 'Fresh', peak: 'jan', dk: 'Fløjlsfodsvampe' }
         };
 
-        function firstMonth(seasonArr) {
-            const idx = seasonArr.findIndex(v => v);
-            return idx >= 0 ? MONTH_KEYS[idx] : 'jan';
-        }
+        const recipeData = {
+            'wild-herb-pesto': {
+                name: 'Wild Herb Pesto', plant: 'Wild Garlic', plant_id: 'wild-garlic',
+                season: [false, true, true, true, true, false, false, false, false, false, false, false],
+                time: '15 mins', serves: '1 jar',
+                intro: 'Capture the essence of spring with this potent and versatile garlic-scented green sauce.',
+                ingredients: [
+                    '25g Ramsons leaves',
+                    '25g Stinging Nettle shoots',
+                    '25g Ground Elder leaves',
+                    '100g Almonds or hazelnuts',
+                    '2dl Rapeseed oil',
+                    '1 tsp Herb salt',
+                    '1 tbsp Honey or syrup',
+                    '100g Grated hard cheese (optional)'
+                ],
+                method: [
+                    'Thoroughly wash and dry all foraged wild herb leaves and shoots.',
+                    'Toast the almonds or hazelnuts in a dry pan for 4 to 5 minutes until fragrant.',
+                    'Place the toasted nuts and wild herbs into a blender or mortar.',
+                    'Add the oil, herb salt, and honey, then blend or pound to your desired consistency.',
+                    'Stir in the grated cheese if using, and taste for a balance of salt, acid, and sweetness.',
+                    'Transfer to a clean jar and cover with a thin layer of oil to preserve freshness.'
+                ],
+                tip: 'Avoid heating this pesto directly; stir it into warm pasta or soup just before serving to preserve the delicate aroma.'
+            },
+            'vegan-herb-cream-cheese': {
+                name: 'Vegan Herb Cream Cheese', plant: 'White Dead-nettle', plant_id: 'white-dead-nettle',
+                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                time: '45 mins', serves: '200g',
+                intro: 'A surprisingly creamy plant-based spread infused with the nutty notes of wild winter greens.',
+                ingredients: [
+                    '1l Unsweetened soy milk',
+                    '1 tbsp Vinegar or lemon juice',
+                    '1 handful White Dead-nettle leaves',
+                    '1 pinch Herb salt',
+                    '1 tsp Honey or syrup'
+                ],
+                method: [
+                    'Pour the soy milk into a large bowl at room temperature.',
+                    'Stir in the vinegar or lemon juice and let it sit for 10 to 30 minutes until it curdles.',
+                    'Line a sieve with a cheesecloth and pour the mixture through.',
+                    'Let the mixture drain naturally; squeeze gently for a firmer texture.',
+                    'Finely chop the fresh wild herbs and stir them into the thickened curd.',
+                    'Season with herb salt and honey, adjusting to your personal taste.'
+                ],
+                tip: 'Save the drained liquid to use as a nutritious base for baking or green smoothies.'
+            },
+            'wild-kraut': {
+                name: 'Wild Kraut', plant: 'Ground Elder', plant_id: 'ground-elder',
+                season: [false, false, true, true, true, true, true, true, true, true, false, false],
+                time: '4 weeks', serves: '2 liters',
+                intro: 'A traditional lactic fermentation that pairs domestic cabbage with a boost of wild aromatic herbs.',
+                ingredients: [
+                    '1.5kg Cabbage',
+                    '500g Ground Elder leaves',
+                    '40g Non-iodized sea salt',
+                    '1 handful Mugwort or Yarrow',
+                    '2-3 Large cabbage leaves for covering'
+                ],
+                method: [
+                    'Finely shred the cabbage and ground elder leaves into a large bowl.',
+                    'Sprinkle the salt and let sit for a few minutes.',
+                    'Massage vigorously until the greens appear glassy and release significant juice.',
+                    'Pack tightly into fermentation jars ensuring greens are fully submerged.',
+                    'Place whole cabbage leaves on top to keep small pieces below the brine.',
+                    'Store at room temperature out of direct sunlight for 21 to 28 days.'
+                ],
+                tip: 'Check the jar daily during the first week and burp it to release built-up fermentation gases.'
+            },
+            'stinging-nettle-pasta': {
+                name: 'Stinging Nettle Pasta', plant: 'Stinging Nettle', plant_id: 'stinging-nettle',
+                season: [false, false, true, true, true, true, true, true, true, true, false, false],
+                time: '1 hour', serves: '4',
+                intro: 'Transform your harvest into vibrant green noodles packed with minerals and a subtle forest flavor.',
+                ingredients: [
+                    '300g Flour',
+                    '3 Eggs',
+                    '50g Blanched nettle puree',
+                    '1 pinch Salt'
+                ],
+                method: [
+                    'Blanch nettle shoots for 1 minute and squeeze out every drop of water.',
+                    'Blend the nettles into the eggs until perfectly smooth.',
+                    'Mix the green egg mixture with flour and salt to form a stiff dough.',
+                    'Knead for 10 minutes then rest for 30 minutes in the refrigerator.',
+                    'Roll out thinly and cut into your preferred pasta ribbons.'
+                ],
+                tip: 'Only use the top two sets of leaves from the nettle for the most tender results.'
+            },
+            'elderberry-soup': {
+                name: 'Elderberry Soup', plant: 'Elder', plant_id: 'elder',
+                season: [false, false, false, false, false, false, false, false, true, true, false, false],
+                time: '30 mins', serves: '4',
+                intro: 'A classic Danish winter comfort dish that warms the soul and boosts the immune system.',
+                ingredients: [
+                    '1l Elderberry juice (boiled)',
+                    '2-3 Tart apples diced',
+                    '100g Sugar',
+                    '1 tbsp Potato starch',
+                    '1 Cinnamon stick (optional)'
+                ],
+                method: [
+                    'Pour the pre-boiled elderberry juice into a saucepan and bring to a gentle simmer.',
+                    'Add the diced apples and cinnamon cooking until apples are tender but not mushy.',
+                    'Stir in the sugar until completely dissolved.',
+                    'Mix the starch with cold water to create a smooth slurry.',
+                    'Slowly whisk the slurry into the hot soup and simmer 1-2 minutes until thickened.',
+                    'Serve hot with whipped cream or kammerjunkere.'
+                ],
+                tip: 'Never consume raw elderberries; boil for at least 15 minutes to neutralize toxins.'
+            },
+            'ivan-chai-tea': {
+                name: 'Ivan Chai Tea', plant: 'Fireweed', plant_id: 'fireweed',
+                season: [false, false, false, false, true, true, true, true, false, false, false, false],
+                time: '3 days', serves: '20 cups',
+                intro: 'A traditional fermented tea with a deep fruity aroma and calming properties.',
+                ingredients: [
+                    '4 large handfuls Fireweed leaves',
+                    'Boiling water for brewing'
+                ],
+                method: [
+                    'Harvest fireweed leaves before flowering and wither in shade for 12 hours.',
+                    'Roll the withered leaves between your palms until bruised and sticky.',
+                    'Pack the bruised leaves tightly into a glass jar and cover with a damp cloth.',
+                    'Let sit at room temperature for 1 to 3 days until the scent turns fruity.',
+                    'Dry the fermented leaves in a dehydrator or low oven under 50C.',
+                    'Store dried leaves in an airtight jar and brew like loose-leaf tea.'
+                ],
+                tip: 'The rolling process breaks cell walls allowing fermentation enzymes to develop the characteristic flavor.'
+            },
+            'glasswort-pickles': {
+                name: 'Glasswort Pickles', plant: 'Glasswort', plant_id: 'glasswort',
+                season: [false, false, false, false, false, true, true, true, true, false, false, false],
+                time: '20 mins', serves: '1 jar',
+                intro: 'Crunchy coastal succulents preserved in a tangy brine perfect for tapas or seafood dishes.',
+                ingredients: [
+                    '200g Glasswort tips',
+                    '1.5dl Vinegar',
+                    '1.5dl Water',
+                    '1 tbsp Sugar',
+                    '1 tsp Mustard seeds'
+                ],
+                method: [
+                    'Rinse the glasswort and remove any woody or brown lower sections.',
+                    'Pack the green succulent tips tightly into a sterilized glass jar.',
+                    'Bring the vinegar water sugar and mustard seeds to a boil.',
+                    'Pour the hot brine over the glasswort ensuring all stems are submerged.',
+                    'Seal the jar immediately and let cool to room temperature.',
+                    'Mature in the refrigerator for at least 2 days before eating.'
+                ],
+                tip: 'Glasswort is naturally very salty so no additional salt is needed in the brine.'
+            },
+            'winter-chai-root-tea': {
+                name: 'Winter Chai Root Tea', plant: 'Chicory', plant_id: 'chicory',
+                season: [true, true, false, false, false, false, false, false, true, true, true, true],
+                time: '30 mins', serves: '4',
+                intro: 'A warming earthy beverage made from roasted wild roots to support the body through winter.',
+                ingredients: [
+                    '2 tsp Dried Chicory root',
+                    '2 tsp Dried Dandelion root',
+                    '2 tsp Dried Stinging Nettle root',
+                    '1 tsp Wild Carrot seeds',
+                    '1l Oat milk',
+                    '1 tbsp Honey (optional)'
+                ],
+                method: [
+                    'Finely chop the dried roots if not already in small pieces.',
+                    'Toast the roots and seeds in a dry pot until intensely aromatic.',
+                    'Pour the oat milk over the roasted roots and bring to a gentle simmer.',
+                    'Simmer for 15 to 20 minutes to extract the deep flavors.',
+                    'Strain the tea into mugs using a fine-mesh sieve.',
+                    'Sweeten with honey if desired and serve hot.'
+                ],
+                tip: 'Roasting chicory and dandelion roots until dark brown transforms bitterness into a coffee-like sweetness.'
+            },
+            'wild-kakaobidder': {
+                name: 'Wild Kakaobidder', plant: 'Mugwort', plant_id: 'mugwort',
+                season: [false, false, false, true, true, true, true, true, true, true, false, false],
+                time: '30 mins', serves: '20 pieces',
+                intro: 'Luxurious raw date bites infused with the savory and aromatic notes of foraged herbs.',
+                ingredients: [
+                    '400g Soft dates pitted',
+                    '150g Coconut oil',
+                    '150g Cocoa paste or dark chocolate',
+                    '100g Rolled oats',
+                    '2 tbsp Pulverized dried Mugwort or Yarrow'
+                ],
+                method: [
+                    'Melt the coconut oil and cocoa paste gently over a water bath.',
+                    'Blend the pitted dates in a food processor into a sticky paste.',
+                    'Add the melted cocoa mixture oats and half the herb powder to the processor.',
+                    'Pulse until uniform and holds its shape when pressed.',
+                    'Roll the dough into small bite-sized balls.',
+                    'Roll in the remaining herb powder and refrigerate to harden.'
+                ],
+                tip: 'Try pulverized rose petals or sea buckthorn powder for different color and flavor profiles.'
+            },
+            'beech-leaf-noyau': {
+                name: 'Beech Leaf Noyau', plant: 'Beech', plant_id: 'beech',
+                season: [false, true, true, true, true, false, false, false, false, false, false, false],
+                time: '3 weeks', serves: '1 bottle',
+                intro: 'A sophisticated wild liqueur that transforms fresh spring buds into a nutty cognac-like delight.',
+                ingredients: [
+                    '2 handfuls Young beech buds or leaves',
+                    '700ml Vodka or neutral snaps',
+                    '100g Sugar (optional)'
+                ],
+                method: [
+                    'Harvest pointy brown buds in March or translucent leaves in April.',
+                    'Toast the buds briefly in a dry pan to enhance the smoky profile.',
+                    'Place the buds or leaves in a clean jar and cover with alcohol.',
+                    'Let the mixture infuse for at least 3 weeks in a dark place.',
+                    'Strain the liquid and add sugar if a sweeter liqueur is desired.'
+                ],
+                tip: 'Toasted beech buds produce a flavor remarkably similar to a fine smoked cognac.'
+            },
+            'blackberry-vinegar': {
+                name: 'Blackberry Vinegar', plant: 'Blackberry', plant_id: 'blackberry',
+                season: [false, false, false, false, false, false, false, true, true, false, false, false],
+                time: '4 weeks', serves: '1 liter',
+                intro: 'Replace your balsamic with this deep fruity wild vinegar that captures the essence of summer hedgerows.',
+                ingredients: [
+                    '500g Ripe blackberries',
+                    '1l Organic apple cider vinegar',
+                    '2 tbsp Honey'
+                ],
+                method: [
+                    'Clean the berries and place them in a wide-mouthed glass jar.',
+                    'Pour the vinegar over the berries until completely covered.',
+                    'Seal the jar and steep for 4 to 6 weeks shaking occasionally.',
+                    'Strain the liquid through a fine cloth and discard the solids.',
+                    'Bottle the vinegar and use as a dressing or savory meat glaze.'
+                ],
+                tip: 'Use only fully ripe dark berries for the deepest color and highest sugar content.'
+            },
+            'cleavers-cold-infusion': {
+                name: 'Cleavers Cold Infusion', plant: 'Cleavers', plant_id: 'cleavers',
+                season: [false, true, true, true, true, false, false, false, false, false, false, false],
+                time: '12 hours', serves: '4',
+                intro: 'A refreshing and cleansing spring tonic that uses cold water to extract the plant delicate green vitality.',
+                ingredients: [
+                    '1 large handful Fresh cleavers',
+                    '1l Cold water',
+                    '2 slices Lemon (optional)'
+                ],
+                method: [
+                    'Harvest fresh young cleavers before they develop sticky seeds.',
+                    'Rinse the herbs well and bruise the stems slightly by hand.',
+                    'Place the greens in a large pitcher and cover with cold water.',
+                    'Let infuse in the refrigerator for 12 to 24 hours.',
+                    'Strain and enjoy as a cooling revitalizing morning drink.'
+                ],
+                tip: 'Bruising the leaves is essential to release the plant juices into the cold water.'
+            },
+            'crab-apple-jelly': {
+                name: 'Crab Apple Jelly', plant: 'Crab Apple', plant_id: 'crab-apple',
+                season: [false, false, false, false, false, false, false, true, true, true, false, false],
+                time: '12 hours', serves: '4 jars',
+                intro: 'A clear glowing amber preserve that brings the tartness of the forest to your breakfast table.',
+                ingredients: [
+                    '1kg Crab apples',
+                    '600g Sugar per liter of juice',
+                    '1 Lemon juice only'
+                ],
+                method: [
+                    'Wash and chop the apples keeping cores and seeds for pectin.',
+                    'Simmer the apples with water for 45 minutes until completely soft.',
+                    'Strain the pulp through a jelly bag overnight without squeezing.',
+                    'Boil the resulting juice with sugar and lemon until the setting point.',
+                    'Pour the hot jelly into sterilized jars and seal immediately.'
+                ],
+                tip: 'Do not squeeze the jelly bag if you want your final preserve to be crystal clear.'
+            },
+            'dandelion-flower-fritters': {
+                name: 'Dandelion Flower Fritters', plant: 'Dandelion', plant_id: 'dandelion',
+                season: [false, false, false, true, true, false, false, false, false, false, false, false],
+                time: '20 mins', serves: '2',
+                intro: 'Crispy golden bites of spring sunshine that transform common garden flowers into a gourmet snack.',
+                ingredients: [
+                    '20 Fresh dandelion heads',
+                    '100g Flour',
+                    '1 Egg',
+                    '1dl Milk',
+                    'Oil for frying'
+                ],
+                method: [
+                    'Pick flowers at midday when fully open and remove green sepals.',
+                    'Whisk flour egg and milk into a smooth thick batter.',
+                    'Hold each flower by the stem and dip into the batter.',
+                    'Fry in hot oil for 1 to 2 minutes until crispy and golden.',
+                    'Drain on paper and serve immediately with a sprinkle of sea salt.'
+                ],
+                tip: 'Ensure flower heads are dry before dipping to help the batter stick properly.'
+            },
+            'dead-nettle-soup': {
+                name: 'Dead-nettle Soup', plant: 'White Dead-nettle', plant_id: 'white-dead-nettle',
+                season: [true, true, true, true, true, false, false, false, false, false, true, true],
+                time: '30 mins', serves: '4',
+                intro: 'A comforting mushroomy green soup that highlights the unique umami flavor of this non-stinging winter herb.',
+                ingredients: [
+                    '200g Dead-nettle leaves',
+                    '2 Potatoes diced',
+                    '1 Onion chopped',
+                    '1l Vegetable broth',
+                    '1dl Cream'
+                ],
+                method: [
+                    'Saute the onion and potatoes in a large pot until softened.',
+                    'Add the washed dead-nettle leaves and cook until fully wilted.',
+                    'Pour in the vegetable broth and simmer for approximately 15 minutes.',
+                    'Blend the mixture until completely smooth and creamy.',
+                    'Stir in the cream and season to taste with salt and pepper.'
+                ],
+                tip: 'Dead-nettle has a natural mushroom flavor that is significantly enhanced by heat.'
+            },
+            'juniper-aquavit-cure': {
+                name: 'Juniper Aquavit Cure', plant: 'Juniper', plant_id: 'juniper',
+                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                time: '1 week', serves: '1 bottle',
+                intro: 'A potent aromatic infusion that mimics the complexity of gin using wild Danish berries.',
+                ingredients: [
+                    '3 tbsp Dried blue juniper berries',
+                    '700ml Neutral snaps or vodka',
+                    '1 sprig Rosemary (optional)'
+                ],
+                method: [
+                    'Lightly crush the ripe blue berries to release the aromatic oils.',
+                    'Place the berries and rosemary in a clean airtight glass jar.',
+                    'Cover completely with the alcohol and seal tightly.',
+                    'Let sit for 3 to 7 days in a cool dark place.',
+                    'Strain through a fine sieve and bottle for long-term storage.'
+                ],
+                tip: 'Taste the infusion daily; juniper can become overpoweringly bitter if left too long.'
+            },
+            'juniper-tea': {
+                name: 'Juniper Tea', plant: 'Juniper', plant_id: 'juniper',
+                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                time: '20 mins', serves: '2',
+                intro: 'A warming forest tea that supports the system with the antiseptic properties of evergreen needles and berries.',
+                ingredients: [
+                    '1 tsp Crushed juniper berries',
+                    '1 small handful Juniper needles',
+                    '500ml Water'
+                ],
+                method: [
+                    'Place the crushed berries and fresh needles into a heat-proof pot.',
+                    'Add the water and bring to a gentle boil.',
+                    'Simmer for 15 minutes to fully extract the resins and vitamins.',
+                    'Strain the tea into mugs using a fine-mesh sieve.',
+                    'Sweeten with a small amount of honey to balance the piney flavor.'
+                ],
+                tip: 'Drink this tea hot to help clear the airways during the cold winter months.'
+            },
+            'linden-flower-tea': {
+                name: 'Linden Flower Tea', plant: 'Linden', plant_id: 'linden',
+                season: [false, false, false, false, false, true, true, false, false, false, false, false],
+                time: '15 mins', serves: '2',
+                intro: 'A fragrant floral tea that is the quintessential scent of a Danish midsummer night.',
+                ingredients: [
+                    '2 tbsp Dried linden flowers with bracts',
+                    '500ml Boiling water',
+                    '1 tsp Honey'
+                ],
+                method: [
+                    'Harvest the flowers along with the pale green leaf-like bracts.',
+                    'Dry the flowers in a warm shaded spot until brittle.',
+                    'Place the dried flowers and bracts into a pre-warmed teapot.',
+                    'Pour boiling water over them and steep for 10 minutes.',
+                    'Strain into a cup and enjoy the calming honey-like aroma.'
+                ],
+                tip: 'Linden flowers are most fragrant when harvested just as they begin to open in July.'
+            },
+            'meadowsweet-panna-cotta': {
+                name: 'Meadowsweet Panna Cotta', plant: 'Meadowsweet', plant_id: 'meadowsweet',
+                season: [false, false, false, false, false, true, true, true, false, false, false, false],
+                time: '4 hours', serves: '4',
+                intro: 'A creamy almond-scented dessert that uses wild flowers to create a sophisticated floral finish.',
+                ingredients: [
+                    '5dl Heavy cream',
+                    '100g Sugar',
+                    '3 Gelatin sheets',
+                    '1 handful Fresh meadowsweet flowers'
+                ],
+                method: [
+                    'Heat the cream and sugar in a saucepan until just below boiling.',
+                    'Add the meadowsweet flowers and infuse for 20 minutes off the heat.',
+                    'Soak the gelatin in cold water then dissolve it into the warm cream.',
+                    'Strain the mixture carefully to remove all flower parts.',
+                    'Pour into molds and refrigerate for 4 hours until firmly set.'
+                ],
+                tip: 'Meadowsweet contains natural salicylic acid giving it a unique honey and almond scent.'
+            },
+            'miso-fungi-broth': {
+                name: 'Miso Fungi Broth', plant: 'Hen of the Woods', plant_id: 'hen-of-the-woods',
+                season: [false, false, false, false, false, false, false, true, true, true, false, false],
+                time: '30 mins', serves: '2',
+                intro: 'A meaty savory broth that pairs wild autumn mushrooms with the fermented depth of miso.',
+                ingredients: [
+                    '300g Hen of the Woods mushroom',
+                    '1l Water',
+                    '2 tbsp Miso paste',
+                    '1 piece Fresh ginger'
+                ],
+                method: [
+                    'Clean the mushroom and pull into small feather-like clusters.',
+                    'Saute the mushrooms in a hot pot until browned and aromatic.',
+                    'Add the water and sliced ginger then simmer for 20 minutes.',
+                    'Whisk a small amount of hot broth into the miso paste separately.',
+                    'Stir the miso back into the pot and serve immediately without boiling.'
+                ],
+                tip: 'Never boil miso paste directly as high heat destroys its beneficial live cultures.'
+            },
+            'porcini-risotto': {
+                name: 'Porcini Risotto', plant: 'Porcini', plant_id: 'porcini',
+                season: [false, false, false, false, false, false, true, true, true, true, false, false],
+                time: '45 mins', serves: '4',
+                intro: 'The King of Risottos featuring the nutty richness and silky texture of a prized wild mushroom.',
+                ingredients: [
+                    '300g Fresh porcini',
+                    '300g Risotto rice',
+                    '1l Mushroom broth',
+                    '1dl Dry white wine',
+                    '50g Parmesan cheese'
+                ],
+                method: [
+                    'Saute sliced porcini in butter until golden; set half aside for garnish.',
+                    'Stir the risotto rice into the pot until the grains are translucent.',
+                    'Deglaze with the wine and add the hot broth one ladle at a time.',
+                    'Cook until the rice is tender but still has a slight bite.',
+                    'Stir in the parmesan and reserved porcini just before serving.'
+                ],
+                tip: 'Use the mushroom cleaning scraps to make a quick broth for even deeper flavor.'
+            },
+            'rose-petal-jam': {
+                name: 'Rose Petal Jam', plant: 'Wild Rose', plant_id: 'wild-rose',
+                season: [false, false, false, false, false, true, true, false, false, false, false, false],
+                time: '1 hour', serves: '2 jars',
+                intro: 'A fragrant jewel-pink preserve that captures the fleeting perfume of summer roses.',
+                ingredients: [
+                    '200g Wild rose petals',
+                    '400g Sugar',
+                    'Juice of 1 lemon',
+                    '200ml Water'
+                ],
+                method: [
+                    'Rinse the petals gently and remove any white petal bases which can be bitter.',
+                    'Combine water sugar and lemon juice in a pan and bring to a boil.',
+                    'Add the petals and simmer gently for 20 minutes stirring occasionally.',
+                    'Test the set by dropping a small amount onto a cold plate.',
+                    'Pour into sterilized jars and seal while still hot.'
+                ],
+                tip: 'Petals from Rosa rugosa give the deepest color and most intense fragrance.'
+            },
+            'sloe-gin': {
+                name: 'Sloe Gin', plant: 'Sloe', plant_id: 'sloe',
+                season: [false, false, false, false, false, false, false, false, true, true, true, false],
+                time: '3 months', serves: '1 bottle',
+                intro: 'The definitive hedgerow liqueur — deep purple almond-scented and worth every week of waiting.',
+                ingredients: [
+                    '500g Sloe berries',
+                    '700ml Gin or neutral snaps',
+                    '100g Sugar'
+                ],
+                method: [
+                    'Freeze the sloes for 24 hours to mimic frost and break down tannins.',
+                    'Prick each berry with a fork or use the frozen-then-thawed method.',
+                    'Place the berries in a large jar and add the sugar and gin.',
+                    'Seal the jar and shake daily for the first week then weekly for 3 months.',
+                    'Strain through muslin into bottles and allow to mellow for at least another month.'
+                ],
+                tip: 'The flavor improves dramatically with age — a batch made in October is perfect by Christmas.'
+            },
+            'roasted-chestnuts': {
+                name: 'Roasted Chestnuts', plant: 'Sweet Chestnut', plant_id: 'sweet-chestnut',
+                season: [false, false, false, false, false, false, false, false, false, true, true, false],
+                time: '30 mins', serves: '2',
+                intro: 'The quintessential autumn treat — warm buttery and nutty nuggets harvested from the forest floor.',
+                ingredients: [
+                    '20 Sweet chestnuts',
+                    'Sea salt',
+                    'Butter'
+                ],
+                method: [
+                    'Harvest chestnuts in late October when the spiky husks have split open.',
+                    'Score a deep X on the flat side of each nut with a sharp knife.',
+                    'Roast in a 200C oven for 20 minutes until the shells peel back.',
+                    'Wrap the hot nuts in a towel for 5 minutes to steam them.',
+                    'Peel while still warm and serve immediately with salt and butter.'
+                ],
+                tip: 'The scoring is essential to prevent the chestnuts from exploding in the oven.'
+            },
+            'elderflower-champagne': {
+                name: 'Elderflower Champagne', plant: 'Elder', plant_id: 'elder',
+                season: [false, false, false, false, false, true, true, false, false, false, false, false],
+                time: '2 weeks', serves: '4 liters',
+                intro: 'A naturally fizzy floral brew that is the undisputed taste of a Danish midsummer celebration.',
+                ingredients: [
+                    '30 Elderflower clusters',
+                    '4l Water',
+                    '600g Sugar',
+                    '2 Lemons sliced',
+                    '2 tbsp Vinegar'
+                ],
+                method: [
+                    'Dissolve the sugar in a liter of hot water and let it cool completely.',
+                    'Add the remaining water lemon slices vinegar and flower heads to a large jar.',
+                    'Cover with a clean cloth and let ferment for 4 to 6 days.',
+                    'Strain the liquid into strong bottles with swing-top lids.',
+                    'Wait 2 weeks for carbonation to build before serving chilled.'
+                ],
+                tip: 'Check the bottles daily and release pressure if it becomes too high.'
+            },
+            'hawthorn-tea': {
+                name: 'Hawthorn Tea', plant: 'Hawthorn', plant_id: 'hawthorn',
+                season: [false, false, false, false, true, false, false, false, true, true, true, false],
+                time: '20 mins', serves: '2',
+                intro: 'A heart-warming tea made from spring blossoms or autumn berries to support circulation and wellness.',
+                ingredients: [
+                    '1 handful Dried hawthorn berries or flowers',
+                    '500ml Water',
+                    '1 tsp Honey'
+                ],
+                method: [
+                    'Harvest flowers in May or ripe red berries in late autumn.',
+                    'If using berries simmer them in the water for 15 minutes.',
+                    'If using flowers steep in boiling water for 10 minutes.',
+                    'Strain carefully to remove hard stones or petals.',
+                    'Serve hot with a dollop of honey.'
+                ],
+                tip: 'Both the flowers and the berries are used traditionally to support heart health.'
+            },
+            'wild-garlic-salt': {
+                name: 'Wild Garlic Salt', plant: 'Wild Garlic', plant_id: 'wild-garlic',
+                season: [false, true, true, true, true, false, false, false, false, false, false, false],
+                time: '24 hours', serves: '1 jar',
+                intro: 'A vibrant green seasoning that preserves the potent garlic aroma of spring for many months.',
+                ingredients: [
+                    '100g Fresh wild garlic leaves',
+                    '200g Coarse sea salt'
+                ],
+                method: [
+                    'Wash the wild garlic leaves thoroughly and ensure they are completely dry.',
+                    'Blend the leaves and half the salt in a processor until smooth.',
+                    'Mix in the remaining salt by hand to maintain some texture.',
+                    'Spread the green paste on a tray and air-dry for 24 hours.',
+                    'Store in a clean jar and use as a topping for eggs bread or meat.'
+                ],
+                tip: 'Ensure the leaves are perfectly dry before blending to prevent the salt becoming too wet.'
+            }
+,
+            'pickled-ramslog-buds': {
+                name: 'Pickled Ramsløg Buds', plant: 'Wild Garlic', plant_id: 'wild-garlic',
+                season: [false, false, false, true, true, false, false, false, false, false, false, false],
+                time: '20 mins', serves: '1 jar',
+                intro: 'A sophisticated wild alternative to capers using the unopened flower buds of the ramsons plant.',
+                ingredients: [
+                    '200g Fresh Ramsløg flower buds',
+                    '1dl Vinegar',
+                    '1dl Sugar',
+                    '1dl Water',
+                    '1 tsp Sea salt'
+                ],
+                method: [
+                    'Harvest small firm flower buds in April or May before they begin to open.',
+                    'Rinse the buds in cold water to remove any forest debris.',
+                    'Bring the vinegar water sugar and salt to a boil in a small saucepan.',
+                    'Place the buds in a sterilized glass jar and pour the hot brine over them.',
+                    'Seal the jar immediately and allow it to cool to room temperature.',
+                    'Let the buds mature in the refrigerator for at least one week before serving.'
+                ],
+                tip: 'Harvest buds while still tucked inside their papery sheath for the best crunch and flavor.'
+            },
+            'grilled-sea-kale': {
+                name: 'Grilled Sea Kale', plant: 'Sea Kale', plant_id: 'sea-kale',
+                season: [false, false, true, true, true, false, false, false, false, false, false, false],
+                time: '15 mins', serves: '2',
+                intro: 'The Asparagus of the North is transformed by fire into a nutty crunchy coastal delicacy.',
+                ingredients: [
+                    '10-12 Fresh Sea Kale shoots',
+                    '2 tbsp Butter or olive oil',
+                    '1 pinch Flake salt',
+                    '1/2 Lemon'
+                ],
+                method: [
+                    'Select young tender shoots before the plant fully blooms.',
+                    'Rinse the shoots well to remove sand and pat them completely dry.',
+                    'Toss the shoots in melted butter or oil until lightly coated.',
+                    'Place on a medium-hot grill for 2 to 3 minutes per side until charred and tender.',
+                    'Season with flake salt and a fresh squeeze of lemon juice while hot.'
+                ],
+                tip: 'Sea kale is protected in many areas; harvest only 1-2 shoots per plant.',
+                plant_alternatives: ['Beech leaves (April-May)', 'Ground elder stems (March-April)']
+            },
+            'spruce-tip-syrup': {
+                name: 'Spruce Tip Syrup', plant: 'Norway Spruce', plant_id: 'norway-spruce',
+                season: [false, false, false, true, true, false, false, false, false, false, false, false],
+                time: '45 mins', serves: '1 bottle',
+                intro: 'Capture the resinous citrusy essence of the Danish spring forests in a vibrant green syrup.',
+                ingredients: [
+                    '500g Fresh Spruce tips',
+                    '1l Water',
+                    '500g Sugar',
+                    '1 Lemon juiced'
+                ],
+                method: [
+                    'Harvest the bright green new growth tips from spruce branches in spring.',
+                    'Place the tips in a pot cover with water and boil gently for 15 minutes.',
+                    'Strain the liquid through a cloth discarding the needles.',
+                    'Return the liquid to the pot with the sugar and lemon juice.',
+                    'Simmer until it thickens to your desired syrup consistency.',
+                    'Pour into sterilized bottles and store in a cool dark place.'
+                ],
+                tip: 'Avoid harvesting from the very top of young trees to protect their continued growth.'
+            },
+            'floral-panna-cotta': {
+                name: 'Floral Panna Cotta', plant: 'Sweet Woodruff', plant_id: 'sweet-woodruff',
+                season: [false, false, false, true, true, false, false, false, false, false, false, false],
+                time: '4 hours', serves: '4',
+                intro: 'A creamy elegant dessert infused with the complex vanilla and hay scent of the forest floor.',
+                ingredients: [
+                    '5dl Heavy cream',
+                    '100g Sugar',
+                    '3 Gelatin sheets',
+                    '1 handful Fresh Sweet Woodruff'
+                ],
+                method: [
+                    'Allow the woodruff to wilt for a few hours to activate the coumarin scent.',
+                    'Heat the cream and sugar until it just begins to simmer.',
+                    'Remove from heat add the wilted herbs and let infuse for 20 minutes.',
+                    'Soak the gelatin in cold water squeeze dry and dissolve into the warm cream.',
+                    'Strain through a fine sieve into individual serving molds.',
+                    'Refrigerate for at least 4 hours until firmly set.'
+                ],
+                tip: 'The scent of woodruff intensifies as it wilts; never use it perfectly fresh.',
+                plant_alternatives: ['Meadowsweet (June-July)', 'Linden flowers (July)']
+            },
+            'foraged-green-soup': {
+                name: 'Foraged Green Soup', plant: 'Wild Garlic', plant_id: 'wild-garlic',
+                season: [false, false, true, true, true, false, false, false, false, false, false, false],
+                time: '30 mins', serves: '4',
+                intro: 'A vibrant nutrient-dense soup that marks the definitive arrival of the Danish foraging season.',
+                ingredients: [
+                    '100g Ramsløg leaves',
+                    '100g Ground Elder leaves',
+                    '2 Potatoes diced',
+                    '1l Vegetable bouillon',
+                    '1dl Cream',
+                    'Butter for sauteing'
+                ],
+                method: [
+                    'Saute the diced potatoes in butter until slightly softened.',
+                    'Add the washed ground elder and bouillon then simmer for 15 minutes.',
+                    'Add the ramsons leaves during the last 2 minutes to preserve their color and aroma.',
+                    'Blend until completely smooth and vibrant green.',
+                    'Stir in the cream and season with salt and pepper to taste.',
+                    'Serve immediately garnished with fresh wild edible flowers.'
+                ],
+                tip: 'Adding ramsons at the very end prevents the delicate garlic flavor from becoming dull through boiling.',
+                plant_alternatives: ['Stinging nettle (March-June)', 'White dead-nettle (year-round)']
+            },
+            'autumn-tonic-shrub': {
+                name: 'Autumn Tonic Shrub', plant: 'Sea Buckthorn', plant_id: 'sea-buckthorn',
+                season: [false, false, false, false, false, false, false, true, true, true, true, false],
+                time: '1 week', serves: '1 bottle',
+                intro: 'A sharp invigorating vinegar-based syrup packed with vitamin C from the coast.',
+                ingredients: [
+                    '200g Sea Buckthorn berries',
+                    '2dl Apple cider vinegar',
+                    '200g Honey',
+                    '1 piece Fresh horseradish'
+                ],
+                method: [
+                    'Crush the sea buckthorn berries in a glass jar to release their oils and juice.',
+                    'Add the vinegar and a few thin slices of fresh horseradish for a spicy kick.',
+                    'Let the mixture infuse in a dark place for 3 to 5 days shaking once daily.',
+                    'Strain the liquid through a fine cloth squeezing well to extract all the pulp.',
+                    'Stir in the honey until completely dissolved.',
+                    'Bottle and store in the fridge; serve diluted with sparkling water.'
+                ],
+                tip: 'Shrubs are a historic method of preserving the vitamin content of wild berries through winter.'
+            },
+            'wild-garlic-butter': {
+                name: 'Wild Garlic Butter', plant: 'Wild Garlic', plant_id: 'wild-garlic',
+                season: [false, false, true, true, true, false, false, false, false, false, false, false],
+                time: '10 mins', serves: '200g',
+                intro: 'The simplest and most effective way to preserve the potent flavor of wild spring garlic.',
+                ingredients: [
+                    '200g Softened butter',
+                    '1 handful Fresh Ramsløg leaves',
+                    '1/2 tsp Sea salt',
+                    '1 tsp Lemon zest'
+                ],
+                method: [
+                    'Wash the ramsons leaves carefully and pat them completely dry.',
+                    'Finely chop the leaves or pulse them briefly in a small food processor.',
+                    'Combine the softened butter chopped leaves salt and lemon zest in a bowl.',
+                    'Mix until the green specks are evenly distributed throughout the butter.',
+                    'Roll into a log using parchment paper and twist the ends.',
+                    'Store in the refrigerator for one week or freeze for up to six months.'
+                ],
+                tip: 'Use this butter to finish grilled fish or top a warm baked potato for an instant wild upgrade.'
+            },
+            'hedgerow-cordial': {
+                name: 'Hedgerow Cordial', plant: 'Elder', plant_id: 'elder',
+                season: [false, false, false, false, false, true, true, false, false, false, false, false],
+                time: '3 days', serves: '2 liters',
+                intro: 'The quintessential scent of a Danish summer captured in a golden floral concentrate.',
+                ingredients: [
+                    '30 Elderflower clusters',
+                    '1.5l Water',
+                    '1kg Sugar',
+                    '2 Lemons sliced',
+                    '30g Citric acid'
+                ],
+                method: [
+                    'Shake the flower heads to remove insects but do not wash to preserve the pollen.',
+                    'Place the flowers and lemon slices in a large heat-proof bowl.',
+                    'Boil the water and sugar until dissolved then stir in the citric acid.',
+                    'Pour the hot syrup over the flowers ensuring they are submerged.',
+                    'Cover and let steep in a cool place for 48 to 72 hours.',
+                    'Strain through a clean cloth and bottle in sterilized containers.'
+                ],
+                tip: 'Harvest flowers on a dry sunny morning when they are cream-colored and heavy with pollen.',
+                plant_alternatives: ['Meadowsweet (June-July)', 'Linden flowers (July)']
+            },
+            'foraged-flower-dressing': {
+                name: 'Foraged Flower Dressing', plant: 'Wild Rose', plant_id: 'wild-rose',
+                season: [false, false, false, false, true, true, true, true, false, false, false, false],
+                time: '10 mins', serves: '4',
+                intro: 'Brighten any spring salad with this aromatic dressing featuring wild petals and herbs.',
+                ingredients: [
+                    '1 handful Wild Rose petals',
+                    '1dl Rapeseed oil',
+                    '3 tbsp White wine vinegar',
+                    '1 tsp Honey',
+                    '1 pinch Herb salt'
+                ],
+                method: [
+                    'Finely chop half of the rose petals and place them in a small jar.',
+                    'Add the oil vinegar honey and salt to the jar.',
+                    'Shake vigorously until the dressing is well emulsified.',
+                    'Let the dressing sit for 10 minutes to allow the floral notes to infuse.',
+                    'Toss your greens with the dressing and garnish with the remaining whole petals.'
+                ],
+                tip: 'Petals from Rosa rugosa offer the strongest perfume for this dressing.'
+            },
+            'wild-strawberry-rose-hip-shrub': {
+                name: 'Wild Strawberry and Rose Hip Shrub', plant: 'Wild Rose', plant_id: 'wild-rose',
+                season: [false, false, false, false, false, false, false, true, true, true, true, false],
+                time: '1 week', serves: '1 bottle',
+                intro: 'A complex crimson syrup that blends the sweetness of wild berries with the tartness of autumn hips.',
+                ingredients: [
+                    '200g Wild strawberries',
+                    '200g Rose hips (deseeded)',
+                    '2dl Cider vinegar',
+                    '300g Sugar'
+                ],
+                method: [
+                    'Clean the hips thoroughly ensuring all irritating inner hairs are removed.',
+                    'Macerate the strawberries and hips with the sugar in a bowl for 24 hours.',
+                    'Strain the resulting syrup into a clean jar and discard the fruit solids.',
+                    'Add the vinegar and stir until perfectly combined.',
+                    'Let the mixture mature in the fridge for one week before use.',
+                    'Serve as a base for cocktails or diluted with sparkling water.'
+                ],
+                tip: 'The rose hip hairs are extremely irritating to the throat; double-strain through a coffee filter if unsure.'
+            },
+            'forest-floor-risotto': {
+                name: 'Forest Floor Risotto', plant: 'Porcini', plant_id: 'porcini',
+                season: [false, false, false, false, false, false, true, true, true, true, false, false],
+                time: '45 mins', serves: '4',
+                intro: 'A rich umami-heavy celebration of the Danish autumn featuring a trio of elite wild mushrooms.',
+                ingredients: [
+                    '300g Mixed Porcini Velvet Shank and Hen of the Woods',
+                    '300g Risotto rice',
+                    '1l Warm vegetable broth',
+                    '1dl Dry white wine',
+                    '50g Parmesan',
+                    'Butter for frying'
+                ],
+                method: [
+                    'Clean and slice the mushrooms then saute in butter until golden brown.',
+                    'Set aside half of the mushrooms to use as a topping.',
+                    'Toast the rice in the same pan then deglaze with the white wine.',
+                    'Add the hot broth one ladle at a time stirring constantly until absorbed.',
+                    'Stir in the sauteed mushrooms parmesan and a knob of cold butter once the rice is tender.',
+                    'Garnish with the reserved crispy mushrooms and serve immediately.'
+                ],
+                tip: 'Velvet shanks are available in winter so this dish can also be made with dried porcini during cold months.'
+            },
+            'sloe-and-crab-apple-cheese': {
+                name: 'Sloe and Crab Apple Cheese', plant: 'Sloe', plant_id: 'sloe',
+                season: [false, false, false, false, false, false, false, true, true, true, true, false],
+                time: '1 hour', serves: '4 jars',
+                intro: 'A traditional thick fruit paste that pairs the astringency of sloes with the pectin-rich crab apple.',
+                ingredients: [
+                    '500g Sloe berries',
+                    '500g Crab apples',
+                    'Sugar equal weight to the fruit pulp',
+                    'Water to cover'
+                ],
+                method: [
+                    'Chop the apples leaving cores in and place in a pot with the sloes and water.',
+                    'Simmer until the fruit is completely soft and broken down.',
+                    'Pass the mixture through a sieve or food mill to remove stones and seeds.',
+                    'Weigh the resulting pulp and return to the pot with an equal weight of sugar.',
+                    'Boil rapidly while stirring until the mixture reaches a thick firm consistency.',
+                    'Pour into sterilized jars; serve sliced alongside cheese.'
+                ],
+                tip: 'Freezing the sloes for 24 hours softens their bitter tannins just like the first autumn frost.'
+            },
+            'sea-rocket-dip': {
+                name: 'Sea Rocket Dip', plant: 'Sea Rocket', plant_id: 'sea-rocket',
+                season: [false, false, false, false, false, true, true, true, true, true, false, false],
+                time: '10 mins', serves: '4',
+                intro: 'A spicy coastal spread that highlights the mustard-like kick of this hardy beach plant.',
+                ingredients: [
+                    '1 handful Fresh Sea Rocket leaves',
+                    '2dl Greek yogurt',
+                    '1 tsp Honey',
+                    '1 pinch Flake salt'
+                ],
+                method: [
+                    'Harvest succulent green leaves from the beach ensuring they are free of sand.',
+                    'Finely chop the leaves — their flavor is a potent mix of mustard and radish.',
+                    'Whisk the chopped greens into the yogurt until well combined.',
+                    'Stir in the honey to balance the natural heat of the plant.',
+                    'Season with salt and let rest for 15 minutes before serving with vegetables.'
+                ],
+                tip: 'Heating sea rocket destroys its characteristic heat; always use it raw in dips and salads.'
+            },
+            'yarrow-herb-butter': {
+                name: 'Yarrow Herb Butter', plant: 'Yarrow', plant_id: 'yarrow',
+                season: [false, false, false, true, true, true, true, true, true, true, false, false],
+                time: '10 mins', serves: '200g',
+                intro: 'An aromatic wild herb butter with the deep green and slightly bitter notes of yarrow.',
+                ingredients: [
+                    '200g Softened butter',
+                    '1 handful Young Yarrow leaves',
+                    '1/2 tsp Herb salt',
+                    '1 tsp Lemon juice'
+                ],
+                method: [
+                    'Select the youngest softest feathery leaves before the plant flowers.',
+                    'Mince the leaves very finely for a pleasant texture in the butter.',
+                    'Combine the minced herbs salt and lemon juice with the softened butter.',
+                    'Whip with a fork until light and airy.',
+                    'Roll into a log using wax paper.',
+                    'Serve on grilled fish warm rye bread or roasted root vegetables.'
+                ],
+                tip: 'Yarrow has a very strong flavor; start with less until you know its intensity.'
+            },
+            'foragers-schnapps': {
+                name: 'Forager`s Schnapps', plant: 'Juniper', plant_id: 'juniper',
+                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                time: '2 weeks', serves: '1 bottle',
+                intro: 'A potent piney infusion that creates a wild Danish gin from forest-harvested juniper berries.',
+                ingredients: [
+                    '3 tbsp Ripe blue Juniper berries',
+                    '700ml Neutral snaps or vodka',
+                    '1 piece Lemon peel'
+                ],
+                method: [
+                    'Harvest the dark blue berries and crush them slightly.',
+                    'Place the crushed berries and lemon peel into a clean glass bottle.',
+                    'Fill with the neutral spirit and seal tightly.',
+                    'Store in a cool dark cupboard for 10 to 14 days.',
+                    'Taste every few days to ensure it does not become overly bitter.',
+                    'Strain out the berries and lemon peel then rebottle the clear liquid.'
+                ],
+                tip: 'The unripe green berries give a more astringent citrusy version — try both.'
+            },
+            'mugwort-meat-rub': {
+                name: 'Mugwort Meat Rub', plant: 'Mugwort', plant_id: 'mugwort',
+                season: [false, false, false, true, true, true, true, true, true, true, false, false],
+                time: '5 mins', serves: '1 jar',
+                intro: 'A savory aromatic wild herb rub that aids digestion and pairs perfectly with fatty meats.',
+                ingredients: [
+                    '3 tbsp Dried Mugwort leaves',
+                    '1 tbsp Coarse sea salt',
+                    '1 tsp Black peppercorns',
+                    '1 tsp Dried garlic mustard seeds'
+                ],
+                method: [
+                    'Harvest mugwort leaves in mid-summer and dry until brittle.',
+                    'Place the dried leaves salt and peppercorns into a mortar.',
+                    'Pound the mixture until it reaches a coarse uniform consistency.',
+                    'Add the garlic mustard seeds and mix well without crushing them.',
+                    'Rub generously onto pork duck or goose before roasting.',
+                    'Store any leftover rub in an airtight jar for up to one year.'
+                ],
+                tip: 'Mugwort has been used in Denmark for centuries to help the body break down heavy fats.'
+            },
+            'garlic-mustard-wasabi': {
+                name: 'Garlic Mustard Wasabi', plant: 'Garlic Mustard', plant_id: 'garlic-mustard',
+                season: [false, false, true, true, true, false, false, false, false, false, false, false],
+                time: '15 mins', serves: '4',
+                intro: 'A spicy pungent root paste that offers a truly Nordic alternative to Japanese wasabi.',
+                ingredients: [
+                    '3-4 Garlic Mustard roots',
+                    '1 tsp Apple cider vinegar',
+                    '1 pinch Salt',
+                    '1 tsp Rapeseed oil'
+                ],
+                method: [
+                    'Dig up the white taproots in early spring when they are most potent.',
+                    'Scrub the roots thoroughly and grate them as finely as possible.',
+                    'Combine the grated root with vinegar salt and oil in a small bowl.',
+                    'Mix until a thick uniform paste forms.',
+                    'Allow the flavors to develop for 10 minutes at room temperature.',
+                    'Serve as a sharp condiment for sushi or smoked fish.'
+                ],
+                tip: 'The heat of the root is volatile; consume within one hour of making for the best experience.'
+            }
+,
+            'sea-buckthorn-curd': {
+                name: 'Sea Buckthorn Curd', plant: 'Sea Buckthorn', plant_id: 'sea-buckthorn',
+                season: [false, false, false, false, false, false, false, true, true, true, true, false],
+                time: '30 mins', serves: '2 jars',
+                intro: 'The Lemon Curd of the North — intensely tart, brilliantly orange, and more complex than anything citrus can offer.',
+                ingredients: [
+                    '200ml Sea buckthorn juice (strained)',
+                    '150g Sugar',
+                    '3 Eggs',
+                    '100g Cold butter, cubed',
+                    '1 pinch Salt'
+                ],
+                method: [
+                    'Thaw the berries and press through a fine sieve to extract the juice, discarding the seeds and skins.',
+                    'Whisk the juice, sugar, eggs, and salt together in a heavy saucepan.',
+                    'Cook over medium-low heat, stirring constantly, until the mixture thickens enough to coat a spoon.',
+                    'Remove from heat and whisk in the cold butter a few cubes at a time until glossy and smooth.',
+                    'Pour into sterilized jars while still warm and seal immediately.',
+                    'Store in the refrigerator for up to two weeks or freeze for up to three months.'
+                ],
+                tip: 'Never let the mixture boil or the eggs will scramble; keep the heat low and patient.'
+            },
+            'sea-rocket-mackerel-salad': {
+                name: 'Sea Rocket and Smoked Mackerel Salad', plant: 'Sea Rocket', plant_id: 'sea-rocket',
+                season: [false, false, false, false, false, true, true, true, true, true, false, false],
+                time: '15 mins', serves: '2',
+                intro: 'A coastal plate that practically builds itself — peppery beach greens cutting straight through the richness of smoked fish.',
+                ingredients: [
+                    '2 handfuls Fresh sea rocket leaves',
+                    '2 Smoked mackerel fillets',
+                    '1 tbsp Capers or pickled ramsons buds',
+                    '2 tbsp Rapeseed oil',
+                    '1 tbsp Apple cider vinegar',
+                    '1 tsp Honey',
+                    'Flake salt and black pepper'
+                ],
+                method: [
+                    'Rinse the sea rocket thoroughly to remove any sand and spin or pat dry.',
+                    'Flake the smoked mackerel into large chunks, removing any remaining bones.',
+                    'Whisk the oil, vinegar, and honey into a quick dressing and season with salt and pepper.',
+                    'Arrange the sea rocket on a plate and scatter the mackerel and capers over the top.',
+                    'Drizzle the dressing over the salad and serve immediately with rye bread.'
+                ],
+                tip: 'Sea rocket wilts fast once dressed — assemble right before serving and never in advance.'
+            },
+            'wild-herb-salt': {
+                name: 'Wild Herb Salt', plant: 'Wild Garlic', plant_id: 'wild-garlic',
+                season: [false, false, true, true, true, true, true, true, true, true, false, false],
+                time: '24 hours', serves: '1 jar',
+                intro: 'A year-round seasoning that captures the whole Danish foraging calendar in a single green blend.',
+                ingredients: [
+                    '100g Coarse sea salt',
+                    '1 handful Wild garlic leaves (spring)',
+                    '1 tsp Dried yarrow leaves',
+                    '1 tsp Dried mugwort leaves',
+                    '3 Juniper berries, crushed',
+                    '1 tsp Dried thyme or lemon thyme'
+                ],
+                method: [
+                    'Wash the wild garlic leaves and ensure they are completely dry before use.',
+                    'Blend the fresh leaves with half the salt in a food processor until a green paste forms.',
+                    'Add the dried herbs and crushed juniper to the processor and pulse briefly to combine.',
+                    'Mix in the remaining salt by hand to keep some coarse texture.',
+                    'Spread the mixture thinly on a tray and leave to air-dry for 24 hours.',
+                    'Store in a clean jar and use as a finishing salt on eggs, fish, bread, or roasted vegetables.'
+                ],
+                tip: 'The herb mix is flexible — swap in dried nettle, ground elder, or sweet woodruff based on what you dried that season.',
+                plant_alternatives: ['Yarrow (May-October)', 'Mugwort (April-October)', 'Dried nettle (year-round)']
+            },
+            'mushroom-toast': {
+                name: 'Mushroom Toast Two Ways', plant: 'Velvet Shank', plant_id: 'velvet-shank',
+                season: [true, true, false, false, false, false, false, false, false, true, true, true],
+                time: '20 mins', serves: '2',
+                intro: 'One pan, two toppings — a fast and honest way to eat whatever mushrooms you brought home.',
+                ingredients: [
+                    '300g Mixed wild mushrooms (velvet shank, oyster, or hen of the woods)',
+                    '4 thick slices Sourdough rye bread',
+                    '2 tbsp Butter',
+                    '1 clove Garlic',
+                    'Fresh thyme',
+                    '2 tbsp Creme fraiche',
+                    '1 tsp Soy sauce',
+                    'Flake salt and black pepper'
+                ],
+                method: [
+                    'Clean the mushrooms and tear into rough pieces rather than slicing for better texture.',
+                    'Melt the butter in a hot pan and add the mushrooms in a single layer without crowding.',
+                    'Cook without stirring for 2 to 3 minutes until deeply golden on one side, then toss.',
+                    'Add the garlic and thyme and cook for another minute.',
+                    'Divide the mushrooms into two portions: stir creme fraiche into one half for a creamy version, and a splash of soy sauce into the other for an umami-rich dark version.',
+                    'Toast the rye bread, spoon each mushroom mix onto two slices, and finish with flake salt.'
+                ],
+                tip: 'Never crowd the pan or the mushrooms will steam instead of fry — work in batches if needed.'
+            }
+        };
 
         function makeDots(seasonArr) {
             return MONTH_KEYS.map((m, i) => {
@@ -591,8 +1210,9 @@
         function render() {
             const id = new URLSearchParams(window.location.search).get('id') || '';
             const recipe = recipeData[id];
+            const meta = recipeMeta[id];
 
-            if (!recipe) {
+            if (!recipe || !meta) {
                 document.querySelector('main').innerHTML = '<p class="text-center text-gray-400 py-20">Recipe not found. <a href="recipes.html" class="underline">Back to Kitchen</a></p>';
                 lucide.createIcons();
                 return;
@@ -600,35 +1220,46 @@
 
             document.title = `FORAGER — ${recipe.name}`;
 
+            const peak = meta.peak;
+            const isDark = darkMonths.includes(peak);
+            const heroColor = hexMap[peak];
+            const textColor = isDark ? 'white' : '#1A1C19';
+
             // Hero
-            const heroColor = hexMap[firstMonth(recipe.season)];
-            const isDark = darkMonths.includes(firstMonth(recipe.season));
             const hero = document.getElementById('hero');
             hero.style.backgroundColor = heroColor;
 
-            // Type badge
             const badge = document.getElementById('type-badge');
-            badge.textContent = recipe.type;
-            badge.style.backgroundColor = typeBadgeColors[recipe.type];
-            badge.style.color = typeBadgeText[recipe.type];
+            badge.textContent = meta.type;
+            badge.style.backgroundColor = typeBadgeColors[meta.type];
+            badge.style.color = typeBadgeText[meta.type];
 
-            // Recipe name
             const nameEl = document.getElementById('recipe-name');
             nameEl.textContent = recipe.name;
-            nameEl.style.color = isDark ? 'white' : '#1A1C19';
+            nameEl.style.color = textColor;
 
             // Plant link
             const plantLink = document.getElementById('plant-link');
-            plantLink.textContent = recipe.plantName;
-            plantLink.href = `plant-detail.html?id=${recipe.plantId}`;
+            plantLink.textContent = recipe.plant;
+            plantLink.href = `plant-detail.html?id=${recipe.plant_id}`;
             plantLink.style.color = '#2D6A4F';
-            document.getElementById('plant-danish').textContent = `(${recipe.plantDanish})`;
+            document.getElementById('plant-danish').textContent = `(${meta.dk})`;
 
             // Season dots
             document.getElementById('season-dots').innerHTML = makeDots(recipe.season);
 
-            // Description
-            document.getElementById('recipe-desc').textContent = recipe.desc;
+            // Intro
+            document.getElementById('recipe-intro').textContent = recipe.intro;
+
+            // Time + serves
+            document.getElementById('recipe-time').textContent = recipe.time;
+            document.getElementById('recipe-serves').textContent = recipe.serves;
+
+            // Alternatives
+            if (recipe.plant_alternatives && recipe.plant_alternatives.length > 0) {
+                document.getElementById('alts-text').textContent = recipe.plant_alternatives.join(' · ');
+                document.getElementById('alts-section').classList.remove('hidden');
+            }
 
             // Ingredients
             const ingList = document.getElementById('ingredients-list');
@@ -636,76 +1267,33 @@
                 const li = document.createElement('li');
                 li.className = 'flex items-start gap-3 text-sm text-gray-700';
                 li.innerHTML = `
-                    <span class="mt-1.5 w-2 h-2 rounded-full flex-shrink-0" style="background-color:${hexMap[firstMonth(recipe.season)]}"></span>
+                    <span class="mt-1.5 w-2 h-2 rounded-full flex-shrink-0" style="background-color:${heroColor}"></span>
                     <span>${ing}</span>
                 `;
                 ingList.appendChild(li);
             });
 
-            // Method steps
+            // Method
             const methodEl = document.getElementById('method-steps');
             recipe.method.forEach((step, i) => {
                 const div = document.createElement('div');
                 div.className = 'flex gap-4';
                 div.innerHTML = `
-                    <div class="step-number" style="background-color:${hexMap[firstMonth(recipe.season)]};color:${isDark ? 'white' : '#1A1C19'}">${i + 1}</div>
+                    <div class="step-number" style="background-color:${heroColor};color:${textColor}">${i + 1}</div>
                     <div class="flex-1 pt-0.5">
-                        <p class="font-semibold text-sm mb-1">${step.title}</p>
-                        <p class="text-sm text-gray-600 leading-relaxed">${step.text}</p>
+                        <p class="text-sm text-gray-700 leading-relaxed">${step}</p>
                     </div>
                 `;
                 methodEl.appendChild(div);
             });
 
-            // Foraging tip
+            // Tip
             if (recipe.tip) {
                 document.getElementById('tip-text').textContent = recipe.tip;
                 document.getElementById('tip-section').classList.remove('hidden');
             }
 
-            // Makes / stores
-            if (recipe.makes || recipe.stores) {
-                document.getElementById('makes-section').classList.remove('hidden');
-                if (recipe.makes) {
-                    document.getElementById('makes-text').textContent = recipe.makes;
-                    document.getElementById('makes-block').classList.remove('hidden');
-                }
-                if (recipe.stores) {
-                    document.getElementById('stores-text').textContent = recipe.stores;
-                    document.getElementById('stores-block').classList.remove('hidden');
-                }
-            }
-
-            // See also
-            const relatedRecipes = recipe.seeAlso || [];
-            if (relatedRecipes.length > 0) {
-                document.getElementById('seealso-section').classList.remove('hidden');
-                const seealsoLinks = document.getElementById('seealso-links');
-                relatedRecipes.forEach(rId => {
-                    const r = recipeData[rId];
-                    if (!r) return;
-                    const link = document.createElement('a');
-                    link.href = `recipe-detail.html?id=${rId}`;
-                    link.className = 'flex items-center justify-between bg-white border border-gray-100 card-shadow rounded-xl p-4 hover:shadow-md transition-shadow';
-                    link.innerHTML = `
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background-color:${hexMap[firstMonth(r.season)]}">
-                                <i data-lucide="flame" class="w-4 h-4 ${darkMonths.includes(firstMonth(r.season)) ? 'text-white' : 'text-gray-700'} opacity-80"></i>
-                            </div>
-                            <span class="font-semibold text-sm">${r.name}</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full" style="background-color:${typeBadgeColors[r.type]};color:${typeBadgeText[r.type]}">${r.type}</span>
-                            <i data-lucide="chevron-right" class="w-4 h-4 text-gray-300"></i>
-                        </div>
-                    `;
-                    seealsoLinks.appendChild(link);
-                });
-            }
-
-            // Header month dot
             document.getElementById('month-dot').style.backgroundColor = hexMap[MONTH_KEYS[new Date().getMonth()]];
-
             lucide.createIcons();
         }
 
