@@ -40,13 +40,24 @@
     </div>
 
     <main class="main-container mx-auto px-6 pt-8">
-        <section class="mb-10">
-            <h2 class="text-2xl font-bold mb-6">Focus Plants</h2>
-            <div id="plant-list" class="two-col space-y-4 md:space-y-0"></div>
-        </section>
-        <section class="mb-10">
-            <h2 class="text-xl font-bold mb-4">What to look for</h2>
-            <ul id="field-notes" class="space-y-3 text-sm list-disc pl-5 text-gray-600"></ul>
+        <section id="harvest-section" class="mb-10 hidden">
+            <h2 class="text-2xl font-bold mb-5">This month's harvest</h2>
+
+            <div id="just-out-block" class="mb-6 hidden">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Just out</h3>
+                <div id="just-out-list" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <div id="still-fresh-block" class="mb-6 hidden">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Still fresh</h3>
+                <div id="still-fresh-list" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <div id="dont-miss-block" class="hidden">
+                <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Don't miss</h3>
+                <div id="last-call-list" class="flex flex-wrap gap-2 mb-4"></div>
+                <ul id="curated-notes" class="space-y-3 text-sm text-gray-600 list-disc pl-5"></ul>
+            </div>
         </section>
         <section class="mb-10">
             <h2 class="text-2xl font-bold mb-6">This month in the kitchen</h2>
@@ -85,6 +96,256 @@
         };
 
         const MONTH_KEYS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+
+        // Layer 1 (just out / still fresh / last call) is derived from the main plant
+        // database's season arrays. Layer 2 ("curated" notes) is hand-written from
+        // Kristine's foraging course book — sub-plant-part timing that season arrays
+        // alone can't express. Only sep/oct are drafted so far; other months fall
+        // back to the older Focus Plants section below until drafted.
+        const harvestNotes = {
+            jan: {
+                justOut: [{id:'birch', name:'Birch'}],
+                stillFresh: [{id:'shepherds-purse', name:"Shepherd's Purse"}, {id:'judasore', name:'Jelly Ear'}, {id:'burdock-root', name:'Burdock Root'}],
+                lastCall: [],
+                curated: [
+                    "Quiet month by design — a good time to process what's already dried or preserved, and plan the year's foraging ahead.",
+                    "<strong>Birch</strong> buds are swelling now, the first sign that sap season (typically February) isn't far off."
+                ]
+            },
+            feb: {
+                justOut: [
+                    {id:'wild-garlic', name:'Wild Garlic'}, {id:'beech', name:'Beech'}, {id:'brondkarse', name:'Watercress'},
+                    {id:'rosetspringklap', name:'Hairy Bittercress'}, {id:'crow-garlic', name:'Crow Garlic'}, {id:'cleavers', name:'Cleavers'}
+                ],
+                stillFresh: [{id:'shepherds-purse', name:"Shepherd's Purse"}, {id:'judasore', name:'Jelly Ear'}, {id:'birch', name:'Birch'}],
+                lastCall: [{id:'burdock-root', name:'Burdock Root'}],
+                curated: [
+                    "<strong>Wild Garlic</strong> — the first spring shoots often appear this early. Leaves are good all the way to the end of May, so no rush yet.",
+                    "<strong>Beech</strong> shoots start this month too — roasted, they make a snaps with a surprising smoky-cognac flavour.",
+                    "<strong>Burdock root</strong> — last call before it toughens up for the season."
+                ]
+            },
+            mar: {
+                justOut: [
+                    {id:'dandelion', name:'Dandelion'}, {id:'stinging-nettle', name:'Nettle'}, {id:'sea-kale', name:'Sea Kale'},
+                    {id:'ground-elder', name:'Ground Elder'}, {id:'garlic-mustard', name:'Garlic Mustard'}, {id:'wood-sorrel', name:'Wood Sorrel'},
+                    {id:'white-dead-nettle', name:'White Dead-nettle'}, {id:'red-dead-nettle', name:'Red Dead-nettle'}, {id:'horseradish', name:'Horseradish'},
+                    {id:'yellow-star-of-bethlehem', name:'Yellow Star-of-Bethlehem'}, {id:'vandkarse', name:'Large Bittercress'},
+                    {id:'mirabelle-blossom', name:'Mirabelle Blossom'}, {id:'porse', name:'Bog Myrtle'}, {id:'martsvioler', name:'Sweet Violet'},
+                    {id:'tandfri-varsalat', name:"Smooth Lamb's Lettuce"}, {id:'daisy', name:'Daisy'}, {id:'elm', name:'Elm'}
+                ],
+                stillFresh: [
+                    {id:'wild-garlic', name:'Wild Garlic'}, {id:'beech', name:'Beech'}, {id:'shepherds-purse', name:"Shepherd's Purse"},
+                    {id:'brondkarse', name:'Watercress'}, {id:'rosetspringklap', name:'Hairy Bittercress'}, {id:'judasore', name:'Jelly Ear'},
+                    {id:'birch', name:'Birch'}, {id:'crow-garlic', name:'Crow Garlic'}, {id:'cleavers', name:'Cleavers'}
+                ],
+                lastCall: [],
+                curated: [
+                    "<strong>Nettle</strong> — this is the best window: the whole young plant is usable now, before it's just the top leaf-sets later in spring.",
+                    "<strong>Dandelion</strong> leaves are at their mildest right now. They'll get noticeably more bitter through high summer, then mellow again in autumn.",
+                    "<strong>Mirabelle Blossom</strong> (Cherry Plum) is often the very first tree into flower — easy to spot as a burst of white in an otherwise bare landscape.",
+                    "<strong>Wild Garlic</strong> buds start appearing next month, so this is prime leaf season before the plant's energy shifts to flowering."
+                ]
+            },
+            apr: {
+                justOut: [
+                    {id:'sweet-cicely', name:'Sweet Cicely'}, {id:'sweet-woodruff', name:'Sweet Woodruff'}, {id:'chicory', name:'Chicory'},
+                    {id:'bird-cherry', name:'Bird Cherry'}, {id:'fireweed', name:'Fireweed'}, {id:'mugwort', name:'Mugwort'},
+                    {id:'hawthorn', name:'Hawthorn'}, {id:'ground-ivy', name:'Ground Ivy'}, {id:'plantain', name:'Plantain'}, {id:'norway-spruce', name:'Norway Spruce'}
+                ],
+                stillFresh: [
+                    {id:'wild-garlic', name:'Wild Garlic'}, {id:'dandelion', name:'Dandelion'}, {id:'stinging-nettle', name:'Nettle'},
+                    {id:'sea-kale', name:'Sea Kale'}, {id:'ground-elder', name:'Ground Elder'}, {id:'garlic-mustard', name:'Garlic Mustard'},
+                    {id:'wood-sorrel', name:'Wood Sorrel'}, {id:'white-dead-nettle', name:'White Dead-nettle'}, {id:'red-dead-nettle', name:'Red Dead-nettle'},
+                    {id:'beech', name:'Beech'}, {id:'vandkarse', name:'Large Bittercress'}, {id:'brondkarse', name:'Watercress'},
+                    {id:'judasore', name:'Jelly Ear'}, {id:'tandfri-varsalat', name:"Smooth Lamb's Lettuce"}, {id:'daisy', name:'Daisy'},
+                    {id:'birch', name:'Birch'}, {id:'cleavers', name:'Cleavers'}
+                ],
+                lastCall: [
+                    {id:'horseradish', name:'Horseradish'}, {id:'yellow-star-of-bethlehem', name:'Yellow Star-of-Bethlehem'},
+                    {id:'shepherds-purse', name:"Shepherd's Purse"}, {id:'rosetspringklap', name:'Hairy Bittercress'},
+                    {id:'mirabelle-blossom', name:'Mirabelle Blossom'}, {id:'porse', name:'Bog Myrtle'}, {id:'martsvioler', name:'Sweet Violet'},
+                    {id:'elm', name:'Elm'}, {id:'crow-garlic', name:'Crow Garlic'}
+                ],
+                curated: [
+                    "<strong>Wild Garlic</strong> buds begin appearing this month, opening into flower around May 1st — the start of the caper-style pickle window (buds now, seeds late May).",
+                    "<strong>Fireweed</strong> shoots — only pick while under about 20cm tall. Your book calls them \"the woodland floor's asparagus\"; taller than that, they turn tough and bitter.",
+                    "<strong>Beech</strong> — young leaves are ready mid-to-late April through May. Test by folding one: it should bend soft, not snap.",
+                    "<strong>Mirabelle Blossom, Sweet Violet, Bog Myrtle</strong> and a few others: last call this year."
+                ]
+            },
+            may: {
+                justOut: [
+                    {id:'wild-carrot', name:'Wild Carrot'}, {id:'sea-sandwort', name:'Sea Sandwort'}, {id:'raspberry', name:'Raspberry'},
+                    {id:'glasswort', name:'Glasswort'}, {id:'wild-strawberry', name:'Wild Strawberry'}, {id:'chamomile', name:'Chamomile'}
+                ],
+                stillFresh: [
+                    {id:'dandelion', name:'Dandelion'}, {id:'stinging-nettle', name:'Nettle'}, {id:'sea-kale', name:'Sea Kale'},
+                    {id:'ground-elder', name:'Ground Elder'}, {id:'garlic-mustard', name:'Garlic Mustard'}, {id:'wood-sorrel', name:'Wood Sorrel'},
+                    {id:'white-dead-nettle', name:'White Dead-nettle'}, {id:'red-dead-nettle', name:'Red Dead-nettle'}, {id:'sweet-cicely', name:'Sweet Cicely'},
+                    {id:'vandkarse', name:'Large Bittercress'}, {id:'brondkarse', name:'Watercress'}, {id:'judasore', name:'Jelly Ear'},
+                    {id:'tandfri-varsalat', name:"Smooth Lamb's Lettuce"}, {id:'daisy', name:'Daisy'}, {id:'chicory', name:'Chicory'},
+                    {id:'fireweed', name:'Fireweed'}, {id:'mugwort', name:'Mugwort'}, {id:'ground-ivy', name:'Ground Ivy'}, {id:'plantain', name:'Plantain'}
+                ],
+                lastCall: [
+                    {id:'wild-garlic', name:'Wild Garlic'}, {id:'sweet-woodruff', name:'Sweet Woodruff'}, {id:'beech', name:'Beech'},
+                    {id:'birch', name:'Birch'}, {id:'bird-cherry', name:'Bird Cherry'}, {id:'hawthorn', name:'Hawthorn'},
+                    {id:'cleavers', name:'Cleavers'}, {id:'norway-spruce', name:'Norway Spruce'}
+                ],
+                curated: [
+                    "<strong>Wild Garlic</strong> — flowers open around May 1st, and by month's end you'll find the fat seed heads. Last call on both the caper-style pickle and the leaves themselves.",
+                    "<strong>Dandelion</strong> hits peak flower this month — good for syrup, and the flowers are full of wild yeast; freeze a handful as a starter for winter brews (keeps roughly six months).",
+                    "<strong>Beech</strong> leaves — last call before they toughen past use in pesto or salad."
+                ]
+            },
+            jun: {
+                justOut: [
+                    {id:'elder', name:'Elder'}, {id:'pineapple-weed', name:'Pineapple Weed'}, {id:'meadowsweet', name:'Meadowsweet'},
+                    {id:'yarrow', name:'Yarrow'}, {id:'wild-rose', name:'Wild Rose & Hip'}, {id:'linden', name:'Linden'},
+                    {id:'water-mint', name:'Water Mint'}, {id:'wild-onion', name:'Wild Onion'}, {id:'sea-rocket', name:'Sea Rocket'}, {id:'strandmaele', name:'Orache'}
+                ],
+                stillFresh: [
+                    {id:'stinging-nettle', name:'Nettle'}, {id:'sea-kale', name:'Sea Kale'}, {id:'ground-elder', name:'Ground Elder'},
+                    {id:'garlic-mustard', name:'Garlic Mustard'}, {id:'wood-sorrel', name:'Wood Sorrel'}, {id:'sweet-cicely', name:'Sweet Cicely'},
+                    {id:'wild-carrot', name:'Wild Carrot'}, {id:'sea-sandwort', name:'Sea Sandwort'}, {id:'vandkarse', name:'Large Bittercress'},
+                    {id:'brondkarse', name:'Watercress'}, {id:'judasore', name:'Jelly Ear'}, {id:'daisy', name:'Daisy'}, {id:'chicory', name:'Chicory'},
+                    {id:'fireweed', name:'Fireweed'}, {id:'mugwort', name:'Mugwort'}, {id:'raspberry', name:'Raspberry'}, {id:'ground-ivy', name:'Ground Ivy'},
+                    {id:'glasswort', name:'Glasswort'}, {id:'plantain', name:'Plantain'}, {id:'wild-strawberry', name:'Wild Strawberry'}, {id:'chamomile', name:'Chamomile'}
+                ],
+                lastCall: [
+                    {id:'dandelion', name:'Dandelion'}, {id:'white-dead-nettle', name:'White Dead-nettle'},
+                    {id:'red-dead-nettle', name:'Red Dead-nettle'}, {id:'tandfri-varsalat', name:"Smooth Lamb's Lettuce"}
+                ],
+                curated: [
+                    "<strong>Elder flowers</strong> — pick only when golden and heavy with pollen; once they turn grey they're spent. Peak season for cordial and champagne.",
+                    "<strong>Linden</strong> — closed flower buds appear this month, good for a caper-style pickle. The actual flowers follow late June into July, a short window.",
+                    "<strong>Wild Onion</strong> (sand-/skov-/vild-løg) — topsets aren't ready until July/August, so this month is still early growth, not harvest yet.",
+                    "<strong>Yarrow</strong> flowers — pick early in its June–August window for the least bitter batch."
+                ]
+            },
+            jul: {
+                justOut: [
+                    {id:'chanterelle', name:'Chanterelle'}, {id:'bilberry', name:'Bilberry'}, {id:'boxthorn', name:'Boxthorn/Goji Berry'}, {id:'porcini', name:'Porcini'}
+                ],
+                stillFresh: [
+                    {id:'stinging-nettle', name:'Nettle'}, {id:'sea-kale', name:'Sea Kale'}, {id:'ground-elder', name:'Ground Elder'},
+                    {id:'garlic-mustard', name:'Garlic Mustard'}, {id:'pineapple-weed', name:'Pineapple Weed'}, {id:'sweet-cicely', name:'Sweet Cicely'},
+                    {id:'wild-carrot', name:'Wild Carrot'}, {id:'sea-sandwort', name:'Sea Sandwort'}, {id:'yarrow', name:'Yarrow'}, {id:'judasore', name:'Jelly Ear'},
+                    {id:'daisy', name:'Daisy'}, {id:'chicory', name:'Chicory'}, {id:'fireweed', name:'Fireweed'}, {id:'mugwort', name:'Mugwort'},
+                    {id:'raspberry', name:'Raspberry'}, {id:'wild-rose', name:'Wild Rose & Hip'}, {id:'ground-ivy', name:'Ground Ivy'}, {id:'glasswort', name:'Glasswort'},
+                    {id:'water-mint', name:'Water Mint'}, {id:'plantain', name:'Plantain'}, {id:'wild-onion', name:'Wild Onion'},
+                    {id:'wild-strawberry', name:'Wild Strawberry'}, {id:'sea-rocket', name:'Sea Rocket'}, {id:'chamomile', name:'Chamomile'}, {id:'strandmaele', name:'Orache'}
+                ],
+                lastCall: [
+                    {id:'elder', name:'Elder'}, {id:'wood-sorrel', name:'Wood Sorrel'}, {id:'meadowsweet', name:'Meadowsweet'},
+                    {id:'vandkarse', name:'Large Bittercress'}, {id:'brondkarse', name:'Watercress'}, {id:'linden', name:'Linden'}
+                ],
+                curated: [
+                    "<strong>Linden</strong> — last call for the flowers, and for the closed-bud pickle if you haven't already. Can run into late July in a mild year, but don't count on it.",
+                    "<strong>Bilberry</strong> — true bilberry is blue all the way through the flesh. The lookalike bog bilberry has white flesh; edible in small amounts but can upset the stomach in quantity.",
+                    "<strong>Elder flowers</strong> — this is the last month for them. From here it's a wait for the berries in September."
+                ]
+            },
+            aug: {
+                justOut: [
+                    {id:'sea-buckthorn', name:'Sea Buckthorn'}, {id:'black-trumpet', name:'Black Trumpet'}, {id:'blackberry', name:'Blackberry'},
+                    {id:'bird-cherry', name:'Bird Cherry'}, {id:'heather', name:'Heather'}, {id:'crab-apple', name:'Crab Apple'}, {id:'hen-of-the-woods', name:'Hen of the Woods'}
+                ],
+                stillFresh: [
+                    {id:'stinging-nettle', name:'Nettle'}, {id:'sea-kale', name:'Sea Kale'}, {id:'ground-elder', name:'Ground Elder'},
+                    {id:'garlic-mustard', name:'Garlic Mustard'}, {id:'pineapple-weed', name:'Pineapple Weed'}, {id:'wild-carrot', name:'Wild Carrot'},
+                    {id:'sea-sandwort', name:'Sea Sandwort'}, {id:'chanterelle', name:'Chanterelle'}, {id:'judasore', name:'Jelly Ear'}, {id:'daisy', name:'Daisy'},
+                    {id:'boxthorn', name:'Boxthorn/Goji Berry'}, {id:'chicory', name:'Chicory'}, {id:'mugwort', name:'Mugwort'}, {id:'wild-rose', name:'Wild Rose & Hip'},
+                    {id:'ground-ivy', name:'Ground Ivy'}, {id:'glasswort', name:'Glasswort'}, {id:'water-mint', name:'Water Mint'}, {id:'plantain', name:'Plantain'},
+                    {id:'porcini', name:'Porcini'}, {id:'sea-rocket', name:'Sea Rocket'}, {id:'strandmaele', name:'Orache'}
+                ],
+                lastCall: [
+                    {id:'sweet-cicely', name:'Sweet Cicely'}, {id:'yarrow', name:'Yarrow'}, {id:'bilberry', name:'Bilberry'}, {id:'fireweed', name:'Fireweed'},
+                    {id:'raspberry', name:'Raspberry'}, {id:'wild-onion', name:'Wild Onion'}, {id:'wild-strawberry', name:'Wild Strawberry'}, {id:'chamomile', name:'Chamomile'}
+                ],
+                curated: [
+                    "<strong>Bird Cherry</strong> — this is about the berries now, a completely separate harvest from the blossom you picked back in spring.",
+                    "<strong>Heather</strong> flowers — just pull them off the stem, no scissors needed. Good through September.",
+                    "<strong>Sea Buckthorn</strong> begins its peak — clip the branch, freeze a day, then strip the berries off frozen rather than hand-picking.",
+                    "<strong>Wild Onion</strong> group — last call on topsets for the year."
+                ]
+            },
+            sep: {
+                justOut: [
+                    {id:'elder', name:'Elder'}, {id:'juniper', name:'Juniper'}, {id:'horseradish', name:'Horseradish'},
+                    {id:'oyster-mushroom', name:'Oyster Mushroom'}, {id:'hawthorn', name:'Hawthorn'},
+                    {id:'sloe', name:'Sloe'}, {id:'burdock-root', name:'Burdock Root'}
+                ],
+                stillFresh: [
+                    {id:'stinging-nettle', name:'Nettle'}, {id:'sea-kale', name:'Sea Kale'}, {id:'ground-elder', name:'Ground Elder'},
+                    {id:'sea-buckthorn', name:'Sea Buckthorn'}, {id:'wild-carrot', name:'Wild Carrot'}, {id:'sea-sandwort', name:'Sea Sandwort'},
+                    {id:'black-trumpet', name:'Black Trumpet'}, {id:'judasore', name:'Jelly Ear'}, {id:'blackberry', name:'Blackberry'},
+                    {id:'boxthorn', name:'Boxthorn/Goji Berry'}, {id:'chicory', name:'Chicory'}, {id:'wild-rose', name:'Wild Rose & Hip'},
+                    {id:'ground-ivy', name:'Ground Ivy'}, {id:'glasswort', name:'Glasswort'}, {id:'plantain', name:'Plantain'},
+                    {id:'crab-apple', name:'Crab Apple'}, {id:'hen-of-the-woods', name:'Hen of the Woods'}, {id:'porcini', name:'Porcini'},
+                    {id:'sea-rocket', name:'Sea Rocket'}
+                ],
+                lastCall: [
+                    {id:'garlic-mustard', name:'Garlic Mustard'}, {id:'pineapple-weed', name:'Pineapple Weed'}, {id:'chanterelle', name:'Chanterelle'},
+                    {id:'daisy', name:'Daisy'}, {id:'bird-cherry', name:'Bird Cherry'}, {id:'mugwort', name:'Mugwort'},
+                    {id:'heather', name:'Heather'}, {id:'water-mint', name:'Water Mint'}, {id:'strandmaele', name:'Orache'}
+                ],
+                curated: [
+                    "<strong>Nettle seeds</strong> — the leaf window closed months ago, but seeds are ready now, picked while still green. Once they brown on the plant, they've lost their potency.",
+                    "<strong>Mugwort seeds</strong> — ready this month too. Roasted, they're a mild \"poor man's pepper.\"",
+                    "<strong>Sea Buckthorn</strong> — clip the branch, freeze it a day, then strip the berries off frozen. Far faster than hand-picking.",
+                    "<strong>Elder berries</strong> — always cook them (about 15 minutes). Raw in quantity is genuinely risky; cooked, it's a non-issue and tastes better too.",
+                    "<strong>Sloe</strong> — ripe from August through just after first frost. Frost sweetens them, but picking earlier works fine too.",
+                    "<strong>Juniper</strong> — no rush here: cones take two years to ripen, so unripe and ripe sit on the same bush year-round."
+                ]
+            },
+            oct: {
+                justOut: [
+                    {id:'sweet-chestnut', name:'Sweet Chestnut'}
+                ],
+                stillFresh: [
+                    {id:'juniper', name:'Juniper'}, {id:'sea-buckthorn', name:'Sea Buckthorn'}, {id:'black-trumpet', name:'Black Trumpet'},
+                    {id:'oyster-mushroom', name:'Oyster Mushroom'}, {id:'judasore', name:'Jelly Ear'}, {id:'boxthorn', name:'Boxthorn/Goji Berry'},
+                    {id:'chicory', name:'Chicory'}, {id:'hawthorn', name:'Hawthorn'}, {id:'wild-rose', name:'Wild Rose & Hip'},
+                    {id:'ground-ivy', name:'Ground Ivy'}, {id:'sloe', name:'Sloe'}, {id:'burdock-root', name:'Burdock Root'}
+                ],
+                lastCall: [
+                    {id:'stinging-nettle', name:'Nettle'}, {id:'elder', name:'Elder'}, {id:'sea-kale', name:'Sea Kale'}, {id:'ground-elder', name:'Ground Elder'},
+                    {id:'wild-carrot', name:'Wild Carrot'}, {id:'horseradish', name:'Horseradish'}, {id:'sea-sandwort', name:'Sea Sandwort'},
+                    {id:'blackberry', name:'Blackberry'}, {id:'glasswort', name:'Glasswort'}, {id:'plantain', name:'Plantain'},
+                    {id:'crab-apple', name:'Crab Apple'}, {id:'hen-of-the-woods', name:'Hen of the Woods'}, {id:'porcini', name:'Porcini'},
+                    {id:'sea-rocket', name:'Sea Rocket'}
+                ],
+                curated: [
+                    "<strong>Horseradish & Chicory root</strong> — both roots hit peak potency this month, the best window all year to dig them for tonics, teas, or a winter chai blend.",
+                    "<strong>Sloe</strong> — still good into October on the same frost logic as September.",
+                    "<strong>Rose Hip</strong> — no rush needed: it usually doesn't fully ripen until October and often hangs on the bush right through winter."
+                ]
+            },
+            nov: {
+                justOut: [{id:'shepherds-purse', name:"Shepherd's Purse"}],
+                stillFresh: [{id:'juniper', name:'Juniper'}, {id:'oyster-mushroom', name:'Oyster Mushroom'}, {id:'judasore', name:'Jelly Ear'}, {id:'burdock-root', name:'Burdock Root'}],
+                lastCall: [
+                    {id:'sea-buckthorn', name:'Sea Buckthorn'}, {id:'black-trumpet', name:'Black Trumpet'}, {id:'boxthorn', name:'Boxthorn/Goji Berry'},
+                    {id:'chicory', name:'Chicory'}, {id:'hawthorn', name:'Hawthorn'}, {id:'wild-rose', name:'Wild Rose & Hip'},
+                    {id:'ground-ivy', name:'Ground Ivy'}, {id:'sloe', name:'Sloe'}, {id:'sweet-chestnut', name:'Sweet Chestnut'}
+                ],
+                curated: [
+                    "<strong>Burdock root</strong> — best dug now, before the ground freezes hard.",
+                    "A quiet month overall — good time to process and organise the autumn harvest, and note what's still growing for next year's map."
+                ]
+            },
+            dec: {
+                justOut: [],
+                stillFresh: [{id:'shepherds-purse', name:"Shepherd's Purse"}, {id:'judasore', name:'Jelly Ear'}, {id:'burdock-root', name:'Burdock Root'}],
+                lastCall: [{id:'juniper', name:'Juniper'}, {id:'oyster-mushroom', name:'Oyster Mushroom'}],
+                curated: [
+                    "<strong>Juniper</strong> — no real urgency here: cones take two years to ripen, so there's always both unripe and ripe berries on the bush, even in deep winter.",
+                    "A good month to review what's preserved and plan next year's foraging calendar."
+                ]
+            }
+        };
+
 
         const monthData = {
             jan: {
@@ -330,7 +591,9 @@
 
         function getParam() {
             const params = new URLSearchParams(window.location.search);
-            return params.get('m') || 'mar';
+            const MONTH_KEYS_FALLBACK = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+            const currentDefault = MONTH_KEYS_FALLBACK[new Date().getMonth()];
+            return params.get('m') || currentDefault;
         }
 
         function render() {
@@ -359,31 +622,74 @@
             document.getElementById('next-label').style.color = nextData.color;
             document.getElementById('next-link').href = `month-detail.html?m=${nextKey}`;
 
-            // Plants
-            const plantList = document.getElementById('plant-list');
-            plantList.innerHTML = '';
-            data.plants.forEach(p => {
-                const card = document.createElement('a');
-                card.href = `plant-detail.html?id=${p.name.toLowerCase().replace(/'/g, '').replace(/\s+/g,'-')}`;
-                card.className = 'bg-white p-5 rounded-2xl shadow-sm border border-gray-50 block hover:shadow-md transition-shadow';
-                card.innerHTML = `
-                    <h3 class="text-lg font-bold">${p.name}</h3>
-                    <p class="text-sm text-gray-400 italic mb-1">(${p.danish})</p>
-                    ${makeDots(p.season)}
-                    <p class="text-sm mt-1"><strong>Tip:</strong> ${p.tip}</p>
-                    <p class="text-sm text-gray-500"><strong>Habitat:</strong> ${p.habitat}</p>
-                `;
-                plantList.appendChild(card);
-            });
+            // This month's harvest (new three-tier section — only drafted for some months so far)
+            const harvest = harvestNotes[key];
+            const harvestSection = document.getElementById('harvest-section');
+            if (harvest) {
+                harvestSection.classList.remove('hidden');
 
-            // Field notes
-            const notesList = document.getElementById('field-notes');
-            notesList.innerHTML = '';
-            data.notes.forEach(n => {
-                const li = document.createElement('li');
-                li.textContent = n;
-                notesList.appendChild(li);
-            });
+                const chip = (p) => {
+                    const a = document.createElement('a');
+                    a.href = `plant-detail.html?id=${p.id}`;
+                    a.className = 'px-3 py-1.5 bg-white border border-gray-200 rounded-full text-sm hover:border-gray-400 transition-colors';
+                    a.textContent = p.name;
+                    return a;
+                };
+                const lastCallChip = (p) => {
+                    const a = chip(p);
+                    a.className = 'px-3 py-1.5 bg-amber-50 border border-amber-200 text-amber-800 rounded-full text-sm hover:border-amber-400 transition-colors';
+                    return a;
+                };
+
+                const justOutBlock = document.getElementById('just-out-block');
+                const justOutList = document.getElementById('just-out-list');
+                justOutList.innerHTML = '';
+                if (harvest.justOut && harvest.justOut.length) {
+                    justOutBlock.classList.remove('hidden');
+                    harvest.justOut.forEach(p => justOutList.appendChild(chip(p)));
+                } else {
+                    justOutBlock.classList.add('hidden');
+                }
+
+                const stillFreshBlock = document.getElementById('still-fresh-block');
+                const stillFreshList = document.getElementById('still-fresh-list');
+                stillFreshList.innerHTML = '';
+                if (harvest.stillFresh && harvest.stillFresh.length) {
+                    stillFreshBlock.classList.remove('hidden');
+                    harvest.stillFresh.forEach(p => stillFreshList.appendChild(chip(p)));
+                } else {
+                    stillFreshBlock.classList.add('hidden');
+                }
+
+                const dontMissBlock = document.getElementById('dont-miss-block');
+                const lastCallList = document.getElementById('last-call-list');
+                const curatedNotes = document.getElementById('curated-notes');
+                lastCallList.innerHTML = '';
+                curatedNotes.innerHTML = '';
+                const hasLastCall = harvest.lastCall && harvest.lastCall.length;
+                const hasCurated = harvest.curated && harvest.curated.length;
+                if (hasLastCall || hasCurated) {
+                    dontMissBlock.classList.remove('hidden');
+                    if (hasLastCall) {
+                        const label = document.createElement('p');
+                        label.className = 'text-xs text-gray-400 mb-2 w-full';
+                        label.textContent = 'Last call this year:';
+                        lastCallList.appendChild(label);
+                        harvest.lastCall.forEach(p => lastCallList.appendChild(lastCallChip(p)));
+                    }
+                    if (hasCurated) {
+                        harvest.curated.forEach(note => {
+                            const li = document.createElement('li');
+                            li.innerHTML = note;
+                            curatedNotes.appendChild(li);
+                        });
+                    }
+                } else {
+                    dontMissBlock.classList.add('hidden');
+                }
+            } else {
+                harvestSection.classList.add('hidden');
+            }
 
             // Recipes
             const recipeList = document.getElementById('recipe-list');
