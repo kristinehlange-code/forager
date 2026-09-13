@@ -165,7 +165,7 @@
             const rotationOffset = -Math.PI / 2 - (currentMonthIdx * (Math.PI * 2 / 12));
             let normalizedAngle = (angle - rotationOffset) % (Math.PI * 2);
             if (normalizedAngle < 0) normalizedAngle += Math.PI * 2;
-            const clickedIdx = (Math.round(normalizedAngle / (Math.PI * 2 / 12)) + currentMonthIdx + 10) % 12;
+            const clickedIdx = Math.round(normalizedAngle / (Math.PI * 2 / 12)) % 12;
             window.location.href = `month-detail.html?m=${monthColors[clickedIdx].label}`;
         });
 
