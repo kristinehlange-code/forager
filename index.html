@@ -61,6 +61,14 @@
             <h2 class="text-3xl font-bold">In season now</h2>
         </div>
 
+        <a id="harvest-teaser" href="month-detail.html" class="block bg-white border border-gray-100 rounded-2xl p-4 mb-5 shadow-sm hover:shadow-md transition-shadow flex items-center justify-between">
+            <div>
+                <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">This month's harvest</p>
+                <p class="text-sm text-secondary">What's just out, still fresh, and not to miss</p>
+            </div>
+            <span class="text-xl text-gray-300">→</span>
+        </a>
+
         <div class="plant-grid space-y-4 md:space-y-0">
         </div>
     </main>
@@ -108,7 +116,6 @@
         const currentYear = now.getFullYear();
 
         document.getElementById('month-dot').style.backgroundColor = monthColors[currentMonthIdx].hex;
-
         function drawWheel() {
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
@@ -175,6 +182,7 @@
 
         // Plant data — season arrays drive the dynamic cards
         const MONTH_KEYS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+        document.getElementById('harvest-teaser').href = `month-detail.html?m=${MONTH_KEYS[currentMonthIdx]}`;
         const hexMap = {
             jan:'#E8ECF0', feb:'#D8EBF8', mar:'#DDF0E4', apr:'#F8F8D0',
             may:'#5FAD6A', jun:'#F0B8CC', jul:'#2E8FD8', aug:'#E8907A',
