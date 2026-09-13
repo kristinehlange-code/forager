@@ -45,9 +45,11 @@
     </header>
 
     <!-- Hero band -->
-    <div id="hero" class="w-full h-40 flex flex-col items-center justify-center gap-2 px-6">
-        <span id="type-badge" class="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full"></span>
-        <h1 id="recipe-name" class="text-3xl font-bold text-center leading-tight"></h1>
+    <div id="hero" class="w-full h-40 flex flex-col items-center justify-center gap-2 px-6 relative overflow-hidden">
+        <img id="hero-photo" class="absolute inset-0 w-full h-full object-cover" alt="" style="display:none">
+        <div id="hero-overlay" class="absolute inset-0 bg-black/35" style="display:none"></div>
+        <span id="type-badge" class="relative text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full"></span>
+        <h1 id="recipe-name" class="relative text-3xl font-bold text-center leading-tight"></h1>
     </div>
 
     <main class="mx-auto px-5 pt-5 pb-4 md:max-w-[720px]">
@@ -195,7 +197,15 @@
             'sea-buckthorn-curd': { type: 'Preserve', peak: 'aug', dk: 'Havtorn' },
             'sea-rocket-mackerel-salad': { type: 'Fresh', peak: 'jun', dk: 'Strandsennep' },
             'wild-herb-salt': { type: 'Preserve', peak: 'mar', dk: 'Ramsløg' },
-            'mushroom-toast': { type: 'Fresh', peak: 'jan', dk: 'Fløjlsfodsvampe' }
+            'mushroom-toast': { type: 'Fresh', peak: 'jan', dk: 'Fløjlsfodsvampe' },
+            'infusing-spirits': { type: 'Drink', peak: 'sep', dk: 'Diverse' },
+            'wild-flavoured-sugar': { type: 'Preserve', peak: 'jun', dk: 'Diverse' },
+            'wild-syrup': { type: 'Drink', peak: 'may', dk: 'Diverse' },
+            'wild-vinegar-fire-cider': { type: 'Preserve', peak: 'oct', dk: 'Diverse' },
+            'wild-jam-method': { type: 'Preserve', peak: 'aug', dk: 'Diverse' },
+            'foragers-salt': { type: 'Preserve', peak: 'jul', dk: 'Diverse' },
+            'dried-herb-mix': { type: 'Preserve', peak: 'jul', dk: 'Diverse' },
+            'wild-pesto-formula': { type: 'Preserve', peak: 'may', dk: 'Diverse' }
         };
 
         const recipeData = {
@@ -1300,6 +1310,160 @@
                     'Toast the rye bread, spoon each mushroom mix onto two slices, and finish with flake salt.'
                 ],
                 tip: 'Never crowd the pan or the mushrooms will steam instead of fry — work in batches if needed.'
+            },
+            'infusing-spirits': {
+                name: 'Infusing Spirits: Gin & Snaps', plant: 'Various foraged ingredients', plant_id: null,
+                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                time: '15 mins active + 1-2 weeks steeping', serves: '750ml',
+                intro: 'A flexible base method for turning neutral spirit into your own gin, snaps, or liqueur with whatever you brought home.',
+                ingredients: [
+                    '750ml Neutral spirit (vodka, ren akvavit, or a plain gin base)',
+                    '20-40g Fresh aromatic ingredient, or 10-15g dried',
+                    '1 tbsp Sugar or honey, optional, to round out sharp or bitter flavours'
+                ],
+                method: [
+                    'Wash and lightly bruise or crush the plant material to release its oils — avoid chopping soft fruit into mush, as it clouds the spirit.',
+                    'Pack loosely into a clean, sterilised jar or bottle. Don\'t overfill; the spirit needs room to circulate.',
+                    'Cover completely with the spirit, seal, and store somewhere dark and cool.',
+                    'Taste every 2 to 3 days from day 3. Strong flavours like juniper or spruce tips can peak in 3 to 5 days; delicate ones like wild rose petals or birch leaves may need 1 to 2 weeks.',
+                    'Strain through a fine sieve or muslin as soon as the flavour is right — leaving ingredients in too long can turn the spirit bitter or vegetal.',
+                    'Sweeten to taste if needed, bottle, and let it rest a further week before drinking; the flavour rounds out with a little time.'
+                ],
+                tip: 'Good candidates: juniper berries and spruce tips for snaps, elderflower and wild rose petals for gin, sloes and rowan berries for dessert liqueurs, chanterelles or porcini for a savoury vodka, sweet woodruff and birch leaves for something more delicate. Always test a small batch first with anything new.'
+            },
+            'wild-flavoured-sugar': {
+                name: 'Wild Flavoured Sugar', plant: 'Various foraged ingredients', plant_id: null,
+                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                time: '10 mins + 5-7 days', serves: '200g',
+                intro: 'A simple way to capture delicate wild aromas in sugar, for baking, drinks, or finishing a dessert.',
+                ingredients: [
+                    '200g Granulated or caster sugar',
+                    '15-20g Fresh aromatic petals, leaves, or zest, or 5-8g dried'
+                ],
+                method: [
+                    'If using fresh material, spread it on a tray and let it wilt for a few hours first — too much moisture will clump or mould the sugar.',
+                    'Layer the sugar and plant material in a jar, or pulse briefly together in a food processor for a faster, more even infusion.',
+                    'Seal and store in a cool, dark place, shaking daily.',
+                    'After 5 to 7 days, sift out any leaves or petals — skip this step if you processed everything together.',
+                    'Store in an airtight jar; it will keep for months.'
+                ],
+                tip: 'Elderflower, wild rose petals, sweet woodruff, pine needles, and lavender all make excellent flavoured sugars.'
+            },
+            'wild-syrup': {
+                name: 'Wild Cordial & Syrup', plant: 'Various foraged ingredients', plant_id: null,
+                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                time: '30 mins', serves: '500ml',
+                intro: 'The base ratio behind cordials like elderflower — works for almost any foraged flower, fruit, or shoot.',
+                ingredients: [
+                    '500g Fresh aromatic flowers, fruit, or shoots',
+                    '500g Sugar',
+                    '500ml Water',
+                    '25g Citric acid, or juice of 2 lemons'
+                ],
+                method: [
+                    'Bring the water and sugar to a simmer, stirring until fully dissolved.',
+                    'Remove from the heat and add the plant material and citric acid or lemon juice.',
+                    'Cover and steep for 24 hours in the fridge for flowers, or simmer gently for 15 to 20 minutes for firmer fruit like rosehips or rowan berries before steeping.',
+                    'Strain through a muslin-lined sieve, pressing gently without forcing pulp through.',
+                    'Bottle in sterilised bottles. Refrigerate and use within a month, or freeze in portions for longer storage.'
+                ],
+                tip: 'For a thicker syrup rather than a diluting cordial, simmer the strained liquid briefly with an extra 1:1 ratio of sugar to reduce it. Elderflower, spruce tips, rosehip, rowan, and wild rose all work well.'
+            },
+            'wild-vinegar-fire-cider': {
+                name: 'Wild Vinegar & Fire Cider', plant: 'Various foraged ingredients', plant_id: null,
+                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                time: '15 mins + 3-4 weeks steeping', serves: '500ml',
+                intro: 'A master method for infusing vinegar with foraged flavour, plus a proper fire cider for the cold months.',
+                ingredients: [
+                    '1 part Fresh or dried aromatic herbs, berries, or roots',
+                    '3 parts Raw apple cider vinegar, with the "mother" if possible',
+                    'For fire cider: fresh ginger, horseradish or wild mustard root, garlic or wild garlic, chilli, and honey to taste'
+                ],
+                method: [
+                    'Loosely fill a jar with your chosen ingredients — don\'t pack tightly.',
+                    'Cover completely with vinegar. Use a non-metal lid, or a layer of parchment under a metal one, as vinegar corrodes metal over time.',
+                    'Store in a cool, dark spot for 3 to 4 weeks, shaking every few days.',
+                    'Strain through muslin and bottle.',
+                    'For fire cider specifically: finely chop or grate all the ingredients into the jar before adding vinegar, steep the full 4 weeks, strain well, and stir in honey to taste before bottling.'
+                ],
+                tip: 'Fire cider is a strong tonic, taken by the spoonful, not the glass. Blackberry, elderberry, and rowan berry vinegars are excellent for dressings; wild garlic and horseradish vinegars are sharper and better suited to savoury cooking.'
+            },
+            'wild-jam-method': {
+                name: 'Wild Jam & Fruit Preserve', plant: 'Various foraged ingredients', plant_id: null,
+                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                time: '40 mins', serves: '3-4 jars',
+                intro: 'The core technique for turning foraged fruit into a proper set jam, whatever the fruit of the month is.',
+                ingredients: [
+                    '1kg Foraged fruit — crab apple, rosehip, sloe, rowan, blackberry, or sea buckthorn',
+                    '750g-1kg Sugar, adjusted to the fruit\'s natural sweetness and pectin content',
+                    '1 Lemon, juiced'
+                ],
+                method: [
+                    'Wash the fruit and remove stems, stones, or damaged parts. Firmer fruit like crab apple, rowan, or rosehip benefits from a first simmer in a little water to soften before sugar is added.',
+                    'Combine the fruit, sugar, and lemon juice in a wide, heavy-bottomed pot.',
+                    'Bring to a rolling boil, stirring frequently to prevent catching on the bottom.',
+                    'Test for setting point after 8 to 10 minutes: place a small spoonful on a cold plate, and if it wrinkles when pushed, it\'s ready.',
+                    'Ladle into sterilised jars while still hot and seal immediately.'
+                ],
+                tip: 'Low-pectin fruit like sea buckthorn or blackberry sets better combined with a high-pectin fruit like crab apple, or with a splash of shop-bought pectin.'
+            },
+            'foragers-salt': {
+                name: 'Foraged Herb Salt', plant: 'Various foraged ingredients', plant_id: null,
+                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                time: '15 mins + 2-3 days drying', serves: '100g',
+                intro: 'A general method for turning whatever aromatic herb is abundant this month into a proper herb salt.',
+                ingredients: [
+                    '100g Coarse sea salt',
+                    '20-30g Fresh aromatic herbs, or 8-10g dried'
+                ],
+                method: [
+                    'If using fresh herbs, finely chop them, then combine with the salt by hand or in a food processor.',
+                    'Spread the mixture thinly on a tray lined with baking paper.',
+                    'Leave to air-dry somewhere warm and ventilated for 2 to 3 days, or dry in an oven on its lowest setting with the door ajar for 1 to 2 hours, checking often.',
+                    'Once fully dry, break up any clumps and store in an airtight jar.'
+                ],
+                tip: 'Wild garlic, mugwort, yarrow, and pine needles all make excellent herb salts. Pinch a bit between your fingers before storing — any lingering dampness will cause mould.'
+            },
+            'dried-herb-mix': {
+                name: 'Dried Wild Herb Mix', plant: 'Various foraged ingredients', plant_id: null,
+                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                time: '20 mins + 1-2 weeks drying', serves: 'Varies',
+                intro: 'How to dry and store wild herbs properly, so the flavour actually survives into winter.',
+                ingredients: [
+                    'Any combination of aromatic wild herbs, leaves, or flowers'
+                ],
+                method: [
+                    'Harvest on a dry day, ideally late morning once the dew has evaporated.',
+                    'Rinse only if needed, and dry thoroughly before you start — any lingering moisture will cause mould.',
+                    'Spread in a single layer on a rack, or hang in small bunches somewhere warm, dark, and airy.',
+                    'Herbs are ready when they crumble easily — usually 1 to 2 weeks air-drying, or 1 to 2 hours in an oven on its lowest setting with the door ajar.',
+                    'Once fully dry, strip the leaves from the stems and store them whole rather than crushed; crush just before use to preserve the aroma.',
+                    'Store in an airtight jar away from light. Most dried wild herbs keep their flavour for 6 to 12 months.'
+                ],
+                tip: 'Good drying candidates: nettle, mugwort, yarrow, chamomile, linden flower, and wild mint. Combine two or three complementary herbs for a house tea blend, or dry them singly to keep your options open.'
+            },
+            'wild-pesto-formula': {
+                name: 'Wild Pesto: The Master Formula', plant: 'Various foraged ingredients', plant_id: null,
+                season: [true, true, true, true, true, true, true, true, true, true, true, true],
+                time: '15 mins', serves: '1 jar',
+                intro: 'One flexible ratio for turning almost any foraged green into a pesto, once you know the formula.',
+                ingredients: [
+                    '50g Foraged greens — wild garlic, nettle, ground elder, dandelion, or a mix',
+                    '30g Nuts or seeds — hazelnuts, almonds, sunflower, or pumpkin seeds',
+                    '100ml Neutral or rapeseed oil',
+                    '30g Hard cheese, grated, optional',
+                    '1 pinch Herb salt or sea salt, to taste',
+                    'Squeeze of lemon juice, optional'
+                ],
+                method: [
+                    'Blanch tougher greens like nettle or ground elder for 30 seconds in boiling water, then plunge into cold water — this softens sharpness and locks in colour. Skip this step for milder greens like wild garlic.',
+                    'Toast the nuts or seeds lightly in a dry pan until fragrant.',
+                    'Blend the greens, nuts, and half the oil until roughly combined.',
+                    'Add the remaining oil gradually, blending to your preferred texture, coarse or smooth.',
+                    'Stir in the cheese and salt, adjusting to taste, and add lemon juice if using.',
+                    'Transfer to a jar and top with a thin layer of oil to seal out air.'
+                ],
+                tip: 'A rough 5:3:10 ratio of greens to nuts to oil by weight is a solid starting point for almost any combination. Freezes well in ice cube trays for portioned use later.'
             }
         };
 
@@ -1332,6 +1496,19 @@
             const hero = document.getElementById('hero');
             hero.style.backgroundColor = heroColor;
 
+            const heroPhoto = document.getElementById('hero-photo');
+            const heroOverlay = document.getElementById('hero-overlay');
+            heroPhoto.src = `images/recipes/${id}.jpg`;
+            heroPhoto.onload = () => {
+                heroPhoto.style.display = 'block';
+                heroOverlay.style.display = 'block';
+                document.getElementById('recipe-name').style.color = 'white';
+            };
+            heroPhoto.onerror = () => {
+                heroPhoto.style.display = 'none';
+                heroOverlay.style.display = 'none';
+            };
+
             const badge = document.getElementById('type-badge');
             badge.textContent = meta.type;
             badge.style.backgroundColor = typeBadgeColors[meta.type];
@@ -1343,10 +1520,20 @@
 
             // Plant link
             const plantLink = document.getElementById('plant-link');
-            plantLink.textContent = recipe.plant;
-            plantLink.href = `plant-detail.html?id=${recipe.plant_id}`;
-            plantLink.style.color = '#2D6A4F';
-            document.getElementById('plant-danish').textContent = `(${meta.dk})`;
+            const plantDanish = document.getElementById('plant-danish');
+            if (recipe.plant_id) {
+                plantLink.textContent = recipe.plant;
+                plantLink.href = `plant-detail.html?id=${recipe.plant_id}`;
+                plantLink.style.color = '#2D6A4F';
+                plantDanish.textContent = `(${meta.dk})`;
+                plantDanish.style.display = '';
+            } else {
+                plantLink.textContent = recipe.plant || 'Various foraged ingredients';
+                plantLink.removeAttribute('href');
+                plantLink.style.color = '#2D6A4F';
+                plantLink.style.cursor = 'default';
+                plantDanish.style.display = 'none';
+            }
 
             // Season dots
             document.getElementById('season-dots').innerHTML = makeDots(recipe.season);
