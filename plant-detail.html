@@ -221,7 +221,7 @@
                     'Infused herb oil',
                     'Fresh garnish for omelets and salads'
                 ],
-                recipes: ['wild-herb-pesto', 'wild-garlic-salt', 'pickled-ramslog-buds', 'foraged-green-soup', 'wild-garlic-butter', 'wild-herb-salt']
+                recipes: ['wild-garlic-pesto', 'wild-garlic-salt', 'pickled-ramslog-buds', 'foraged-green-soup', 'wild-garlic-butter', 'wild-herb-salt']
             },
             'dandelion': {
                 name: 'Dandelion', danish: 'Mælkebøtte', latin: 'Taraxacum officinale', peak: 'may',
@@ -267,7 +267,7 @@
                     'Dried seeds as a crunchy food topping',
                     'Nettle root tea for winter wellness'
                 ],
-                recipes: ['stinging-nettle-pasta']
+                recipes: ['nettle-soup', 'stinging-nettle-pasta']
             },
             'elder': {
                 name: 'Elder', danish: 'Hyld', latin: 'Sambucus nigra', peak: 'jun',
@@ -1791,30 +1791,15 @@
                     'Season with salt, pepper, and a squeeze of lemon. Scatter with parsley and serve with crusty bread or over soft polenta.'
                 ],
                 tip: 'Fresh oyster mushrooms are best within a day or two of picking. Look for firm clusters with tight, unfurled edges.'
-            },            'wild-herb-pesto': {
-                name: 'Wild Herb Pesto', plant: 'Wild Garlic', plant_id: 'wild-garlic',
+            },
+            'wild-garlic-pesto': {
+                name: 'Wild Garlic Pesto', plant: 'Wild Garlic', plant_id: 'wild-garlic',
                 season: [false, true, true, true, true, false, false, false, false, false, false, false],
-                time: '15 mins', serves: '1 jar',
-                intro: 'Capture the essence of spring with this potent and versatile garlic-scented green sauce.',
-                ingredients: [
-                    '25g Ramsons leaves',
-                    '25g Stinging Nettle shoots',
-                    '25g Ground Elder leaves',
-                    '100g Almonds or hazelnuts',
-                    '2dl Rapeseed oil',
-                    '1 tsp Herb salt',
-                    '1 tbsp Honey or syrup',
-                    '100g Grated hard cheese (optional)'
-                ],
-                method: [
-                    'Thoroughly wash and dry all foraged wild herb leaves and shoots.',
-                    'Toast the almonds or hazelnuts in a dry pan for 4 to 5 minutes until fragrant.',
-                    'Place the toasted nuts and wild herbs into a blender or mortar.',
-                    'Add the oil, herb salt, and honey, then blend or pound to your desired consistency.',
-                    'Stir in the grated cheese if using, and taste for a balance of salt, acid, and sweetness.',
-                    'Transfer to a clean jar and cover with a thin layer of oil to preserve freshness.'
-                ],
-                tip: 'Avoid heating this pesto directly; stir it into warm pasta or soup just before serving to preserve the delicate aroma.'
+                time: '15 mins', serves: '250ml jar',
+                intro: 'A vivid green pesto that captures spring at its most intense. Better than basil pesto and made in minutes.',
+                ingredients: ['100g fresh wild garlic leaves, washed and dried','50g pine nuts or walnuts, lightly toasted','50g Parmesan or Pecorino, finely grated','100ml good olive oil','Juice of half a lemon','Salt and black pepper to taste'],
+                method: ['Toast the nuts in a dry pan for 2–3 minutes until golden. Watch carefully — they burn fast. Cool.','Add wild garlic leaves, cooled nuts, and lemon juice to a food processor. Pulse until roughly chopped.','With the processor running, slowly pour in the olive oil until you have a loose, textured paste. Do not over-blend.','Stir in the grated cheese by hand. Season generously with salt and pepper.','Transfer to a clean jar and pour a thin layer of olive oil over the surface to prevent browning.'],
+                tip: 'Harvest wild garlic before the flowers open for the best flavour and deepest green colour.'
             },
             'vegan-herb-cream-cheese': {
                 name: 'Vegan Herb Cream Cheese', plant: 'White Dead-nettle', plant_id: 'white-dead-nettle',
@@ -1859,6 +1844,15 @@
                     'Store at room temperature out of direct sunlight for 21 to 28 days.'
                 ],
                 tip: 'Check the jar daily during the first week and burp it to release built-up fermentation gases.'
+            },
+            'nettle-soup': {
+                name: 'Nettle Soup', plant: 'Stinging Nettle', plant_id: 'stinging-nettle',
+                season: [false, false, true, true, true, false, false, false, false, false, false, false],
+                time: '35 mins', serves: '4',
+                intro: 'A classic Nordic spring soup — deep green and mineral-tasting with a silky texture. Rich in iron, vitamins, and the taste of early spring.',
+                ingredients: ['200g young nettle tops (top 4 leaves only), washed','1 medium onion, roughly chopped','2 cloves garlic, sliced','2 medium potatoes, peeled and diced','800ml vegetable stock','100ml cream or crème fraîche','1 tbsp butter','Salt, pepper, and nutmeg to taste','Soft-boiled egg and rye bread to serve'],
+                method: ['Wear gloves when handling raw nettles. Pick only the young top leaves from fresh spring shoots. Rinse well.','Melt butter in a large pan over medium heat. Cook onion gently for 8–10 minutes until soft. Add garlic for 2 more minutes.','Add diced potato and vegetable stock. Bring to a boil and cook for 12–15 minutes until potato is completely tender.','Add nettles and stir into the liquid. The sting disappears within 30 seconds of heat. Simmer for 3 minutes only.','Blend until smooth. Stir in cream, season with salt, pepper, and a little nutmeg. Reheat gently without boiling.','Serve topped with a soft-boiled egg, a swirl of cream, and rye bread.'],
+                tip: 'Harvest nettles in March and April before they flower. Older nettles become coarse and less pleasant. Always wear thick gloves.'
             },
             'stinging-nettle-pasta': {
                 name: 'Stinging Nettle Pasta', plant: 'Stinging Nettle', plant_id: 'stinging-nettle',
@@ -1967,7 +1961,7 @@
                 tip: 'Roasting chicory and dandelion roots until dark brown transforms bitterness into a coffee-like sweetness.'
             },
             'wild-kakaobidder': {
-                name: 'Wild Kakaobidder', plant: 'Mugwort', plant_id: 'mugwort',
+                name: 'Wild Cocoa Bites', plant: 'Mugwort', plant_id: 'mugwort',
                 season: [false, false, false, true, true, true, true, true, true, true, false, false],
                 time: '30 mins', serves: '20 pieces',
                 intro: 'Luxurious raw date bites infused with the savory and aromatic notes of foraged herbs.',

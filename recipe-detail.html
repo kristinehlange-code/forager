@@ -140,7 +140,6 @@
         const typeBadgeText = { Fresh: '#3A5C3A', Preserve: '#6B6B00', Drink: '#1A4A6B' };
 
         const recipeMeta = {
-            'wild-garlic-pesto': { type: 'Preserve', peak: 'mar', dk: 'Ramsløg' },
             'nettle-soup': { type: 'Fresh', peak: 'apr', dk: 'Brændenælde' },
             'elderflower-cordial': { type: 'Drink', peak: 'jun', dk: 'Hyld' },
             'hawthorn-bud-salad': { type: 'Fresh', peak: 'mar', dk: 'Tjørn' },
@@ -150,7 +149,7 @@
             'velvet-shank-broth': { type: 'Fresh', peak: 'nov', dk: 'Hønseporesvamp' },
             'chanterelle-butter': { type: 'Preserve', peak: 'aug', dk: 'Kantarel' },
             'oyster-mushroom-stew': { type: 'Fresh', peak: 'nov', dk: 'Østershat' },
-            'wild-herb-pesto': { type: 'Preserve', peak: 'feb', dk: 'Ramsløg' },
+            'wild-garlic-pesto': { type: 'Preserve', peak: 'feb', dk: 'Ramsløg' },
             'vegan-herb-cream-cheese': { type: 'Preserve', peak: 'jan', dk: 'Døvnælde' },
             'wild-kraut': { type: 'Preserve', peak: 'mar', dk: 'Skvalderkål' },
             'stinging-nettle-pasta': { type: 'Fresh', peak: 'mar', dk: 'Brændenælde' },
@@ -210,15 +209,6 @@
 
         const recipeData = {
 
-            'wild-garlic-pesto': {
-                name: 'Wild Garlic Pesto', plant: 'Wild Garlic', plant_id: 'wild-garlic',
-                season: [false, true, true, true, true, false, false, false, false, false, false, false],
-                time: '15 mins', serves: '250ml jar',
-                intro: 'A vivid green pesto that captures spring at its most intense. Better than basil pesto and made in minutes.',
-                ingredients: ['100g fresh wild garlic leaves, washed and dried','50g pine nuts or walnuts, lightly toasted','50g Parmesan or Pecorino, finely grated','100ml good olive oil','Juice of half a lemon','Salt and black pepper to taste'],
-                method: ['Toast the nuts in a dry pan for 2–3 minutes until golden. Watch carefully — they burn fast. Cool.','Add wild garlic leaves, cooled nuts, and lemon juice to a food processor. Pulse until roughly chopped.','With the processor running, slowly pour in the olive oil until you have a loose, textured paste. Do not over-blend.','Stir in the grated cheese by hand. Season generously with salt and pepper.','Transfer to a clean jar and pour a thin layer of olive oil over the surface to prevent browning.'],
-                tip: 'Harvest wild garlic before the flowers open for the best flavour and deepest green colour.'
-            },
             'nettle-soup': {
                 name: 'Nettle Soup', plant: 'Stinging Nettle', plant_id: 'stinging-nettle',
                 season: [false, false, true, true, true, false, false, false, false, false, false, false],
@@ -302,30 +292,14 @@
                 method: ['Heat a wide pan over high heat with olive oil. Add mushrooms in a single layer, cook without stirring for 2–3 minutes until golden. Toss and cook another minute. Remove and set aside.','In the same pan, cook onion gently in butter for 10–12 minutes until golden. Add garlic, thyme, and bay leaf for 2 more minutes.','Pour in wine or stock and reduce by half, scraping up the brown bits.','Add cream and return mushrooms. Simmer gently for 5–8 minutes until sauce is thick. Remove bay leaf and thyme.','Season with salt, pepper, and lemon. Scatter with parsley. Serve with crusty bread or polenta.'],
                 tip: 'Fresh oyster mushrooms are best within a day or two of picking. Look for firm clusters with tight, unfurled edges.'
             },
-            'wild-herb-pesto': {
-                name: 'Wild Herb Pesto', plant: 'Wild Garlic', plant_id: 'wild-garlic',
+            'wild-garlic-pesto': {
+                name: 'Wild Garlic Pesto', plant: 'Wild Garlic', plant_id: 'wild-garlic',
                 season: [false, true, true, true, true, false, false, false, false, false, false, false],
-                time: '15 mins', serves: '1 jar',
-                intro: 'Capture the essence of spring with this potent and versatile garlic-scented green sauce.',
-                ingredients: [
-                    '25g Ramsons leaves',
-                    '25g Stinging Nettle shoots',
-                    '25g Ground Elder leaves',
-                    '100g Almonds or hazelnuts',
-                    '2dl Rapeseed oil',
-                    '1 tsp Herb salt',
-                    '1 tbsp Honey or syrup',
-                    '100g Grated hard cheese (optional)'
-                ],
-                method: [
-                    'Thoroughly wash and dry all foraged wild herb leaves and shoots.',
-                    'Toast the almonds or hazelnuts in a dry pan for 4 to 5 minutes until fragrant.',
-                    'Place the toasted nuts and wild herbs into a blender or mortar.',
-                    'Add the oil, herb salt, and honey, then blend or pound to your desired consistency.',
-                    'Stir in the grated cheese if using, and taste for a balance of salt, acid, and sweetness.',
-                    'Transfer to a clean jar and cover with a thin layer of oil to preserve freshness.'
-                ],
-                tip: 'Avoid heating this pesto directly; stir it into warm pasta or soup just before serving to preserve the delicate aroma.'
+                time: '15 mins', serves: '250ml jar',
+                intro: 'A vivid green pesto that captures spring at its most intense. Better than basil pesto and made in minutes.',
+                ingredients: ['100g fresh wild garlic leaves, washed and dried','50g pine nuts or walnuts, lightly toasted','50g Parmesan or Pecorino, finely grated','100ml good olive oil','Juice of half a lemon','Salt and black pepper to taste'],
+                method: ['Toast the nuts in a dry pan for 2–3 minutes until golden. Watch carefully — they burn fast. Cool.','Add wild garlic leaves, cooled nuts, and lemon juice to a food processor. Pulse until roughly chopped.','With the processor running, slowly pour in the olive oil until you have a loose, textured paste. Do not over-blend.','Stir in the grated cheese by hand. Season generously with salt and pepper.','Transfer to a clean jar and pour a thin layer of olive oil over the surface to prevent browning.'],
+                tip: 'Harvest wild garlic before the flowers open for the best flavour and deepest green colour.'
             },
             'vegan-herb-cream-cheese': {
                 name: 'Vegan Herb Cream Cheese', plant: 'White Dead-nettle', plant_id: 'white-dead-nettle',
@@ -478,7 +452,7 @@
                 tip: 'Roasting chicory and dandelion roots until dark brown transforms bitterness into a coffee-like sweetness.'
             },
             'wild-kakaobidder': {
-                name: 'Wild Kakaobidder', plant: 'Mugwort', plant_id: 'mugwort',
+                name: 'Wild Cocoa Bites', plant: 'Mugwort', plant_id: 'mugwort',
                 season: [false, false, false, true, true, true, true, true, true, true, false, false],
                 time: '30 mins', serves: '20 pieces',
                 intro: 'Luxurious raw date bites infused with the savory and aromatic notes of foraged herbs.',
@@ -1498,6 +1472,7 @@
 
             const heroPhoto = document.getElementById('hero-photo');
             const heroOverlay = document.getElementById('hero-overlay');
+            heroPhoto.dataset.fallback = '';
             heroPhoto.src = `images/recipes/${id}.jpg`;
             heroPhoto.onload = () => {
                 heroPhoto.style.display = 'block';
@@ -1505,8 +1480,13 @@
                 document.getElementById('recipe-name').style.color = 'white';
             };
             heroPhoto.onerror = () => {
-                heroPhoto.style.display = 'none';
-                heroOverlay.style.display = 'none';
+                if (!heroPhoto.dataset.fallback) {
+                    heroPhoto.dataset.fallback = '1';
+                    heroPhoto.src = `images/recipes/${id}.jpeg`;
+                } else {
+                    heroPhoto.style.display = 'none';
+                    heroOverlay.style.display = 'none';
+                }
             };
 
             const badge = document.getElementById('type-badge');
